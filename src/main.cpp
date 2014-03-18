@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2");
+uint256 hashGenesisBlock("0xb868e0d95a3c3c0e0dadc67ee587aaf9dc8acbf99e3b4b3110fad4eb74c1decc");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -1063,16 +1063,40 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 50 * COIN;
+    int64 nSubsidy = 100000 * COIN;
 
-    // Subsidy is cut in half every 840000 blocks, which will occur approximately every 4 years
-    nSubsidy >>= (nHeight / 840000); // Reddcoin: 840k blocks in ~4 years
+    // Bonus reward for block 20,000 - 29,999 of 150,000 coins
+    if(nHeight < 30000)
+    {
+        nSubsidy =  150000 * COIN;
+    }
+
+    // Bonus reward for block 10,000 - 19,999 of 200,000 coins
+    if(nHeight < 20000)
+    {
+        nSubsidy =  200000 * COIN;
+    }
+
+    // Bonus reward for block 10-9,999 of 300,000 coins
+    if(nHeight < 10000)
+    {
+        nSubsidy =  300000 * COIN;
+    }
+
+    // Premine: First 10 block are 540,000,000 RDD (5% of the total coin)
+    if(nHeight < 11)
+    {
+        nSubsidy =  545000000 * COIN;
+    }
+
+    // Subsidy is cut in half every 500,000 blocks
+    nSubsidy >>= (nHeight / 500000);
 
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 3.5 * 24 * 60 * 60; // Reddcoin: 3.5 days
-static const int64 nTargetSpacing = 2.5 * 60; // Reddcoin: 2.5 minutes
+static const int64 nTargetTimespan = 60 * 60; // Reddcoin: Not used
+static const int64 nTargetSpacing = 60; // Reddcoin: 1 minute block
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 //
@@ -2723,7 +2747,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0xf5ae71e26c74beacc88382716aced69cddf3dffff24f384e1808905e0188f68f");
+        hashGenesisBlock = uint256("0x38745099220dc33c497c89bab8379be45d5d987aed849f31e528cf6961d9588b");
     }
 
     //
@@ -2756,26 +2780,26 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "NY Times 05/Oct/2011 Steve Jobs, Apple’s Visionary, Dies at 56";
+        const char* pszTimestamp = "January 21st 2014 was such a nice day...";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-        txNew.vout[0].nValue = 50 * COIN;
+        txNew.vout[0].nValue = 10000 * COIN;
         txNew.vout[0].scriptPubKey = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
         CBlock block;
         block.vtx.push_back(txNew);
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1317972665;
+        block.nTime    = 1390280400;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 2084524493;
+        block.nNonce   = 222583475;
 
         if (fTestNet)
         {
-            block.nTime    = 1317798646;
-            block.nNonce   = 385270584;
+            block.nTime    = 1389917800;
+            block.nNonce   = 231045249;
         }
 
         //// debug print
@@ -2783,7 +2807,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        assert(block.hashMerkleRoot == uint256("0xb502bc1dc42b07092b9187e92f70e32f9a53247feae16d821bebffa916af79ff"));
         block.print();
         assert(hash == hashGenesisBlock);
 
