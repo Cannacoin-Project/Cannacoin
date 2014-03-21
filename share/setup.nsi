@@ -5,7 +5,7 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.8.6.2
+!define VERSION 1.1.3.1
 !define COMPANY "Reddcoin project"
 !define URL http://www.reddcoin.com/
 
