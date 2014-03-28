@@ -1,0 +1,9 @@
+Building CannaCoin
+
+See doc/readme-qt.rst for instructions on building CannaCoin-QT,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of CannaCoin.
+
+See doc/build-*.txt for instructions on building CannaCoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Litecoin.
