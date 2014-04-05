@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
-// Copyright (c) 2011-2013 CannaCoin Developers.
+// Copyright (c) 2013-2014 Dr Kimoto Chan
+// Copyright (c) 2013-2014 The CannaCoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -59,7 +60,6 @@ int64 nHPSTimerStart;
 // Settings
 int64 nTransactionFee = 0;
 int64 nMinimumInputValue = CENT / 100;
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -154,11 +154,6 @@ void static ResendWalletTransactions()
 }
 
 
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 //
 // mapOrphanTransactions
@@ -229,11 +224,6 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
     }
     return nEvicted;
 }
-
-
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -421,12 +411,6 @@ int CMerkleTx::SetMerkleBranch(const CBlock* pblock)
 
     return pindexBest->nHeight - pindex->nHeight + 1;
 }
-
-
-
-
-
-
 
 bool CTransaction::CheckTransaction() const
 {
@@ -666,9 +650,6 @@ void CTxMemPool::queryHashes(std::vector<uint256>& vtxid)
         vtxid.push_back((*mi).first);
 }
 
-
-
-
 int CMerkleTx::GetDepthInMainChain(CBlockIndex* &pindexRet) const
 {
     if (hashBlock == 0 || nIndex == -1)
@@ -793,13 +774,6 @@ bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock)
     return false;
 }
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 //
 // CBlock and CBlockIndex
@@ -871,7 +845,7 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
 	if (pindexLast->nHeight+1 == 160)
 		return bnStartDiff.GetCompact();
 		
-	// Kimoto Gravity Well
+	// Kimoto Gravity Well (Patched for Time-warp exploit 4/5/14)
 	static const int64	BlocksTargetSpacing	= 1 * 60; // 1 minute
 	unsigned int	TimeDaySeconds	= 60 * 60 * 24;
 	int64	PastSecondsMin	= TimeDaySeconds * 0.1;
@@ -883,32 +857,42 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
 	
 
 	const CBlockIndex *BlockLastSolved	= pindexLast;
-const CBlockIndex *BlockReading	= pindexLast;
-uint64	PastBlocksMass	= 0;
-int64	PastRateActualSeconds	= 0;
-int64	PastRateTargetSeconds	= 0;
-double	PastRateAdjustmentRatio	= double(1);
-CBigNum	PastDifficultyAverage;
-CBigNum	PastDifficultyAveragePrev;
-double	EventHorizonDeviation;
-double	EventHorizonDeviationFast;
-double	EventHorizonDeviationSlow;
+	const CBlockIndex *BlockReading	= pindexLast;
+	uint64	PastBlocksMass	= 0;
+	int64	PastRateActualSeconds	= 0;
+	int64	PastRateTargetSeconds	= 0;
+	double	PastRateAdjustmentRatio	= double(1);
+	CBigNum	PastDifficultyAverage;
+	CBigNum	PastDifficultyAveragePrev;
+	double	EventHorizonDeviation;
+	double	EventHorizonDeviationFast;
+	double	EventHorizonDeviationSlow;
 
     if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64)BlockLastSolved->nHeight < PastBlocksMin) { return bnProofOfWorkLimit.GetCompact(); }
 
-for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
-PastBlocksMass++;
+	int64 LatestBlockTime = BlockLastSolved->GetBlockTime();
+	for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
+	if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
+		PastBlocksMass++;
 
-if (i == 1)	{ PastDifficultyAverage.SetCompact(BlockReading->nBits); }
-else	{ PastDifficultyAverage = ((CBigNum().SetCompact(BlockReading->nBits) - PastDifficultyAveragePrev) / i) + PastDifficultyAveragePrev; }
-PastDifficultyAveragePrev = PastDifficultyAverage;
-
-PastRateActualSeconds	= BlockLastSolved->GetBlockTime() - BlockReading->GetBlockTime();
+	if (i == 1)	{ PastDifficultyAverage.SetCompact(BlockReading->nBits); }
+		else	{ PastDifficultyAverage = ((CBigNum().SetCompact(BlockReading->nBits) - PastDifficultyAveragePrev) / i) + PastDifficultyAveragePrev; }
+				  PastDifficultyAveragePrev = PastDifficultyAverage;
+				  PastRateActualSeconds	= BlockLastSolved->GetBlockTime() - BlockReading->GetBlockTime();
+if (LatestBlockTime < BlockReading->GetBlockTime()) {
+                        if (BlockReading->nHeight > 16000) // HARD Fork block number
+                                LatestBlockTime = BlockReading->GetBlockTime();
+                }
+PastRateActualSeconds                   = LatestBlockTime - BlockReading->GetBlockTime();
 PastRateTargetSeconds	= TargetBlocksSpacingSeconds * PastBlocksMass;
 PastRateAdjustmentRatio	= double(1);
 if (PastRateActualSeconds < 0) { PastRateActualSeconds = 0; }
-if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
+                if (BlockReading->nHeight > 16000) { // HARD Fork block number
+                        if (PastRateActualSeconds < 1) { PastRateActualSeconds = 1; }
+                } else {
+                        if (PastRateActualSeconds < 0) { PastRateActualSeconds = 0; }
+                }
+                if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
 PastRateAdjustmentRatio	= double(PastRateTargetSeconds) / double(PastRateActualSeconds);
 }
 EventHorizonDeviation	= 1 + (0.7084 * pow((double(PastBlocksMass)/double(144)), -1.228));
@@ -1002,15 +986,6 @@ void CBlock::UpdateTime(const CBlockIndex* pindexPrev)
     if (fTestNet)
         nBits = GetNextWorkRequired(pindexPrev, this);
 }
-
-
-
-
-
-
-
-
-
 
 
 bool CTransaction::DisconnectInputs(CTxDB& txdb)
@@ -1304,9 +1279,6 @@ bool CTransaction::ClientConnectInputs()
 
     return true;
 }
-
-
-
 
 bool CBlock::DisconnectBlock(CTxDB& txdb, CBlockIndex* pindex)
 {
@@ -1713,8 +1685,6 @@ bool CBlock::AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos)
 }
 
 
-
-
 bool CBlock::CheckBlock() const
 {
     // These are checks that are independent of context
@@ -1901,13 +1871,6 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
     return true;
 }
 
-
-
-
-
-
-
-
 bool CheckDiskSpace(uint64 nAdditionalBytes)
 {
     uint64 nFreeBytesAvailable = filesystem::space(GetDataDir()).available;
@@ -1994,9 +1957,7 @@ bool LoadBlockIndex(bool fAllowNew)
         if (!fAllowNew)
             return false;
 
-        // Genesis Block:
-
-// Genesis block
+	// Genesis block
         const char* pszTimestamp = "08795136517445238056987515653326978746565045253647784699110785997841012011001784";
         CTransaction txNew;
         txNew.vin.resize(1);
@@ -2205,13 +2166,6 @@ bool LoadExternalBlockFile(FILE* fileIn)
 }
 
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 //
 // CAlert
@@ -2326,12 +2280,6 @@ bool CAlert::ProcessAlert()
     printf("accepted alert %d, AppliesToMe()=%d\n", nID, AppliesToMe());
     return true;
 }
-
-
-
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3240,18 +3188,6 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 //
 // BitcoinMiner
@@ -3655,7 +3591,6 @@ void static BitcoinMiner(CWallet *pwallet)
                 return;
         }
 
-
         //
         // Create new block
         //
@@ -3669,7 +3604,6 @@ void static BitcoinMiner(CWallet *pwallet)
 
         printf("Running BitcoinMiner with %d transactions in block\n", pblock->vtx.size());
 
-
         //
         // Prebuild hash buffers
         //
@@ -3682,8 +3616,7 @@ void static BitcoinMiner(CWallet *pwallet)
         unsigned int& nBlockTime = *(unsigned int*)(pdata + 64 + 4);
         unsigned int& nBlockBits = *(unsigned int*)(pdata + 64 + 8);
         //unsigned int& nBlockNonce = *(unsigned int*)(pdata + 64 + 12);
-
-
+        
         //
         // Search
         //
@@ -3795,7 +3728,6 @@ void static ThreadBitcoinMiner(void* parg)
         dHashesPerSec = 0;
     printf("ThreadBitcoinMiner exiting, %d threads remaining\n", vnThreadsRunning[THREAD_MINER]);
 }
-
 
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
 {
