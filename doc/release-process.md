@@ -51,13 +51,17 @@ Release Process
 	wget 'https://svn.boost.org/trac/boost/raw-attachment/ticket/7262/boost-mingw.patch' -O boost-mingw-gas-cross-compile-2013-03-03.patch
 	wget 'https://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
 
- Create the VMs (and grab a coffee, or five)
+ Create the VMs (and grab a coffee, or five). Make sure you have device mapper kernel module (dm-mod) loaded. If you are running a Linux distribution other than Ubuntu, you need to make sure /bin, /sbin, /usr/sbin are all in your PATH.
+
+ The following may be run as a normal user or root:
 
 	cd ../
 	bin/make-base-vm --suite precise --arch i386
 	bin/make-base-vm --suite precise --arch amd64
 
- Build the inputs (get some more coffee)
+ Build the inputs (get some more coffee). Make sure you have KVM kernel module (kvm) loaded. If there is any error, you can check the log files (var/install.log, var/build.log).
+
+ The following must be run as root:
 
 	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/boost-linux.yml
 	mv build/out/boost-*.zip inputs/
@@ -78,6 +82,10 @@ Release Process
 	litecoin
 
 ###Update (commit) version in sources
+
+ With all the VMs and dependency packages ready, it's time to make any necessary change to reddcoin repository:
+
+      	cd ../reddcoin
 
 	reddcoin-qt.pro
 	doc/README*
@@ -102,7 +110,7 @@ Release Process
   
 	export SIGNER=(your PGP key used for gitian)
 	export VERSION=1.1.3.1
-	cd ./gitian-builder
+	cd ../gitian-builder
 
  Build reddcoind and reddcoin-qt on Linux32, Linux64:
   
