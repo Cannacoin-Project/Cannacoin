@@ -85,7 +85,7 @@ Release Process
 
  With all the VMs and dependency packages ready, it's time to make any necessary change to reddcoin repository:
 
-      	cd ../reddcoin
+	cd ../reddcoin
 
 	reddcoin-qt.pro
 	doc/README*
@@ -130,7 +130,7 @@ Release Process
 	mv reddcoin-${VERSION}-win-gitian.zip ../../
 	popd
 
-  Build output expected:
+ Build output expected:
 
   1. linux 32-bit and 64-bit binaries + source (reddcoin-${VERSION}-linux-gitian.zip)
   2. windows 32-bit binaries, installer + source (reddcoin-${VERSION}-win-gitian.zip)
