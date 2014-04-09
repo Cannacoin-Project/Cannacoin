@@ -213,14 +213,15 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 **Perform Mac build:**
 
-  OSX binaries are created by Gavin Andresen on a 32-bit, OSX 10.6 machine.
+ OSX binaries are compiled on Maverick using QT 4.8. Due to the complication with libstdc++ vs libc++, one should install the latest QT library using Homebrew:
 
-	qmake RELEASE=1 USE_UPNP=1 USE_QRCODE=1 reddcoin-qt.pro
+	brew update
+	brew install qt --HEAD
+	/usr/local/bin/qmake -spec unsupported/macx-clang-libc++ reddcoin-qt.pro USE_UPNP=1
 	make
-	export QTDIR=/opt/local/share/qt4  # needed to find translations/qt_*.qm files
+	export QTDIR=/usr/local/Cellar/qt/4.8.5/  # needed to find translations/qt_*.qm files
 	T=$(contrib/qt_translations.py $QTDIR/translations src/qt/locale)
 	python2.7 share/qt/clean_mac_info_plist.py
-	python2.7 contrib/macdeploy/macdeployqtplus Bitcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
+	python2.7 contrib/macdeploy/macdeployqtplus Reddcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
 
- Build output expected: Bitcoin-Qt.dmg
-
+ Build output expected: Reddcoin-Qt.dmg
