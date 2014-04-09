@@ -49,7 +49,7 @@ script: |
     cd $BUILDDIR
     #
     tar xzf $INDIR/openssl-1.0.1g.tar.gz
-    cd openssl-1.0.1e
+    cd openssl-1.0.1g
     if [ "$BITS" == "32" ]; then
       OPENSSL_TGT=mingw
     else
