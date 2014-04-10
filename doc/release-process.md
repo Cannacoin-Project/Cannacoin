@@ -18,7 +18,10 @@ Release Process
 	Optionally a comment
 	o
 	Enter your passphrase twice
+
+ If you generate GPG key through ssh and has no access to mouse, use the following command or equivalent to generate enough entropy:
 	
+	rngd -f -r /dev/urandom
 
 ###Create a Gitian build directory
 
