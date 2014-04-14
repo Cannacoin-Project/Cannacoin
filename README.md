@@ -26,7 +26,6 @@ Blockhain won't sync?
 Add the following information to your cannacoin.conf file
 
 addnode=81.4.106.129
-
 addnode=91.214.168.179
 
 License
