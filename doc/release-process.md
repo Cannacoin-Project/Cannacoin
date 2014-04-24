@@ -20,7 +20,7 @@ Release Process
 	Enter your passphrase twice
 
  If you generate GPG key through ssh and has no access to mouse, use the following command or equivalent to generate enough entropy:
-	
+
 	rngd -f -r /dev/urandom
 
 ###Create a Gitian build directory
@@ -38,7 +38,7 @@ Release Process
 	git clone https://github.com/reddcoin-project/reddcoin.git
 	git clone https://github.com/devrandom/gitian-builder.git
 	git clone https://github.com/reddcoin-project/gitian.sigs.git
-	
+
 	mkdir gitian-builder/inputs
 	cd gitian-builder/inputs
 
@@ -110,13 +110,13 @@ Release Process
 ###Perform gitian builds
 
  From the build directory created above
-  
+
 	export SIGNER=(your PGP key used for gitian)
-	export VERSION=1.1.3.2
+	export VERSION=1.1.3.3
 	cd ../gitian-builder
 
  Build reddcoind and reddcoin-qt on Linux32, Linux64:
-  
+
 	./bin/gbuild --commit reddcoin=v${VERSION} ../reddcoin/contrib/gitian-descriptors/gitian-linux.yml
 	./bin/gsign --signer "$SIGNER" --release ${VERSION} --destination ../gitian.sigs/ ../reddcoin/contrib/gitian-descriptors/gitian-linux.yml
 	pushd build/out
@@ -153,7 +153,7 @@ Release Process
 
  From the gitian-builder directory created above
 
-	export VERSION=1.1.3.2
+	export VERSION=1.1.3.3
 	mkdir reddcoin-${VERSION}-linux-gitian
 	pushd reddcoin-${VERSION}-linux-gitian
 	unzip ../reddcoin-${VERSION}-linux-gitian.zip
@@ -212,7 +212,7 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 -------------------------------------------------------------------------
 
-- Celebrate 
+- Celebrate
 
 **Perform Mac build:**
 
