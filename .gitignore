@@ -1,7 +1,7 @@
 src/*.exe
-src/litecoin
-src/litecoind
-src/test_litecoin
+src/reddcoin
+src/reddcoind
+src/test_reddcoin
 .*.swp
 *.*~*
 *.bak
@@ -9,17 +9,17 @@ src/test_litecoin
 *.orig
 *.o
 *.patch
-.litecoin
+.reddcoin
 
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-litecoin-qt
-Litecoin-Qt.app
+reddcoin-qt
+Reddcoin-Qt.app
 
 # Unit-tests
 Makefile.test
-litecoin-qt_test
+reddcoin-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -32,3 +32,9 @@ qrc_*.cpp
 build
 
 !src/leveldb*/Makefile
+
+.qmake.stash
+Info.plist
+Reddcoin-Qt.xcodeproj
+dist/
+reddcoin-1.1.3.2-mac.dmg
