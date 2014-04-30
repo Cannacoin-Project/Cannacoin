@@ -19,12 +19,12 @@ See readme-qt.rst for instructions on building Reddcoin-Qt, the graphical user i
 Dependencies
 ---------------------
 
- Library     Purpose           Description
- -------     -------           -----------
- libssl      SSL Support       Secure communications
- libdb4.8    Berkeley DB       Blockchain & wallet storage
- libboost    Boost             C++ Library
- miniupnpc   UPnP Support      Optional firewall-jumping support
+ Library     | Purpose          | Description
+ ------------|------------------|----------------------
+ libssl      | SSL Support      | Secure communications
+ libdb4.8    | Berkeley DB      | Blockchain & wallet storage
+ libboost    | Boost            | C++ Library
+ miniupnpc   | UPnP Support     | Optional firewall-jumping support
 
 [miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](
 http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and
