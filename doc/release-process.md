@@ -112,7 +112,7 @@ Release Process
  From the build directory created above
 
 	export SIGNER=(your PGP key used for gitian)
-	export VERSION=1.1.3.3
+	export VERSION=1.2.0.0
 	cd ../gitian-builder
 
  Build reddcoind and reddcoin-qt on Linux32, Linux64:
@@ -153,7 +153,7 @@ Release Process
 
  From the gitian-builder directory created above
 
-	export VERSION=1.1.3.3
+	export VERSION=1.2.0.0
 	mkdir reddcoin-${VERSION}-linux-gitian
 	pushd reddcoin-${VERSION}-linux-gitian
 	unzip ../reddcoin-${VERSION}-linux-gitian.zip
