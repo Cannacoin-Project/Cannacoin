@@ -1077,7 +1077,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     } else if (nHeight < 30000) {
         // Bonus reward for block 20,000 - 29,999 of 150,000 coins
         nSubsidy =  150000 * COIN;
-    } else {
+    } else if (nHeight >= 140000) {
       // Subsidy is cut in half every 50,000 blocks starting at block 140000
       nSubsidy >>= ((nHeight - 140000 + 50000) / 50000);
     }
