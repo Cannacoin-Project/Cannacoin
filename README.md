@@ -10,12 +10,22 @@ Copyright (c) 2014 Reddcoin Developers
 What is Reddcoin?
 ----------------
 
-Reddcoin is a version of Litecoin using scrypt as a proof-of-work algorithm.
- - 1 minute block targets
+Reddcoin first started in January 2014 as a variant of Litecoin using Scrypt as
+the Proof-of-Work hash algorithm.
+ - 1 minute block target
  - subsidy halves in 500,000 blocks
  - ~109 billion total coins
  - 100,000 coins per block
  - Difficulty Retarget: Every block using Kimoto's gravity well.
+
+Reddcoin is in transition to its own designed Proof-of-Stake-Velocity (PoSV) which
+will replace Proof-of-Work (PoW) in second half of 2014.
+ - 1 minute block target
+ - subsidy halves every 50,000 blocks starting at block 140,000
+ - ~30 billion mined during the PoW era
+ - 5% annual interest once in PoSV era
+ - academic paper: http://www.reddcoin.com/papers/PoSV.pdf
+ - FAQs paper: http://www.reddcoin.com/papers/PoSV_FAQ.pdf
 
 For more information, as well as an immediately useable, binary version of
 the Reddcoin client sofware, see http://www.reddcoin.com.
@@ -70,4 +80,3 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     qmake BITCOIN_QT_TEST=1 -o Makefile.test bitcoin-qt.pro
     make -f Makefile.test
     ./reddcoin-qt_test
-
