@@ -288,6 +288,16 @@ inline int64 abs64(int64 n)
     return (n >= 0 ? n : -n);
 }
 
+inline std::string leftTrim(std::string src, char chr)
+{
+    std::string::size_type pos = src.find_first_not_of(chr, 0);
+
+    if(pos > 0)
+        src.erase(0, pos);
+
+    return src;
+}
+
 template<typename T>
 std::string HexStr(const T itbegin, const T itend, bool fSpaces=false)
 {
@@ -357,6 +367,13 @@ inline std::string DateTimeStrFormat(const char* pszFormat, int64 nTime)
     strftime(pszTime, sizeof(pszTime), pszFormat, ptmTime);
     return pszTime;
 }
+
+static const std::string strTimestampFormat = "%Y-%m-%d %H:%M:%S UTC";
+inline std::string DateTimeStrFormat(int64 nTime)
+{
+    return DateTimeStrFormat(strTimestampFormat.c_str(), nTime);
+}
+
 
 template<typename T>
 void skipspaces(T& it)
