@@ -2,6 +2,7 @@ src/*.exe
 src/reddcoin
 src/reddcoind
 src/test_reddcoin
+src/tags
 .*.swp
 *.*~*
 *.bak
@@ -38,3 +39,5 @@ Info.plist
 Reddcoin-Qt.xcodeproj
 dist/
 *.dmg
+*.sublime-project
+*.sublime-workspace
