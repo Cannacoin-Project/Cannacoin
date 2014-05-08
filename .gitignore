@@ -33,5 +33,12 @@ build
 
 !src/leveldb*/Makefile
 
+.qmake.stash
+Info.plist
+Reddcoin-Qt.xcodeproj
+dist/
+*.dmg
+
 # Output of contrib/check-upstream.sh
 merge-*.txt
+

@@ -1,4 +1,4 @@
-Reddcoin 1.1.3.1
+Reddcoin 1.2.0.0
 ================
 
 Copyright (c) 2009-2013 Bitcoin Developers

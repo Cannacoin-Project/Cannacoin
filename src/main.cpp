@@ -356,7 +356,7 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 bool CTxOut::IsDust() const
 {
     // Reddcoin: IsDust() detection disabled, allows any valid dust to be relayed.
-    // The fees imposed on each dust txo is considered sufficient spam deterrant. 
+    // The fees imposed on each dust txo is considered sufficient spam deterrant.
     return false;
 }
 
@@ -1065,32 +1065,22 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 100000 * COIN;
 
-    // Bonus reward for block 20,000 - 29,999 of 150,000 coins
-    if(nHeight < 30000)
-    {
-        nSubsidy =  150000 * COIN;
-    }
-
-    // Bonus reward for block 10,000 - 19,999 of 200,000 coins
-    if(nHeight < 20000)
-    {
-        nSubsidy =  200000 * COIN;
-    }
-
-    // Bonus reward for block 10-9,999 of 300,000 coins
-    if(nHeight < 10000)
-    {
-        nSubsidy =  300000 * COIN;
-    }
-
-    // Premine: First 10 block are 540,000,000 RDD (5% of the total coin)
-    if(nHeight < 11)
-    {
+    if (nHeight < 11) {
+        // Premine: First 10 block are 545,000,000 RDD (5% of the total coin)
         nSubsidy =  545000000 * COIN;
+    } else if (nHeight < 10000) {
+        // Bonus reward for block 10-9,999 of 300,000 coins
+        nSubsidy =  300000 * COIN;
+    } else if (nHeight < 20000) {
+        // Bonus reward for block 10,000 - 19,999 of 200,000 coins
+        nSubsidy =  200000 * COIN;
+    } else if (nHeight < 30000) {
+        // Bonus reward for block 20,000 - 29,999 of 150,000 coins
+        nSubsidy =  150000 * COIN;
+    } else if (nHeight >= 140000) {
+      // Subsidy is cut in half every 50,000 blocks starting at block 140000
+      nSubsidy >>= ((nHeight - 140000 + 50000) / 50000);
     }
-
-    // Subsidy is cut in half every 500,000 blocks
-    nSubsidy >>= (nHeight / 500000);
 
     return nSubsidy + nFees;
 }
@@ -1187,7 +1177,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
 
         if (PastBlocksMass >= PastBlocksMin)
         {
-            if ((PastRateAdjustmentRatio <= EventHorizonDeviationSlow) || (PastRateAdjustmentRatio >= EventHorizonDeviationFast)) 
+            if ((PastRateAdjustmentRatio <= EventHorizonDeviationSlow) || (PastRateAdjustmentRatio >= EventHorizonDeviationFast))
             {
                 assert(BlockReading);
                 break;
@@ -1241,7 +1231,7 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     }
 
     uint64 PastBlocksMin = PastSecondsMin / BlocksTargetSpacing;
-    uint64 PastBlocksMax = PastSecondsMax / BlocksTargetSpacing;        
+    uint64 PastBlocksMax = PastSecondsMax / BlocksTargetSpacing;
 
     return KimotoGravityWell(pindexLast, pblock, BlocksTargetSpacing, PastBlocksMin, PastBlocksMax);
 }

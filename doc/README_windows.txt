@@ -1,4 +1,4 @@
-Reddcoin 1.1.3.1
+Reddcoin 1.2.0.0
 
 Copyright (c) 2009-2013 Bitcoin Developers
 Copyright (c) 2011-2013 Litecoin Developers
@@ -26,4 +26,3 @@ Reddcoin-Qt is the original Reddcoin client and it builds the backbone of the ne
 However, it downloads and stores the entire history of Reddcoin transactions;
 depending on the speed of your computer and network connection, the synchronization
 process can take anywhere from a few hours to a day or more.
-
