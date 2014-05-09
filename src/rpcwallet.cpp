@@ -30,13 +30,15 @@ void EnsureWalletIsUnlocked()
 {
     if (pwalletMain->IsLocked())
         throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Please enter the wallet passphrase with walletpassphrase first.");
+    if (fWalletUnlockStakingOnly)
+        throw JSONRPCError(RPC_WALLET_UNLOCK_NEEDED, "Error: Wallet is unlocked for staking only.");
 }
 
 void WalletTxToJSON(const CWalletTx& wtx, Object& entry)
 {
     int confirms = wtx.GetDepthInMainChain();
     entry.push_back(Pair("confirmations", confirms));
-    if (wtx.IsCoinBase())
+    if (wtx.IsCoinBase() || wtx.IsCoinStake())
         entry.push_back(Pair("generated", true));
     if (confirms)
     {
@@ -69,18 +71,23 @@ Value getinfo(const Array& params, bool fHelp)
     proxyType proxy;
     GetProxy(NET_IPV4, proxy);
 
-    Object obj;
+    Object obj, diff;
     obj.push_back(Pair("version",       (int)CLIENT_VERSION));
     obj.push_back(Pair("protocolversion",(int)PROTOCOL_VERSION));
     if (pwalletMain) {
         obj.push_back(Pair("walletversion", pwalletMain->GetVersion()));
         obj.push_back(Pair("balance",       ValueFromAmount(pwalletMain->GetBalance())));
+        obj.push_back(Pair("newmint",       ValueFromAmount(pwalletMain->GetNewMint())));
+        obj.push_back(Pair("stake",         ValueFromAmount(pwalletMain->GetStake())));
     }
     obj.push_back(Pair("blocks",        (int)nBestHeight));
     obj.push_back(Pair("timeoffset",    (boost::int64_t)GetTimeOffset()));
+    obj.push_back(Pair("moneysupply",   ValueFromAmount(pindexBest->nMoneySupply)));
     obj.push_back(Pair("connections",   (int)vNodes.size()));
     obj.push_back(Pair("proxy",         (proxy.first.IsValid() ? proxy.first.ToStringIPPort() : string())));
-    obj.push_back(Pair("difficulty",    (double)GetDifficulty()));
+    diff.push_back(Pair("proof-of-work",  (double)GetDifficulty()));
+    diff.push_back(Pair("proof-of-stake", (double)GetDifficulty(GetLastBlockIndex(pindexBest, true))));
+    obj.push_back(Pair("difficulty",    diff);
     obj.push_back(Pair("testnet",       fTestNet));
     if (pwalletMain) {
         obj.push_back(Pair("keypoololdest", (boost::int64_t)pwalletMain->GetOldestKeyPoolTime()));
@@ -431,7 +438,7 @@ Value getreceivedbyaddress(const Array& params, bool fHelp)
     for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !wtx.IsFinal())
+        if (wtx.IsCoinBase() || wtx.IsCoinStake() || !wtx.IsFinal())
             continue;
 
         BOOST_FOREACH(const CTxOut& txout, wtx.vout)
@@ -477,7 +484,7 @@ Value getreceivedbyaccount(const Array& params, bool fHelp)
     for (map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it)
     {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !wtx.IsFinal())
+        if (wtx.IsCoinBase() || wtx.IsCoinStake() || !wtx.IsFinal())
             continue;
 
         BOOST_FOREACH(const CTxOut& txout, wtx.vout)
@@ -862,7 +869,7 @@ Value ListReceived(const Array& params, bool fByAccounts)
     {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsCoinBase() || !wtx.IsFinal())
+        if (wtx.IsCoinBase() || wtx.IsCoinStake() || !wtx.IsFinal())
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -988,7 +995,7 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
     bool fAllAccounts = (strAccount == string("*"));
 
     // Sent
-    if ((!listSent.empty() || nFee != 0) && (fAllAccounts || strAccount == strSentAccount))
+    if ((!wtx.IsCoinStake()) && (!listSent.empty() || nFee != 0) && (fAllAccounts || strAccount == strSentAccount))
     {
         BOOST_FOREACH(const PAIRTYPE(CTxDestination, int64)& s, listSent)
         {
@@ -1007,6 +1014,7 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
     // Received
     if (listReceived.size() > 0 && wtx.GetDepthInMainChain() >= nMinDepth)
     {
+        bool stop = false;
         BOOST_FOREACH(const PAIRTYPE(CTxDestination, int64)& r, listReceived)
         {
             string account;
@@ -1017,7 +1025,7 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
                 Object entry;
                 entry.push_back(Pair("account", account));
                 entry.push_back(Pair("address", CBitcoinAddress(r.first).ToString()));
-                if (wtx.IsCoinBase())
+                if (wtx.IsCoinBase() || wtx.IsCoinStake())
                 {
                     if (wtx.GetDepthInMainChain() < 1)
                         entry.push_back(Pair("category", "orphan"));
@@ -1027,12 +1035,22 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
                         entry.push_back(Pair("category", "generate"));
                 }
                 else
+                {
                     entry.push_back(Pair("category", "receive"));
-                entry.push_back(Pair("amount", ValueFromAmount(r.second)));
+                }
+                if (!wtx.IsCoinStake())
+                    entry.push_back(Pair("amount", ValueFromAmount(r.second)));
+                else
+                {
+                    entry.push_back(Pair("amount", ValueFromAmount(-nFee)));
+                    stop = true; // only one coinstake output
+                }
                 if (fLong)
                     WalletTxToJSON(wtx, entry);
                 ret.push_back(entry);
             }
+            if (stop)
+                break;
         }
     }
 }
@@ -1296,7 +1314,7 @@ Value keypoolrefill(const Array& params, bool fHelp)
 void ThreadTopUpKeyPool(void* parg)
 {
     // Make this thread recognisable as the key-topping-up thread
-    RenameThread("bitcoin-key-top");
+    RenameThread("reddcoin-key-top");
 
     pwalletMain->TopUpKeyPool();
 }
@@ -1304,7 +1322,7 @@ void ThreadTopUpKeyPool(void* parg)
 void ThreadCleanWalletPassphrase(void* parg)
 {
     // Make this thread recognisable as the wallet relocking thread
-    RenameThread("bitcoin-lock-wa");
+    RenameThread("reddcoin-lock-wa");
 
     int64 nMyWakeTime = GetTimeMillis() + *((int64*)parg) * 1000;
 
@@ -1347,10 +1365,11 @@ void ThreadCleanWalletPassphrase(void* parg)
 
 Value walletpassphrase(const Array& params, bool fHelp)
 {
-    if (pwalletMain->IsCrypted() && (fHelp || params.size() != 2))
+    if (pwalletMain->IsCrypted() && (fHelp || params.size() < 2 || params.size() > 3))
         throw runtime_error(
-            "walletpassphrase <passphrase> <timeout>\n"
-            "Stores the wallet decryption key in memory for <timeout> seconds.");
+            "walletpassphrase <passphrase> <timeout> [stakingonly]\n"
+            "Stores the wallet decryption key in memory for <timeout> seconds.\n"
+            "if [stakingonly] is true sending functions are disabled.");
     if (fHelp)
         return true;
     if (!pwalletMain->IsCrypted())
@@ -1379,6 +1398,12 @@ Value walletpassphrase(const Array& params, bool fHelp)
     NewThread(ThreadTopUpKeyPool, NULL);
     int64* pnSleepTime = new int64(params[1].get_int64());
     NewThread(ThreadCleanWalletPassphrase, pnSleepTime);
+
+    // ppcoin: if user OS account compromised prevent trivial sendmoney commands
+    if (params.size() > 2)
+        fWalletUnlockStakingOnly = params[2].get_bool();
+    else
+        fWalletUnlockStakingOnly = false;
 
     return Value::null;
 }
@@ -1606,4 +1631,3 @@ Value listlockunspent(const Array& params, bool fHelp)
 
     return ret;
 }
-
