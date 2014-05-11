@@ -924,21 +924,21 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     }
     
     CBigNum bnNew(PastDifficultyAverage);
-        if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
-            bnNew *= PastRateActualSeconds;
-            bnNew /= PastRateTargetSeconds;
-        }
-        if (bnNew > bnProofOfWorkLimit) {
-            bnNew = bnProofOfWorkLimit;
-        }
-    
-        /// debug print
-        printf("Difficulty Retarget - Gravity Well\n");
-        printf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
-        printf("Before: %08x %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
-        printf("After: %08x %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
-    
-        return bnNew.GetCompact();
+    if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
+        bnNew *= PastRateActualSeconds;
+        bnNew /= PastRateTargetSeconds;
+    }
+    if (bnNew > bnProofOfWorkLimit) {
+        bnNew = bnProofOfWorkLimit;
+    }
+
+    /// debug print
+    printf("Difficulty Retarget - Gravity Well\n");
+    printf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
+    printf("Before: %08x %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
+    printf("After: %08x %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
+
+    return bnNew.GetCompact();
 }
 
 bool CheckProofOfWork(uint256 hash, unsigned int nBits)
