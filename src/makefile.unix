@@ -122,6 +122,7 @@ OBJS= \
     obj/db.o \
     obj/init.o \
     obj/keystore.o \
+    obj/miner.o \
     obj/main.o \
     obj/net.o \
     obj/protocol.o \
@@ -141,6 +142,7 @@ OBJS= \
     obj/hash.o \
     obj/bloom.o \
     obj/noui.o \
+    obj/kernel.o \
     obj/leveldb.o \
     obj/txdb.o
 
