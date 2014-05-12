@@ -466,7 +466,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != hashBestChain)
-            return error("CheckWork(): generated block is stale");
+            return error("CheckWork() : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
