@@ -81,6 +81,7 @@ OBJS= \
     obj/init.o \
     obj/keystore.o \
     obj/main.o \
+    obj/miner.o \
     obj/net.o \
     obj/protocol.o \
     obj/bitcoinrpc.o \
@@ -99,6 +100,7 @@ OBJS= \
     obj/hash.o \
     obj/bloom.o \
     obj/noui.o \
+    obj/kernel.o \
     obj/leveldb.o \
     obj/txdb.o
 
