@@ -10,7 +10,9 @@
 #include "kernel.h"
 #include "main.h"
 #include "wallet.h"
+
 using namespace std;
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // ReddcoinMiner
@@ -574,13 +576,11 @@ void StakeMiner(CWallet *pwallet)
         //
         // Create new block
         //
-        CBlockIndex* pindexPrev = chainActive.Tip();
-
         auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
         if (!pblocktemplate.get())
             return;
         CBlock *pblock = &pblocktemplate->block;
-        int64_t nFees;
+        int64_t nFees = pblocktemplate->vTxFees[0] * -1;
 
         // Trying to sign a block
         if (pblock->SignBlock(*pwallet, nFees))
