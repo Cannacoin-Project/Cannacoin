@@ -262,6 +262,7 @@ static const CRPCCommand vRPCCommands[] =
     { "signrawtransaction",     &signrawtransaction,     false,     false,      false },
     { "sendrawtransaction",     &sendrawtransaction,     false,     false,      false },
     { "getnormalizedtxid",      &getnormalizedtxid,      true,      true,       false },
+    { "getcheckpoint",          &getcheckpoint,          true,      false,      false },
     { "gettxoutsetinfo",        &gettxoutsetinfo,        true,      false,      false },
     { "gettxout",               &gettxout,               true,      false,      false },
     { "lockunspent",            &lockunspent,            false,     false,      true },
