@@ -1168,7 +1168,6 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
 }
 
 static const int64 nTargetTimespan = 60 * 60; // Reddcoin: Not used
->>>>>>> First cut of updating block structure and main logic.
 static const int64 nTargetSpacing = 60; // Reddcoin: 1 minute block
 
 //
