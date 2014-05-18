@@ -1086,7 +1086,10 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 100000 * COIN;
 
-    if (nHeight < 11) {
+    if (nHeight == 0) {
+        // Genesis block
+        nSubsidy =  10000 * COIN;
+    } else if (nHeight < 11) {
         // Premine: First 10 block are 545,000,000 RDD (5% of the total coin)
         nSubsidy =  545000000 * COIN;
     } else if (nHeight < 10000) {
