@@ -1110,8 +1110,8 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     int64 nSubsidy = 100000 * COIN;
 
     if (nHeight == 0) {
-	    // Genesis block
-		nSubsidy = 10000 * COIN;
+        // Genesis block
+        nSubsidy = 10000 * COIN;
     } else if (nHeight < 11) {
         // Premine: First 10 block are 545,000,000 RDD (5% of the total coin)
         nSubsidy =  545000000 * COIN;
@@ -1135,9 +1135,9 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 // ppcoin: miner's coin stake reward based on coin age spent (coin-days)
 int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
 {
-	// some scary rounding dirty trick here for leap / non-leap years
-	// CoinAge=365 -> nSubsidy=9993
-	// CoinAge=366 -> nSubsidy=10020
+    // some scary rounding dirty trick here for leap / non-leap years
+    // CoinAge=365 -> nSubsidy=9993
+    // CoinAge=366 -> nSubsidy=10020
     int64 nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
 
     if (fDebug && GetBoolArg("-printcreation"))
@@ -1559,16 +1559,16 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
 
         if (!IsCoinStake())
         {
-	        if (nValueIn < GetValueOut())
-	            return state.DoS(100, error("CheckInputs() : %s value in < value out", GetHash().ToString().c_str()));
+            if (nValueIn < GetValueOut())
+                return state.DoS(100, error("CheckInputs() : %s value in < value out", GetHash().ToString().c_str()));
 
-	        // Tally transaction fees
-	        int64 nTxFee = nValueIn - GetValueOut();
-	        if (nTxFee < 0)
-	            return state.DoS(100, error("CheckInputs() : %s nTxFee < 0", GetHash().ToString().c_str()));
-	        nFees += nTxFee;
-	        if (!MoneyRange(nFees))
-	            return state.DoS(100, error("CheckInputs() : nFees out of range"));
+            // Tally transaction fees
+            int64 nTxFee = nValueIn - GetValueOut();
+            if (nTxFee < 0)
+                return state.DoS(100, error("CheckInputs() : %s nTxFee < 0", GetHash().ToString().c_str()));
+            nFees += nTxFee;
+            if (!MoneyRange(nFees))
+                return state.DoS(100, error("CheckInputs() : nFees out of range"));
         }
 
         // The first loop above does all the inexpensive checks.
@@ -1828,8 +1828,8 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
 
         CTxUndo txundo;
         tx.UpdateCoins(state, view, txundo, pindex->nHeight, GetTxHash(i));
-		// FIXME should add tx.IsCoinStake()?
-        if (!tx.IsCoinBase())
+        // FIXME should add tx.IsCoinStake() or not?
+        if (!tx.IsCoinBase() && !tx.IsCoinStake())
             blockundo.vtxundo.push_back(txundo);
 
         vPos.push_back(std::make_pair(GetTxHash(i), pos));
@@ -2176,24 +2176,25 @@ bool CBlock::AddToBlockIndex(unsigned int nFile, unsigned int nBlockPos, const u
 
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + pindexNew->GetBlockWork().getuint256();
 
+    // FIXME how to make BlockIndex backward compatible with PoW-only blocks?
     if (pindexNew->IsProofOfStake())
-	{
-	    // ppcoin: compute stake entropy bit for stake modifier
-	    if (!pindexNew->SetStakeEntropyBit(GetStakeEntropyBit()))
-	        return state.Invalid(error("AddToBlockIndex() : SetStakeEntropyBit() failed"));
+    {
+        // ppcoin: compute stake entropy bit for stake modifier
+        if (!pindexNew->SetStakeEntropyBit(GetStakeEntropyBit()))
+            return state.Invalid(error("AddToBlockIndex() : SetStakeEntropyBit() failed"));
 
-	    // Record proof hash value
-	    pindexNew->hashProof = hashProof;
+        // Record proof hash value
+        pindexNew->hashProof = hashProof;
 
-	    // ppcoin: compute stake modifier
-	    uint64 nStakeModifier = 0;
-	    bool fGeneratedStakeModifier = false;
-	    if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier))
-	        return state.Invalid(error("AddToBlockIndex() : ComputeNextStakeModifier() failed"));
-	    pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
-	    pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
-	    if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
-	        return state.Invalid(error("AddToBlockIndex() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016"PRI64x, pindexNew->nHeight, nStakeModifier));
+        // ppcoin: compute stake modifier
+        uint64 nStakeModifier = 0;
+        bool fGeneratedStakeModifier = false;
+        if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier))
+            return state.Invalid(error("AddToBlockIndex() : ComputeNextStakeModifier() failed"));
+        pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
+        pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
+        if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
+            return state.Invalid(error("AddToBlockIndex() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016"PRI64x, pindexNew->nHeight, nStakeModifier));
 
         setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
     }
