@@ -19,6 +19,7 @@ class CBlock;
 class CBlockIndex;
 class CKeyItem;
 class CReserveKey;
+class COutPoint;
 
 class CAddress;
 class CInv;
@@ -84,9 +85,12 @@ extern CScript COINBASE_FLAGS;
 
 extern CCriticalSection cs_main;
 extern std::map<uint256, CBlockIndex*> mapBlockIndex;
+extern std::set<std::pair<COutPoint, unsigned int> > setStakeSeen;
 extern std::set<CBlockIndex*, CBlockIndexWorkComparator> setBlockIndexValid;
 extern uint256 hashGenesisBlock;
 extern CBlockIndex* pindexGenesisBlock;
+extern unsigned int nStakeMinAge;
+extern unsigned int nStakeMaxAge;
 extern int nBestHeight;
 extern uint256 nBestChainWork;
 extern uint256 nBestInvalidWork;
@@ -95,6 +99,7 @@ extern CBlockIndex* pindexBest;
 extern unsigned int nTransactionsUpdated;
 extern uint64 nLastBlockTx;
 extern uint64 nLastBlockSize;
+extern int64 nLastCoinStakeSearchInterval;
 extern const std::string strMessageMagic;
 extern double dHashesPerSec;
 extern int64 nHPSTimerStart;
@@ -177,8 +182,11 @@ void FormatHashBuffers(CBlock* pblock, char* pmidstate, char* pdata, char* phash
 bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey);
 /** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
 bool CheckProofOfWork(uint256 hash, unsigned int nBits);
+int64 GetProofOfWorkReward(int64 nFees);
+int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees);
 /** Calculate the minimum amount of work a received block needs, without knowing its direct parent */
 unsigned int ComputeMinWork(unsigned int nBase, int64 nTime);
+unsigned int ComputeMinStake(unsigned int nBase, int64 nTime, unsigned int nBlockTime);
 /** Get the number of active peers */
 int GetNumBlocksOfPeers();
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
@@ -197,7 +205,8 @@ CBlockIndex * InsertBlockIndex(uint256 hash);
 bool VerifySignature(const CCoins& txFrom, const CTransaction& txTo, unsigned int nIn, unsigned int flags, int nHashType);
 /** Abort with a message */
 bool AbortNode(const std::string &msg);
-
+/** PoS miner */
+void StakeMiner(CWallet *pwallet);
 
 
 
@@ -486,6 +495,7 @@ public:
     static int64 nMinRelayTxFee;
     static const int CURRENT_VERSION=1;
     int nVersion;
+    unsigned int nTime;
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
     unsigned int nLockTime;
@@ -499,6 +509,7 @@ public:
     (
         READWRITE(this->nVersion);
         nVersion = this->nVersion;
+        READWRITE(nTime);
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
@@ -507,6 +518,7 @@ public:
     void SetNull()
     {
         nVersion = CTransaction::CURRENT_VERSION;
+        nTime = GetAdjustedTime();
         vin.clear();
         vout.clear();
         nLockTime = 0;
@@ -646,6 +658,7 @@ void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCach
     friend bool operator==(const CTransaction& a, const CTransaction& b)
     {
         return (a.nVersion  == b.nVersion &&
+                a.nTime     == b.nTime &&
                 a.vin       == b.vin &&
                 a.vout      == b.vout &&
                 a.nLockTime == b.nLockTime);
@@ -660,8 +673,10 @@ void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCach
     std::string ToString() const
     {
         std::string str;
-        str += strprintf("CTransaction(hash=%s, ver=%d, vin.size=%"PRIszu", vout.size=%"PRIszu", nLockTime=%u)\n",
+        str += IsCoinBase()? "Coinbase" : (IsCoinStake()? "Coinstake" : "CTransaction");
+        str += strprintf("CTransaction(hash=%s, nTime=%d, ver=%d, vin.size=%"PRIszu", vout.size=%"PRIszu", nLockTime=%u)\n",
             GetHash().ToString().c_str(),
+            nTime,
             nVersion,
             vin.size(),
             vout.size(),
@@ -1695,6 +1710,27 @@ public:
     // height of the entry in the chain. The genesis block has height 0
     int nHeight;
 
+    // ppcoin extra fields
+    int64 nMint;
+    int64 nMoneySupply;
+
+    unsigned int nFlags;  // ppcoin: block index flags
+    enum
+    {
+        BLOCK_PROOF_OF_STAKE = (1 << 0), // is proof-of-stake block
+        BLOCK_STAKE_ENTROPY  = (1 << 1), // entropy bit for stake modifier
+        BLOCK_STAKE_MODIFIER = (1 << 2), // regenerated stake modifier
+    };
+
+    uint64 nStakeModifier; // hash modifier for proof-of-stake
+    unsigned int nStakeModifierChecksum; // checksum of index; in-memeory only
+
+    // proof-of-stake specific fields
+    COutPoint prevoutStake;
+    unsigned int nStakeTime;
+
+    uint256 hashProof;
+
     // Which # file this block is stored in (blk?????.dat)
     int nFile;
 
@@ -1731,6 +1767,16 @@ public:
         pprev = NULL;
         pnext = NULL;
         nHeight = 0;
+
+        nMint = 0;
+        nMoneySupply = 0;
+        nFlags = 0;
+        nStakeModifier = 0;
+        nStakeModifierChecksum = 0;
+        hashProof = 0;
+        prevoutStake.SetNull();
+        nStakeTime = 0;
+
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
@@ -1752,6 +1798,25 @@ public:
         pprev = NULL;
         pnext = NULL;
         nHeight = 0;
+
+        nMint = 0;
+        nMoneySupply = 0;
+        nFlags = 0;
+        nStakeModifier = 0;
+        nStakeModifierChecksum = 0;
+        hashProof = 0;
+        if (block.IsProofOfStake())
+        {
+            SetProofOfStake();
+            prevoutStake = block.vtx[1].vin[0].prevout;
+            nStakeTime = block.vtx[1].nTime;
+        }
+        else
+        {
+            prevoutStake.SetNull();
+            nStakeTime = 0;
+        }
+
         nFile = 0;
         nDataPos = 0;
         nUndoPos = 0;
@@ -1907,8 +1972,13 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(pprev=%p, pnext=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
-            pprev, pnext, nHeight,
+        return strprintf("CBlockIndex(nprev=%p, pnext=%p, nFile=%u, nBlockPos=%-6d nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=(%s)(%d)(%s), nStakeModifier=%016"PRI64x", nStakeModifierChecksum=%08x, hashProof=%s, prevoutStake=(%s), nStakeTime=%d merkle=%s, hashBlock=%s)",
+            pprev, pnext, nFile, nBlockPos, nHeight,
+            FormatMoney(nMint).c_str(), FormatMoney(nMoneySupply).c_str(),
+            GeneratedStakeModifier() ? "MOD" : "-", GetStakeEntropyBit(), IsProofOfStake()? "PoS" : "PoW",
+            nStakeModifier, nStakeModifierChecksum,
+            hashProof.ToString().c_str(),
+            prevoutStake.ToString().c_str(), nStakeTime,
             hashMerkleRoot.ToString().c_str(),
             GetBlockHash().ToString().c_str());
     }
@@ -1954,6 +2024,18 @@ public:
             READWRITE(VARINT(nVersion));
 
         READWRITE(VARINT(nHeight));
+
+        READWRITE(VARINT(nMint));
+        READWRITE(VARINT(nMoneySupply));
+        READWRITE(VARINT(nFlags));
+        READWRITE(VARINT(nStakeModifier));
+        if (IsProofOfStake())
+        {
+            READWRITE(VARINT(prevoutStake));
+            READWRITE(VARINT(nStakeTime));
+        }
+        READWRITE(VARINT(hashProof));
+
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
         if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
