@@ -83,7 +83,10 @@ namespace Checkpoints
 
     bool CheckHardened(int nHeight, const uint256& hash)
     {
-        const MapCheckpoints& checkpoints = (fTestNet ? *Checkpoints().mapCheckpointsTestnet : *Checkpoints().mapCheckpoints);
+        //if (fTestNet) return true; // Testnet has no checkpoints
+        if (!GetBoolArg("-checkpoints", true))
+            return true;
+        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
 
         MapCheckpoints::const_iterator i = checkpoints.find(nHeight);
         if (i == checkpoints.end()) return true;
@@ -123,14 +126,22 @@ namespace Checkpoints
 
     int GetTotalBlocksEstimate()
     {
-        const MapCheckpoints& checkpoints = (fTestNet ? *Checkpoints().mapCheckpointsTestnet : *Checkpoints().mapCheckpoints);
+        //if (fTestNet) return 0; // Testnet has no checkpoints
+        if (!GetBoolArg("-checkpoints", true))
+            return 0;
+
+        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
 
         return checkpoints.rbegin()->first;
     }
 
     CBlockIndex* GetLastCheckpoint(const std::map<uint256, CBlockIndex*>& mapBlockIndex)
     {
-        const MapCheckpoints& checkpoints = (fTestNet ? *Checkpoints().mapCheckpointsTestnet : *Checkpoints().mapCheckpoints);
+        //if (fTestNet) return NULL; // Testnet has no checkpoints
+        if (!GetBoolArg("-checkpoints", true))
+            return NULL;
+
+        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
 
         BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
         {
@@ -276,7 +287,7 @@ namespace Checkpoints
     // Check against synchronized checkpoint
     bool CheckSync(const uint256& hashBlock, const CBlockIndex* pindexPrev)
     {
-        if (fTestNet) return true; // Testnet has no checkpoints
+        //if (fTestNet) return true; // Testnet has no checkpoints
         int nHeight = pindexPrev->nHeight + 1;
 
         LOCK(cs_hashSyncCheckpoint);
