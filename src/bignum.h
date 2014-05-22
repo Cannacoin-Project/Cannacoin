@@ -222,7 +222,7 @@ public:
         BN_mpi2bn(pch, p - pch, this);
     }
 
-    uint64 getuint64()
+    uint64 getuint64() const
     {
         unsigned int nSize = BN_bn2mpi(this, NULL);
         if (nSize < 4)

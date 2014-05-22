@@ -208,6 +208,7 @@ bool AbortNode(const std::string &msg);
 // Reddcoin PoSV
 int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees);
 unsigned int ComputeMinStake(unsigned int nBase, int64 nTime, unsigned int nBlockTime);
+const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake);
 void StakeMiner(CWallet *pwallet);
 
 
