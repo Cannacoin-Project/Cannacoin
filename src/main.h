@@ -103,6 +103,7 @@ extern int64 nTimeBestReceived;
 extern CCriticalSection cs_setpwalletRegistered;
 extern std::set<CWallet*> setpwalletRegistered;
 extern unsigned char pchMessageStart[4];
+extern std::map<uint256, CBlock*> mapOrphanBlocks;
 extern bool fImporting;
 extern bool fReindex;
 extern bool fBenchmark;
@@ -446,6 +447,17 @@ public:
     bool IsNull() const
     {
         return (nValue == -1);
+    }
+
+    void SetEmpty()
+    {
+        nValue = 0;
+        scriptPubKey.clear();
+    }
+
+    bool IsEmpty() const
+    {
+        return (nValue == 0 && scriptPubKey.empty());
     }
 
     uint256 GetHash() const
