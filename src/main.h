@@ -1606,7 +1606,7 @@ public:
     bool ReadFromDisk(const CBlockIndex* pindex);
 
     // Add this block to the block index, and if necessary, switch the active block chain to this
-    bool AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos);
+    bool AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos, uint256 &hashProof);
 
     // Context-independent validity checks
     bool CheckBlock(CValidationState &state, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
