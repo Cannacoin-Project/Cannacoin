@@ -1173,29 +1173,48 @@ static const int64 nTargetSpacing = 60; // Reddcoin: 1 minute block
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 //
-// minimum amount of work that could possibly be required nTime after
-// minimum work required was nBase
+// maximum nBits value could possible be required nTime after
 //
-unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
+unsigned int static ComputeMaxBits(CBigNum bnTargetLimit, unsigned int nBase, int64 nTime)
 {
     // Testnet has min-difficulty blocks
     // after nTargetSpacing*2 time between blocks:
     if (fTestNet && nTime > nTargetSpacing*2)
-        return bnProofOfWorkLimit.GetCompact();
+        return bnTargetLimit.GetCompact();
 
     CBigNum bnResult;
     bnResult.SetCompact(nBase);
-    while (nTime > 0 && bnResult < bnProofOfWorkLimit)
+    while (nTime > 0 && bnResult < bnTargetLimit)
     {
         // Maximum 400% adjustment...
         bnResult *= 4;
         // ... in best-case exactly 4-times-normal target time
         nTime -= nTargetTimespan*4;
     }
-    if (bnResult > bnProofOfWorkLimit)
-        bnResult = bnProofOfWorkLimit;
+    if (bnResult > bnTargetLimit)
+        bnResult = bnTargetLimit;
     return bnResult.GetCompact();
 }
+
+//
+// minimum amount of work that could possibly be required nTime after
+// minimum work required was nBase
+//
+unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
+{
+    return ComputeMaxBits(bnProofOfWorkLimit, nBase, nTime);
+}
+
+//
+// ppcoin
+// minimum amount of stake that could possibly be required nTime after
+// minimum proof-of-stake required was nBase
+//
+unsigned int ComputeMinStake(unsigned int nBase, int64 nTime)
+{
+    return ComputeMaxBits(bnProofOfStakeLimit, nBase, nTime);
+}
+
 
 // ppcoin: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
@@ -1211,7 +1230,6 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     const CBlockIndex  *BlockLastSolved = pindexLast;
     const CBlockIndex  *BlockReading    = pindexLast;
     const CBlockHeader *BlockCreating   = pblock;
-    BlockCreating                       = BlockCreating;
 
     uint64  PastBlocksMass              = 0;
     int64   PastRateActualSeconds       = 0;
@@ -1224,12 +1242,21 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     double EventHorizonDeviationFast;
     double EventHorizonDeviationSlow;
 
+    bool fProofOfStake = false;
+    if (BlockLastSolved && BlockLastSolved->nHeight > LAST_POW_BLOCK)
+        fProofOfStake = true;
+
     if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64)BlockLastSolved->nHeight < PastBlocksMin)
     {
         return bnProofOfWorkLimit.GetCompact();
     }
+    else if (fProofOfStake && (uint64)(BlockLastSolved->nHeight - LAST_POW_BLOCK) < PastBlocksMin)
+    {
+        // difficulty is reset to minimum at the first PoSV block
+        return bnProofOfStakeLimit.GetCompact();
+    }
 
-    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++)
+    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > (fProofOfStake ? LAST_POW_BLOCK : 0); i++)
     {
         if (PastBlocksMax > 0 && i > PastBlocksMax)
         {
@@ -1293,9 +1320,13 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
         bnNew /= PastRateTargetSeconds;
     }
 
-    if (bnNew > bnProofOfWorkLimit)
+    if (!fProofOfStake && bnNew > bnProofOfWorkLimit)
     {
         bnNew = bnProofOfWorkLimit;
+    }
+    else if (fProofOfStake && bnNew > bnProofOfStakeLimit)
+    {
+        bnNew = bnProofOfStakeLimit;
     }
 
      /// debug print
@@ -1307,7 +1338,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
      return bnNew.GetCompact();
 }
 
-unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
     static const int64 BlocksTargetSpacing = 1 * 60; // 1 Minute
     unsigned int       TimeDaySeconds      = 60 * 60 * 24;
@@ -2483,7 +2514,7 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         if (IsProofOfWork() && nHeight > LAST_POW_BLOCK)
             return state.DoS(100, error("AcceptBlock() : reject proof-of-work at height %d", nHeight));
         // Check proof-of-work or proof-of-stake
-        if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
+        if (nBits != GetNextWorkRequired(pindexPrev, this))
             return state.DoS(100, error("AcceptBlock() : incorrect proof-of-%s", IsProofOfWork() ? "work" : "stake"));
 
         // Check timestamp against prev
@@ -2632,7 +2663,7 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
         bnNewBlock.SetCompact(pblock->nBits);
         CBigNum bnRequired;
         if (pblock->IsProofOfStake())
-            bnRequired.SetCompact(ComputeMinStake(GetLastBlockIndex(pcheckpoint, true)->nBits, deltaTime, pblock->nTime));
+            bnRequired.SetCompact(ComputeMinStake(GetLastBlockIndex(pcheckpoint, true)->nBits, deltaTime));
         else
             bnRequired.SetCompact(ComputeMinWork(GetLastBlockIndex(pcheckpoint, false)->nBits, deltaTime));
 
