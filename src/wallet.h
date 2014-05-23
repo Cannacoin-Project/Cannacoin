@@ -18,6 +18,7 @@
 #include "util.h"
 #include "walletdb.h"
 
+extern bool fWalletUnlockStakingOnly;
 extern bool bSpendZeroConfChange;
 
 class CAccountingEntry;

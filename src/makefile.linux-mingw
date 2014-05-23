@@ -102,8 +102,10 @@ all: reddcoind.exe
 
 DEFS += -I"$(CURDIR)/leveldb/include"
 DEFS += -I"$(CURDIR)/leveldb/helpers"
+OBJS += obj/txdb-leveldb.o
 leveldb/libleveldb.a:
 	@echo "Building LevelDB ..." && cd leveldb && TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) CC=$(CC) CXX=$(CXX) OPT="$(xCXXFLAGS)" libleveldb.a libmemenv.a && i686-w64-mingw32-ranlib libleveldb.a && i686-w64-mingw32-ranlib libmemenv.a && cd ..
+obj/txdb-leveldb.o: leveldb/libleveldb.a
 
 obj/build.h: FORCE
 	/bin/sh ../share/genbuild.sh obj/build.h
