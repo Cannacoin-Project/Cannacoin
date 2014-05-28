@@ -1,5 +1,3 @@
-NOTE: THIS IS A BETA VERSION OF CANNACOIN 0.8.7.1 IT IS CURRENTLY IN TESTING AND PROVING TO BE STABLE AT THIS TIME
-
 Cannacoin integration/staging tree
 ================================
 
