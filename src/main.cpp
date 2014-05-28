@@ -1086,18 +1086,21 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 100000 * COIN;
 
-    if (nHeight < 11) {
+    if (nHeight == 0) {
+        // Genesis block
+        nSubsidy = 10000 * COIN;
+    } else if (nHeight < 11) {
         // Premine: First 10 block are 545,000,000 RDD (5% of the total coin)
-        nSubsidy =  545000000 * COIN;
+        nSubsidy = 545000000 * COIN;
     } else if (nHeight < 10000) {
         // Bonus reward for block 10-9,999 of 300,000 coins
-        nSubsidy =  300000 * COIN;
+        nSubsidy = 300000 * COIN;
     } else if (nHeight < 20000) {
         // Bonus reward for block 10,000 - 19,999 of 200,000 coins
-        nSubsidy =  200000 * COIN;
+        nSubsidy = 200000 * COIN;
     } else if (nHeight < 30000) {
         // Bonus reward for block 20,000 - 29,999 of 150,000 coins
-        nSubsidy =  150000 * COIN;
+        nSubsidy = 150000 * COIN;
     } else if (nHeight >= 140000) {
       // Subsidy is cut in half every 50,000 blocks starting at block 140000
       nSubsidy >>= ((nHeight - 140000 + 50000) / 50000);
