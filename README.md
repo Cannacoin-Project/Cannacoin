@@ -1,32 +1,26 @@
+NOTE: THIS IS A BETA VERSION OF CANNACOIN 0.8.7.1 IT IS CURRENTLY IN TESTING AND PROVING TO BE STABLE AT THIS TIME
+
 Cannacoin integration/staging tree
 ================================
 
-http://www.cannacoin.info
+http://www.cannacoin.org
 
-Copyright (c) 2009-2013 Bitcoin Developers
-Copyright (c) 2014-2014 Cannacoin Developers
+Copyright (c) 2009-2014 Bitcoin Developers
+Copyright (c) 2011-2014 Litecoin Developers
+Copyright (c) 2014 Cannacoin Developers
 
 What is Cannacoin?
 ----------------
 
 Cannacoin is a lite version of Bitcoin using scrypt as a proof-of-work algorithm.
- - 60 Second block targets
- - Subsidy halves every 525,600 Blocks (~1 years)
- - 13,140,000 total supply
+ - 1 minute block targets
+ - subsidy halves in 526k blocks (~1 years)
+ - ~13,140,000 total coins
  - 12.5 coins per block
  - 1 blocks to retarget difficulty
- - RPC-PORT : 7142
- - P2P-PORT : 7143
- 
+
 For more information, as well as an immediately useable, binary version of
-the Cannacoin client software, see http://cannacoin.cc
-
-Blockhain won't sync?
----------------------
-Add the following information to your cannacoin.conf file
-
-addnode=81.4.106.129<br>
-addnode=91.214.168.179
+the Cannacoin client sofware, see http://www.cannacoin.cc.
 
 License
 -------
@@ -44,8 +38,8 @@ If it is a simple/trivial/non-controversial change, then one of the Cannacoin
 development team members simply pulls it.
 
 If it is a *more complicated or potentially controversial* change, then the patch
-submitter will be asked to start a discussion (if they haven't already) on
-[/r/Cannacoin](http://reddit.com/r/cannacoin).
+submitter will be asked to start a discussion (if they haven't already) on the
+[mailing list](http://ADDE-DEVELOPER-MAILING-LIST.cannacoin.cc)
 
 The patch will be accepted if there is broad consensus that it is a good thing.
 Developers should expect to rework and resubmit patches if the code doesn't
@@ -75,6 +69,7 @@ Unit tests for the core code are in `src/test/`. To compile and run them:
 
 Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 
-    qmake BITCOIN_QT_TEST=1 -o Makefile.test cannacoin-qt.pro
+    qmake BITCOIN_QT_TEST=1 -o Makefile.test bitcoin-qt.pro
     make -f Makefile.test
-    ./Cannacoin-qt_test
+    ./cannacoin-qt_test
+
