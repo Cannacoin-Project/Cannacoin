@@ -1229,7 +1229,6 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     /* current difficulty formula, megacoin - kimoto gravity well */
     const CBlockIndex  *BlockLastSolved = pindexLast;
     const CBlockIndex  *BlockReading    = pindexLast;
-    const CBlockHeader *BlockCreating   = pblock;
 
     uint64  PastBlocksMass              = 0;
     int64   PastRateActualSeconds       = 0;
@@ -2669,7 +2668,7 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
 
         if (pblock->GetBlockTime() > CHECK_POW_FROM_NTIME && bnNewBlock > bnRequired)
         {
-            return state.DoS(100, error("ProcessBlock() : block with too little proof-of-%s", pblock->IsProofOfStake()? "stake" : "work");
+            return state.DoS(100, error("ProcessBlock() : block with too little proof-of-%s", pblock->IsProofOfStake()? "stake" : "work"));
         }
     }
 
@@ -2809,9 +2808,7 @@ bool CBlock::CheckBlockSignature() const
     if (whichType == TX_PUBKEY)
     {
         valtype& vchPubKey = vSolutions[0];
-        CKey key;
-        if (!key.SetPubKey(vchPubKey))
-            return false;
+        CPubKey key(vchPubKey);
         if (vchBlockSig.empty())
             return false;
         return key.Verify(GetHash(), vchBlockSig);
