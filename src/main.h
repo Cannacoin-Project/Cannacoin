@@ -1631,8 +1631,8 @@ public:
     bool AcceptBlock(CValidationState &state, CDiskBlockPos *dbp = NULL);
 
     // ppcoin: calculate total coin age spent in block
-    bool GetCoinAge(uint64_t& nCoinAge) const;
-    bool SignBlock(CWallet& keystore, int64_t nFees);
+    bool GetCoinAge(uint64& nCoinAge) const;
+    bool SignBlock(CWallet& keystore, int64 nFees);
     bool CheckBlockSignature() const;
 };
 
