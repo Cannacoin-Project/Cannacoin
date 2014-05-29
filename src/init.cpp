@@ -37,6 +37,10 @@ CClientUIInterface uiInterface;
 #define MIN_CORE_FILEDESCRIPTORS 150
 #endif
 
+// ppcoin
+unsigned int nMinerSleep;
+enum Checkpoints::CPMode CheckpointsMode;
+
 // Used to pass flags to the Bind() function
 enum BindFlags {
     BF_NONE         = 0,
@@ -503,6 +507,19 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     // ********************************************************* Step 2: parameter interactions
 
+    nMinerSleep = GetArg("-minersleep", 500);
+
+    CheckpointsMode = Checkpoints::STRICT;
+    std::string strCpMode = GetArg("-cppolicy", "strict");
+
+    if(strCpMode == "strict")
+        CheckpointsMode = Checkpoints::STRICT;
+
+    if(strCpMode == "advisory")
+        CheckpointsMode = Checkpoints::ADVISORY;
+
+    if(strCpMode == "permissive")
+        CheckpointsMode = Checkpoints::PERMISSIVE;
     fTestNet = GetBoolArg("-testnet");
     fBloomFilters = GetBoolArg("-bloomfilters", true);
     if (fBloomFilters)
@@ -903,7 +920,7 @@ bool AppInit2(boost::thread_group& threadGroup)
                 }
 
                 // Check for changed -txindex state
-                if (fTxIndex != GetBoolArg("-txindex", false)) {
+                if (fTxIndex != GetBoolArg("-txindex", true)) {
                     strLoadError = _("You need to rebuild the database using -reindex to change -txindex");
                     break;
                 }
