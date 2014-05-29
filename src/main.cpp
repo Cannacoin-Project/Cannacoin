@@ -1917,7 +1917,7 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
     {
         // ppcoin: coin stake tx earns reward instead of paying fee
         uint64 nCoinAge;
-        if (!vtx[1].GetCoinAge(txdb, nCoinAge))
+        if (!vtx[1].GetCoinAge(nCoinAge))
             return state.DoS(100, error("ConnectBlock() : %s unable to get coin age for coinstake", vtx[1].GetHash().ToString().substr(0,10).c_str()));
 
         int64 nCalculatedStakeReward = GetProofOfStakeReward(nCoinAge, nFees);
@@ -1928,8 +1928,6 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
     // ppcoin: track money supply and mint amount info
     pindex->nMint = nValueOut - nValueIn + nFees;
     pindex->nMoneySupply = (pindex->pprev? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn;
-//    if (!txdb.WriteBlockIndex(CDiskBlockIndex(pindex)))
-//       return state.DoS(100, error("ConnectBlock() : WriteBlockIndex for pindex failed"));
 
     if (!control.Wait())
         return state.DoS(100, false);
@@ -2162,7 +2160,7 @@ bool SetBestChain(CValidationState &state, CBlockIndex* pindexNew)
 // guaranteed to be in main chain by sync-checkpoint. This rule is
 // introduced to help nodes establish a consistent view of the coin
 // age (trust score) of competing branches.
-bool CTransaction::GetCoinAge(CTxDB& txdb, uint64& nCoinAge) const
+bool CTransaction::GetCoinAge(uint64& nCoinAge) const
 {
     CBigNum bnCentSecond = 0;  // coin age in the unit of cent-seconds
     nCoinAge = 0;
@@ -2174,20 +2172,23 @@ bool CTransaction::GetCoinAge(CTxDB& txdb, uint64& nCoinAge) const
     {
         // First try finding the previous transaction in database
         CTransaction txPrev;
-        CTxIndex txindex;
-        if (!txPrev.ReadFromDisk(txdb, txin.prevout, txindex))
+        uint256 hashTxPrev = txin.prevout.hash;
+        uint256 hashBlock = 0;
+        if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
             continue;  // previous transaction not in main chain
         if (nTime < txPrev.nTime)
             return false;  // Transaction timestamp violation
 
         // Read block header
         CBlock block;
-        if (!block.ReadFromDisk(txindex.pos.nFile, txindex.pos.nBlockPos, false))
+        if (!mapBlockIndex.count(hashBlock))
+            return false; // unable to read block of previous transaction
+        if (!block.ReadFromDisk(mapBlockIndex[hashBlock]))
             return false; // unable to read block of previous transaction
         if (block.GetBlockTime() + nStakeMinAge > nTime)
             continue; // only count coins meeting min age requirement
 
-        int64_t nValueIn = txPrev.vout[txin.prevout.n].nValue;
+        int64 nValueIn = txPrev.vout[txin.prevout.n].nValue;
         bnCentSecond += CBigNum(nValueIn) * (nTime-txPrev.nTime) / CENT;
 
         if (fDebug && GetBoolArg("-printcoinage"))
@@ -2206,11 +2207,10 @@ bool CBlock::GetCoinAge(uint64& nCoinAge) const
 {
     nCoinAge = 0;
 
-    CTxDB txdb("r");
     BOOST_FOREACH(const CTransaction& tx, vtx)
     {
-        uint64_t nTxCoinAge;
-        if (tx.GetCoinAge(txdb, nTxCoinAge))
+        uint64 nTxCoinAge;
+        if (tx.GetCoinAge(nTxCoinAge))
             nCoinAge += nTxCoinAge;
         else
             return false;
