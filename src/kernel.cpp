@@ -336,10 +336,10 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
     const CTxIn& txin = tx.vin[0];
 
     // First try finding the previous transaction in database
-    CTxDB txdb("r");
     CTransaction txPrev;
-    CTxIndex txindex;
-    if (!txPrev.ReadFromDisk(txdb, txin.prevout, txindex))
+    uint256 hashTxPrev = txin.prevout.hash;
+    uint256 hashBlock = 0;
+    if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
         return tx.DoS(1, error("CheckProofOfStake() : INFO: read txPrev failed"));  // previous transaction not in main chain, may occur during initial download
 
     // Verify signature
@@ -347,8 +347,11 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
         return tx.DoS(100, error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str()));
 
     // Read block header
+    if (!mapBlockIndex.count(hashBlock))
+        return fDebug? error("CheckProofOfStake() : block not indexed") : false; // unable to read block of previous transaction
+
     CBlock block;
-    if (!block.ReadFromDisk(txindex.pos.nFile, txindex.pos.nBlockPos, false))
+    if (!block.ReadFromDisk(mapBlockIndex[hashBlock]))
         return fDebug? error("CheckProofOfStake() : read block failed") : false; // unable to read block of previous transaction
 
     if (!CheckStakeKernelHash(nBits, block, txindex.pos.nTxPos - txindex.pos.nBlockPos, txPrev, txin.prevout, tx.nTime, hashProofOfStake, targetProofOfStake, fDebug))
