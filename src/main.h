@@ -116,7 +116,7 @@ extern unsigned int nCoinCacheSize;
 extern std::set<std::pair<COutPoint, unsigned int> > setStakeSeen;
 extern unsigned int nStakeMinAge;
 extern unsigned int nStakeMaxAge;
-extern int64 nTargetSpacing;
+extern const int64 nTargetSpacing;
 extern int64 nLastCoinStakeSearchInterval;
 
 // Settings
@@ -213,6 +213,7 @@ bool AbortNode(const std::string &msg);
 // Reddcoin PoSV
 int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees);
 unsigned int ComputeMinStake(unsigned int nBase, int64 nTime);
+uint256 WantedByOrphan(const CBlock* pblockOrphan);
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake);
 void StakeMiner(CWallet *pwallet);
 
@@ -2071,15 +2072,15 @@ public:
         READWRITE(nNonce);
 
         // ppcoin
-        READWRITE(VARINT(nMint));
-        READWRITE(VARINT(nMoneySupply));
-        READWRITE(VARINT(nFlags));
-        READWRITE(VARINT(nStakeModifier));
-        READWRITE(VARINT(hashProof));
+        READWRITE(nMint);
+        READWRITE(nMoneySupply);
+        READWRITE(nFlags);
+        READWRITE(nStakeModifier);
+        READWRITE(hashProof);
         if (IsProofOfStake())
         {
-            READWRITE(VARINT(prevoutStake));
-            READWRITE(VARINT(nStakeTime));
+            READWRITE(prevoutStake);
+            READWRITE(nStakeTime);
         }
     )
 
