@@ -1168,6 +1168,7 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
     return nSubsidy + nFees;
 }
 
+const int64 nTargetSpacing = 60; // Reddcoin: 1 minute block
 static const int64 nTargetTimespan = 60 * 60; // Reddcoin: Not used
 static const int64 nTargetSpacing = 60; // Reddcoin: 1 minute block
 

@@ -17,6 +17,7 @@
 class CWallet;
 class CBlock;
 class CBlockIndex;
+class CBlockHeader;
 class CKeyItem;
 class CReserveKey;
 class COutPoint;
@@ -115,6 +116,7 @@ extern unsigned int nCoinCacheSize;
 extern std::set<std::pair<COutPoint, unsigned int> > setStakeSeen;
 extern unsigned int nStakeMinAge;
 extern unsigned int nStakeMaxAge;
+extern int64 nTargetSpacing;
 extern int64 nLastCoinStakeSearchInterval;
 
 // Settings
@@ -1999,8 +2001,8 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(nprev=%p, pnext=%p, nFile=%u, nBlockPos=%-6d nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=(%s)(%d)(%s), nStakeModifier=%016"PRI64x", nStakeModifierChecksum=%08x, hashProof=%s, prevoutStake=(%s), nStakeTime=%d merkle=%s, hashBlock=%s)",
-            pprev, pnext, nFile, nBlockPos, nHeight,
+        return strprintf("CBlockIndex(pprev=%p, pnext=%p, nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=(%s)(%d)(%s), nStakeModifier=%016"PRI64x", nStakeModifierChecksum=%08x, hashProof=%s, prevoutStake=(%s), nStakeTime=%d merkle=%s, hashBlock=%s)",
+            pprev, pnext, nHeight,
             FormatMoney(nMint).c_str(), FormatMoney(nMoneySupply).c_str(),
             GeneratedStakeModifier() ? "MOD" : "-", GetStakeEntropyBit(), IsProofOfStake()? "PoS" : "PoW",
             nStakeModifier, nStakeModifierChecksum,
