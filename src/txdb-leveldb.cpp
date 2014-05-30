@@ -19,6 +19,7 @@
 #include "txdb.h"
 #include "util.h"
 #include "main.h"
+#include "txdb-leveldb.h"
 
 using namespace std;
 using namespace boost;

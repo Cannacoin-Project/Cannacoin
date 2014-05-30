@@ -1527,6 +1527,11 @@ bool CWallet::GetTransaction(const uint256 &hashTx, CWalletTx& wtx)
     return false;
 }
 
+bool CWallet::GetTransaction(const uint256 &hashTx, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow)
+{
+    return GetTransaction(hashTx, tx, hashBlock, fAllowSlow);
+}
+
 bool CWallet::SetDefaultKey(const CPubKey &vchPubKey)
 {
     if (fFileBacked)
