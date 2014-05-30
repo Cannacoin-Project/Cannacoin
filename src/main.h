@@ -123,6 +123,7 @@ extern int64 nLastCoinStakeSearchInterval;
 
 // Settings
 extern int64 nTransactionFee;
+extern int64 nReserveBalance;
 extern int64 nMinimumInputValue;
 
 // Minimum disk space required - used in CheckDiskSpace()

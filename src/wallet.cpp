@@ -19,6 +19,7 @@ using namespace std;
 bool bSpendZeroConfChange = true;
 
 // ppcoin
+typedef vector<unsigned char> valtype;
 unsigned int nStakeSplitAge = 24 * 60 * 60;
 int64 nStakeCombineThreshold = 1000 * COIN;
 
@@ -1564,7 +1565,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         CBlock block;
         {
             LOCK2(cs_main, cs_wallet);
-            if (!block.ReadFromDisk(mapBlockIndex[hashBlock])
+            if (!block.ReadFromDisk(mapBlockIndex[hashBlock]))
                 continue;
         }
 
@@ -1909,6 +1910,11 @@ bool CWallet::GetTransaction(const uint256 &hashTx, CWalletTx& wtx)
         }
     }
     return false;
+}
+
+bool CWallet::GetTransaction(const uint256 &hashTx, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow)
+{
+    return GetTransaction(hashTx, tx, hashBlock, fAllowSlow);
 }
 
 bool CWallet::SetDefaultKey(const CPubKey &vchPubKey)
