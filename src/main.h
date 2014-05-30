@@ -76,7 +76,9 @@ static const int fHaveUPnP = true;
 static const int fHaveUPnP = false;
 #endif
 
-
+// ppcoin
+inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
+inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 extern CScript COINBASE_FLAGS;
 
 
@@ -736,6 +738,9 @@ public:
     // Try to accept this transaction into the memory pool
     bool AcceptToMemoryPool(CValidationState &state, bool fCheckInputs=true, bool fLimitFree = true, bool* pfMissingInputs=NULL, bool fRejectInsaneFee = false);
 
+    // ppcoin: get transaction coin age
+    bool GetCoinAge(uint64& nCoinAge) const;
+
 protected:
     static const CTxOut &GetOutputFor(const CTxIn& input, CCoinsViewCache& mapInputs);
 };
@@ -948,6 +953,12 @@ public:
     // whether transaction is a coinbase
     bool fCoinBase;
 
+    // whether transaction is a coinstake
+    bool fCoinStake;
+
+    // transaction timestamp
+    int64 nTime;
+
     // unspent transaction outputs; spent outputs are .IsNull(); spent outputs at the end of the array are dropped
     std::vector<CTxOut> vout;
 
@@ -959,10 +970,10 @@ public:
     int nVersion;
 
     // construct a CCoins from a CTransaction, at a given height
-    CCoins(const CTransaction &tx, int nHeightIn) : fCoinBase(tx.IsCoinBase()), vout(tx.vout), nHeight(nHeightIn), nVersion(tx.nVersion) { }
+    CCoins(const CTransaction &tx, int nHeightIn) : fCoinBase(tx.IsCoinBase()), fCoinStake(tx.IsCoinStake()), nTime(tx.nTime), vout(tx.vout), nHeight(nHeightIn), nVersion(tx.nVersion) { }
 
     // empty constructor
-    CCoins() : fCoinBase(false), vout(0), nHeight(0), nVersion(0) { }
+    CCoins() : fCoinBase(false), fCoinStake(false), nTime(0), vout(0), nHeight(0), nVersion(0) { }
 
     // remove spent outputs at the end of vout
     void Cleanup() {
@@ -974,6 +985,8 @@ public:
 
     void swap(CCoins &to) {
         std::swap(to.fCoinBase, fCoinBase);
+        std::swap(to.fCoinStake, fCoinStake);
+        std::swap(to.nTime, nTime);
         to.vout.swap(vout);
         std::swap(to.nHeight, nHeight);
         std::swap(to.nVersion, nVersion);
@@ -982,6 +995,8 @@ public:
     // equality test
     friend bool operator==(const CCoins &a, const CCoins &b) {
          return a.fCoinBase == b.fCoinBase &&
+                a.fCoinStake == b.fCoinStake &&
+                a.nTime == b.nTime &&
                 a.nHeight == b.nHeight &&
                 a.nVersion == b.nVersion &&
                 a.vout == b.vout;
@@ -1013,6 +1028,10 @@ public:
 
     bool IsCoinBase() const {
         return fCoinBase;
+    }
+
+    bool IsCoinStake() const {
+        return fCoinStake;
     }
 
     unsigned int GetSerializeSize(int nType, int nVersion) const {
@@ -1627,7 +1646,7 @@ public:
     bool AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos, uint256 &hashProof);
 
     // Context-independent validity checks
-    bool CheckBlock(CValidationState &state, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
+    bool CheckBlock(CValidationState &state, bool fCheckPOW=true, bool fCheckMerkleRoot=true, bool fCheckSig=true) const;
 
     // Store block on disk
     // if dbp is provided, the file is known to already reside on disk
