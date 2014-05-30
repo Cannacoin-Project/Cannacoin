@@ -214,6 +214,7 @@ bool AbortNode(const std::string &msg);
 
 // Reddcoin PoSV
 int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees);
+int64 GetBlockValue(int nHeight, int64 nFees);
 unsigned int ComputeMinStake(unsigned int nBase, int64 nTime);
 uint256 WantedByOrphan(const CBlock* pblockOrphan);
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake);
