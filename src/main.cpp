@@ -1129,7 +1129,7 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
     return pblockOrphan->hashPrevBlock;
 }
 
-int64 static GetBlockValue(int nHeight, int64 nFees)
+int64 GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 100000 * COIN;
 

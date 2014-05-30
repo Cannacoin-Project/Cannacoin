@@ -117,7 +117,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
     if(!pblocktemplate.get())
         return NULL;
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
-    CBlockIndex* pindexPrev = chainActive.Tip();
+    CBlockIndex* pindexPrev = pindexBest;
 
     // Create coinbase tx
     CTransaction txNew;
@@ -353,7 +353,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
         // Fill in header
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
         if (!fProofOfStake)
-            UpdateTime(*pblock, pindexPrev);
+            pblock->UpdateTime(pindexPrev);
         pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock);
         pblock->nNonce         = 0;
         pblock->vtx[0].vin[0].scriptSig = CScript() << OP_0 << OP_0;
@@ -451,7 +451,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
     if(!pblock->IsProofOfWork())
-        return error("CheckWork() : %s is not a proof-of-work block", hashBlock.GetHex().c_str());
+        return error("CheckWork() : %s is not a proof-of-work block", hash.GetHex().c_str());
 
     if (hash > hashTarget)
         return false;
@@ -502,12 +502,12 @@ bool CheckStake(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     printf("CheckStake():\n");
     printf("CheckStake() : new proof-of-stake block found  \n  hash: %s \nproofhash: %s  \ntarget: %s\n", hash.GetHex().c_str(), proofHash.GetHex().c_str(), hashTarget.GetHex().c_str());
     pblock->print();
-    printf("out %s\n", FormatMoney(pblock->vtx[1].GetValueOut()));
+    printf("out %s\n", FormatMoney(pblock->vtx[1].GetValueOut()).c_str());
 
     // Found a solution
     {
         LOCK(cs_main);
-        if (pblock->hashPrevBlock != chainActive.Tip()->GetBlockHash())
+        if (pblock->hashPrevBlock != pindexBest->GetBlockHash())
             return error("CheckStake(): generated block is stale");
 
         // Remove key from key pool
@@ -540,15 +540,10 @@ void StakeMiner(CWallet *pwallet)
 
     while (true)
     {
-        if (fShutdown)
-            return;
-
         while (pwallet->IsLocked())
         {
             nLastCoinStakeSearchInterval = 0;
             MilliSleep(1000);
-            if (fShutdown)
-                return;
         }
 
         while (vNodes.empty() || IsInitialBlockDownload())
@@ -556,8 +551,6 @@ void StakeMiner(CWallet *pwallet)
             nLastCoinStakeSearchInterval = 0;
             fTryToSync = true;
             MilliSleep(1000);
-            if (fShutdown)
-                return;
         }
 
         if (fTryToSync)
