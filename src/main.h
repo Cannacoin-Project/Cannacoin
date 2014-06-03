@@ -28,8 +28,6 @@ class CNode;
 
 struct CBlockIndexWorkComparator;
 
-/** The last PoW block*/
-static const int LAST_POW_BLOCK = 240000 - 1;
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 1000000;                      // 1000KB block hard limit
 /** Obsolete: maximum size for mined blocks */
@@ -60,7 +58,6 @@ static const int64 DUST_SOFT_LIMIT = 100000000; // 1 RDD
 static const int64 DUST_HARD_LIMIT = 1000000;   // 0.01 RDD mininput
 /** No amount larger than this (in satoshi) is valid */
 static const int64 MAX_MONEY = 92233720368 * COIN; // Maximum or compile warning, will fix in future release.
-static const int64 COIN_YEAR_REWARD = 5 * CENT; // Reddcoin PoSV: 5% per year
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 static const int COINBASE_MATURITY = 30;
@@ -79,6 +76,11 @@ static const int fHaveUPnP = false;
 // ppcoin
 inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
+
+// Reddcoin PoSV
+static const int LAST_POW_BLOCK = 240000 - 1;
+static const int64 COIN_YEAR_REWARD = 5 * CENT; // 5% per year
+
 extern CScript COINBASE_FLAGS;
 
 
@@ -90,6 +92,7 @@ extern CCriticalSection cs_main;
 extern std::map<uint256, CBlockIndex*> mapBlockIndex;
 extern std::set<CBlockIndex*, CBlockIndexWorkComparator> setBlockIndexValid;
 extern uint256 hashGenesisBlock;
+extern uint256 hashGenesisBlockTestNet;
 extern CBlockIndex* pindexGenesisBlock;
 extern int nBestHeight;
 extern uint256 nBestChainWork;
@@ -120,10 +123,10 @@ extern unsigned int nStakeMinAge;
 extern unsigned int nStakeMaxAge;
 extern const int64 nTargetSpacing;
 extern int64 nLastCoinStakeSearchInterval;
+extern int64 nReserveBalance;
 
 // Settings
 extern int64 nTransactionFee;
-extern int64 nReserveBalance;
 extern int64 nMinimumInputValue;
 
 // Minimum disk space required - used in CheckDiskSpace()
@@ -148,7 +151,7 @@ void RegisterWallet(CWallet* pwalletIn);
 /** Unregister a wallet from core */
 void UnregisterWallet(CWallet* pwalletIn);
 /** Push an updated transaction to all registered wallets */
-void SyncWithWallets(const uint256 &hash, const CTransaction& tx, const CBlock* pblock = NULL, bool fUpdate = false, bool fConnect = true);
+void SyncWithWallets(const uint256 &hash, const CTransaction& tx, const CBlock* pblock = NULL, bool fUpdate = false);
 /** Process an incoming block */
 bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBlockPos *dbp = NULL);
 /** Check whether enough disk space is available for an incoming block */
@@ -510,7 +513,7 @@ class CTransaction
 public:
     static int64 nMinTxFee;
     static int64 nMinRelayTxFee;
-    static const int CURRENT_VERSION=2;
+    static const int CURRENT_VERSION=1;
     int nVersion;
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
@@ -1351,7 +1354,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int CURRENT_VERSION=3;
+    static const int CURRENT_VERSION=2;
     int nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
