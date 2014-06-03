@@ -13,6 +13,7 @@ using namespace std;
 
 typedef std::map<int, unsigned int> MapModifierCheckpoints;
 
+// FIXME
 // Hard checkpoints of stake modifiers to ensure they are deterministic
 static std::map<int, unsigned int> mapStakeModifierCheckpoints =
     boost::assign::map_list_of
@@ -21,6 +22,7 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints =
         ( 7000, 0x4da1176e )
     ;
 
+// FIXME
 // Hard checkpoints of stake modifiers to ensure they are deterministic (testNet)
 static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
     boost::assign::map_list_of
@@ -372,7 +374,7 @@ bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 // Get stake modifier checksum
 unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 {
-    assert (fTestNet || pindex->pprev || pindex->GetBlockHash() == hashGenesisBlock);
+    assert (pindex->pprev || pindex->GetBlockHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
     // Hash previous checksum with flags, hashProofOfStake and nStakeModifier
     CDataStream ss(SER_GETHASH, 0);
     if (pindex->pprev)

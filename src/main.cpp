@@ -40,6 +40,7 @@ unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xb868e0d95a3c3c0e0dadc67ee587aaf9dc8acbf99e3b4b3110fad4eb74c1decc");
+uint256 hashGenesisBlockTestNet("0x46db8d519c64586e3f0bf16153f61fdcf1d30b71ab159bf4a5b46dbcbc79d814");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -79,16 +80,17 @@ int64 nHPSTimerStart = 0;
 
 // Settings
 int64 nTransactionFee = 0;
-int64 nReserveBalance = 0;
 int64 nMinimumInputValue = DUST_HARD_LIMIT;
 
 // ppcoin
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 set<pair<COutPoint, unsigned int> > setStakeSeenOrphan;
 static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
-unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
+int64 nReserveBalance = 0;
+//unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
+unsigned int nStakeMinAge = 0;
 unsigned int nStakeMaxAge = -1; // unlimited
-unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
+unsigned int nModifierInterval = 1 * 60; // time to elapse before new modifier is computed
 extern enum Checkpoints::CPMode CheckpointsMode;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -141,19 +143,8 @@ void static EraseFromWallets(uint256 hash)
 }
 
 // make sure all wallets know about the given transaction, in the given block
-void SyncWithWallets(const uint256 &hash, const CTransaction& tx, const CBlock* pblock, bool fUpdate, bool fConnect)
+void SyncWithWallets(const uint256 &hash, const CTransaction& tx, const CBlock* pblock, bool fUpdate)
 {
-    if (!fConnect)
-    {
-        // ppcoin: wallets need to refund inputs when disconnecting coinstake
-        if (tx.IsCoinStake())
-        {
-            BOOST_FOREACH(CWallet* pwallet, setpwalletRegistered)
-                if (pwallet->IsFromMe(tx))
-                    pwallet->DisableTransaction(tx);
-        }
-        return;
-    }
     BOOST_FOREACH(CWallet* pwallet, setpwalletRegistered)
         pwallet->AddToWalletIfInvolvingMe(hash, tx, pblock, fUpdate);
 }
@@ -855,7 +846,7 @@ bool CTxMemPool::accept(CValidationState &state, CTransaction &tx, bool fCheckIn
     // If updated, erase old tx from wallet
     if (ptxOld)
         EraseFromWallets(ptxOld->GetHash());
-    SyncWithWallets(hash, tx, NULL, true, true);
+    SyncWithWallets(hash, tx, NULL, true);
 
     return true;
 }
@@ -1674,37 +1665,8 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
     return true;
 }
 
-void static FlushBlockFile(bool fFinalize = false)
-{
-    LOCK(cs_LastBlockFile);
 
-    CDiskBlockPos posOld(nLastBlockFile, 0);
 
-    FILE *fileOld = OpenBlockFile(posOld);
-    if (fileOld) {
-        if (fFinalize)
-            TruncateFile(fileOld, infoLastBlockFile.nSize);
-        FileCommit(fileOld);
-        fclose(fileOld);
-    }
-
-    fileOld = OpenUndoFile(posOld);
-    if (fileOld) {
-        if (fFinalize)
-            TruncateFile(fileOld, infoLastBlockFile.nUndoSize);
-        FileCommit(fileOld);
-        fclose(fileOld);
-    }
-}
-
-bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigned int nAddSize);
-
-static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
-
-void ThreadScriptCheck() {
-    RenameThread("bitcoin-scriptch");
-    scriptcheckqueue.Thread();
-}
 
 bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoinsViewCache &view, bool *pfClean)
 {
@@ -1791,6 +1753,38 @@ bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoin
     } else {
         return fClean;
     }
+}
+
+void static FlushBlockFile(bool fFinalize = false)
+{
+    LOCK(cs_LastBlockFile);
+
+    CDiskBlockPos posOld(nLastBlockFile, 0);
+
+    FILE *fileOld = OpenBlockFile(posOld);
+    if (fileOld) {
+        if (fFinalize)
+            TruncateFile(fileOld, infoLastBlockFile.nSize);
+        FileCommit(fileOld);
+        fclose(fileOld);
+    }
+
+    fileOld = OpenUndoFile(posOld);
+    if (fileOld) {
+        if (fFinalize)
+            TruncateFile(fileOld, infoLastBlockFile.nUndoSize);
+        FileCommit(fileOld);
+        fclose(fileOld);
+    }
+}
+
+bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigned int nAddSize);
+
+static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
+
+void ThreadScriptCheck() {
+    RenameThread("bitcoin-scriptch");
+    scriptcheckqueue.Thread();
 }
 
 bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsViewCache &view, bool fJustCheck)
@@ -1917,7 +1911,7 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
         if (vtx[0].GetValueOut() > GetBlockValue(pindex->nHeight, nFees))
             return state.DoS(100, error("ConnectBlock() : coinbase pays too much (actual=%"PRI64d" vs limit=%"PRI64d")", vtx[0].GetValueOut(), GetBlockValue(pindex->nHeight, nFees)));
     }
-    if (IsProofOfStake())
+    else if (IsProofOfStake())
     {
         // ppcoin: coin stake tx earns reward instead of paying fee
         uint64 nCoinAge;
@@ -2403,24 +2397,6 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
     // Size limits
     if (vtx.empty() || vtx.size() > MAX_BLOCK_SIZE || ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION) > MAX_BLOCK_SIZE)
         return state.DoS(100, error("CheckBlock() : size limits failed"));
-
-    // Reddcoin: Special short-term limits to avoid 10,000 BDB lock limit:
-    if (GetBlockTime() < 1376568000)  // stop enforcing 15 August 2013 00:00:00
-    {
-        // Rule is: #unique txids referenced <= 4,500
-        // ... to prevent 10,000 BDB lock exhaustion on old clients
-        set<uint256> setTxIn;
-        for (size_t i = 0; i < vtx.size(); i++)
-        {
-            setTxIn.insert(vtx[i].GetHash());
-            if (i == 0) continue; // skip coinbase txin
-            BOOST_FOREACH(const CTxIn& txin, vtx[i].vin)
-                setTxIn.insert(txin.prevout.hash);
-        }
-        size_t nTxids = setTxIn.size();
-        if (nTxids > 4500)
-            return error("CheckBlock() : 15 August maxlocks violation");
-    }
 
     // Check proof of work matches claimed amount
     if (GetBlockTime() > CHECK_POW_FROM_NTIME && fCheckPOW && IsProofOfWork() && !CheckProofOfWork(GetPoWHash(), nBits))
@@ -3211,7 +3187,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc3;
         pchMessageStart[2] = 0xb9;
         pchMessageStart[3] = 0xde;
-        hashGenesisBlock = uint256("0x46db8d519c64586e3f0bf16153f61fdcf1d30b71ab159bf4a5b46dbcbc79d814");
+        hashGenesisBlock = hashGenesisBlockTestNet;
     }
 
     //
