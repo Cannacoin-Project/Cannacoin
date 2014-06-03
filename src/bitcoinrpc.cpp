@@ -93,7 +93,7 @@ void RPCTypeCheck(const Object& o,
 int64 AmountFromValue(const Value& value)
 {
     double dAmount = value.get_real();
-    if (dAmount <= 0.0 || dAmount > 100000000000.0)
+    if (dAmount <= 0.0 || dAmount > (double)(MAX_MONEY / COIN))
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount");
     int64 nAmount = roundint64(dAmount * COIN);
     if (!MoneyRange(nAmount))
@@ -213,7 +213,6 @@ static const CRPCCommand vRPCCommands[] =
     { "gethashespersec",        &gethashespersec,        true,      false,      false },
     { "getinfo",                &getinfo,                true,      false,      false },
     { "getmininginfo",          &getmininginfo,          true,      false,      false },
-    { "getstakinginfo",         &getstakinginfo,         true,      false,      false },
     { "getnewaddress",          &getnewaddress,          true,      false,      true },
     { "getaccountaddress",      &getaccountaddress,      true,      false,      true },
     { "setaccount",             &setaccount,             true,      false,      true },
@@ -262,13 +261,15 @@ static const CRPCCommand vRPCCommands[] =
     { "signrawtransaction",     &signrawtransaction,     false,     false,      false },
     { "sendrawtransaction",     &sendrawtransaction,     false,     false,      false },
     { "getnormalizedtxid",      &getnormalizedtxid,      true,      true,       false },
-    { "getcheckpoint",          &getcheckpoint,          true,      false,      false },
-    { "reservebalance",         &reservebalance,         false,     false,      false },
     { "gettxoutsetinfo",        &gettxoutsetinfo,        true,      false,      false },
     { "gettxout",               &gettxout,               true,      false,      false },
     { "lockunspent",            &lockunspent,            false,     false,      true },
     { "listlockunspent",        &listlockunspent,        false,     false,      true },
     { "verifychain",            &verifychain,            true,      false,      false },
+    // ppcoin
+    { "getstakinginfo",         &getstakinginfo,         true,      false,      false },
+    { "getcheckpoint",          &getcheckpoint,          true,      true,       false },
+    { "reservebalance",         &reservebalance,         false,     false,      false },
 };
 
 CRPCTable::CRPCTable()
@@ -1180,8 +1181,6 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "listsinceblock"         && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "sendmany"               && n > 1) ConvertTo<Object>(params[1]);
     if (strMethod == "sendmany"               && n > 2) ConvertTo<boost::int64_t>(params[2]);
-    if (strMethod == "reservebalance"         && n > 0) ConvertTo<bool>(params[0]);
-    if (strMethod == "reservebalance"         && n > 1) ConvertTo<double>(params[1]);
     if (strMethod == "addmultisigaddress"     && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "addmultisigaddress"     && n > 1) ConvertTo<Array>(params[1]);
     if (strMethod == "createmultisig"         && n > 0) ConvertTo<boost::int64_t>(params[0]);
@@ -1203,6 +1202,8 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "importprivkey"          && n > 2) ConvertTo<bool>(params[2]);
     if (strMethod == "verifychain"            && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "verifychain"            && n > 1) ConvertTo<boost::int64_t>(params[1]);
+    if (strMethod == "reservebalance"         && n > 0) ConvertTo<bool>(params[0]);
+    if (strMethod == "reservebalance"         && n > 1) ConvertTo<double>(params[1]);
 
     return params;
 }

@@ -866,7 +866,7 @@ void CWallet::ReacceptWalletTransactions()
             else
             {
                 // Re-accept any txes of ours that aren't already in a block
-                if (!(wtx.IsCoinBase() || wtx.IsCoinStake()))
+                if (!wtx.IsCoinBase() && !wtx.IsCoinStake())
                     wtx.AcceptWalletTransaction(false);
             }
         }
@@ -1013,7 +1013,7 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
             if (fOnlyConfirmed && !pcoin->IsConfirmed())
                 continue;
 
-            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+            if ((pcoin->IsCoinBase() || pcoin->IsCoinStake()) && pcoin->GetBlocksToMaturity() > 0)
                 continue;
 
             int nDepth = pcoin->GetDepthInMainChain();
@@ -1784,13 +1784,13 @@ string CWallet::SendMoney(CScript scriptPubKey, int64 nValue, CWalletTx& wtxNew,
     CReserveKey reservekey(this);
     int64 nFeeRequired;
 
+    string strError;
     if (IsLocked())
     {
-        string strError = _("Error: Wallet locked, unable to create transaction!");
+        strError = _("Error: Wallet locked, unable to create transaction!");
         printf("SendMoney() : %s", strError.c_str());
         return strError;
     }
-    string strError;
     if (fWalletUnlockStakingOnly)
     {
         strError = _("Error: Wallet unlocked for staking only, unable to create transaction.");
@@ -1888,12 +1888,11 @@ void CWallet::PrintWallet(const CBlock& block)
             CWalletTx& wtx = mapWallet[block.vtx[0].GetHash()];
             printf("    mine:  %d  %d  %"PRI64d"", wtx.GetDepthInMainChain(), wtx.GetBlocksToMaturity(), wtx.GetCredit());
         }
-        if (block.IsProofOfStake() && mapWallet.count(block.vtx[1].GetHash()))
+        else if (block.IsProofOfStake() && mapWallet.count(block.vtx[1].GetHash()))
         {
             CWalletTx& wtx = mapWallet[block.vtx[1].GetHash()];
             printf("    stake: %d  %d  %"PRI64d"", wtx.GetDepthInMainChain(), wtx.GetBlocksToMaturity(), wtx.GetCredit());
-         }
-
+        }
     }
     printf("\n");
 }
