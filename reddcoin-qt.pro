@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = reddcoin-qt
 macx:TARGET = "Reddcoin-Qt"
-VERSION = 1.2.1.0
+VERSION = 1.3.0.0
 INCLUDEPATH += src src/json src/qt
 QT += core gui network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -103,6 +103,7 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
+SOURCES += src/txdb-leveldb.cpp
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
     genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
@@ -158,11 +159,14 @@ HEADERS += src/qt/bitcoingui.h \
     src/util.h \
     src/hash.h \
     src/uint256.h \
+    src/kernel.h \
     src/serialize.h \
     src/main.h \
+    src/miner.h \
     src/net.h \
     src/key.h \
     src/db.h \
+    src/txdb.h \
     src/walletdb.h \
     src/script.h \
     src/init.h \
@@ -243,6 +247,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/key.cpp \
     src/script.cpp \
     src/main.cpp \
+    src/miner.cpp \
     src/init.cpp \
     src/net.cpp \
     src/bloom.cpp \
@@ -288,6 +293,7 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/rpcconsole.cpp \
     src/scrypt.cpp \
     src/noui.cpp \
+    src/kernel.cpp \
     src/leveldb.cpp \
     src/txdb.cpp \
     src/qt/splashscreen.cpp
