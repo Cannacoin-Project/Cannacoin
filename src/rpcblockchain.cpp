@@ -54,6 +54,9 @@ double GetPoSKernelPS()
     CBlockIndex* pindex = pindexBest;;
     CBlockIndex* pindexPrevStake = NULL;
 
+    if (pindex == NULL || pindex->nHeight < (LAST_POW_BLOCK + nPoSInterval))
+        return 0;
+
     while (pindex && nStakesHandled < nPoSInterval)
     {
         if (pindex->IsProofOfStake())
@@ -97,11 +100,13 @@ Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex)
     if (blockindex->pnext)
         result.push_back(Pair("nextblockhash", blockindex->pnext->GetBlockHash().GetHex()));
 
+    result.push_back(Pair("flags", strprintf("%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work")));
+    result.push_back(Pair("proofhash", blockindex->hashProof.GetHex()));
+
+
     if (block.IsProofOfStake())
     {
         result.push_back(Pair("mint", ValueFromAmount(blockindex->nMint)));
-        result.push_back(Pair("flags", strprintf("%s%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work", blockindex->GeneratedStakeModifier()? " stake-modifier": "")));
-        result.push_back(Pair("proofhash", blockindex->hashProof.GetHex()));
         result.push_back(Pair("entropybit", (int)blockindex->GetStakeEntropyBit()));
         result.push_back(Pair("modifier", strprintf("%016"PRI64x, blockindex->nStakeModifier)));
         result.push_back(Pair("modifierchecksum", strprintf("%08x", blockindex->nStakeModifierChecksum)));
@@ -328,11 +333,9 @@ Value getcheckpoint(const Array& params, bool fHelp)
     // Check that the block satisfies synchronized checkpoint
     if (CheckpointsMode == Checkpoints::STRICT)
         result.push_back(Pair("policy", "strict"));
-
-    if (CheckpointsMode == Checkpoints::ADVISORY)
+    else if (CheckpointsMode == Checkpoints::ADVISORY)
         result.push_back(Pair("policy", "advisory"));
-
-    if (CheckpointsMode == Checkpoints::PERMISSIVE)
+    else if (CheckpointsMode == Checkpoints::PERMISSIVE)
         result.push_back(Pair("policy", "permissive"));
 
     if (mapArgs.count("-checkpointkey"))

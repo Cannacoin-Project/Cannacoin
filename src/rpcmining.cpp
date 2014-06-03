@@ -138,37 +138,33 @@ Value getmininginfo(const Array& params, bool fHelp)
             "getmininginfo\n"
             "Returns an object containing mining-related information.");
 
-    uint64 nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
-    pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
-
-    Object obj, diff, weight;
+    Object obj;
     obj.push_back(Pair("blocks",        (int)nBestHeight));
     obj.push_back(Pair("currentblocksize",(uint64_t)nLastBlockSize));
     obj.push_back(Pair("currentblocktx",(uint64_t)nLastBlockTx));
-
-    diff.push_back(Pair("proof-of-work",        (double)GetDifficulty()));
-    diff.push_back(Pair("proof-of-stake",       (double)GetDifficulty(GetLastBlockIndex(pindexBest, true))));
-    diff.push_back(Pair("search-interval",      (int)nLastCoinStakeSearchInterval));
-    obj.push_back(Pair("difficulty",    diff));
-
-    obj.push_back(Pair("netstakeweight", GetPoSKernelPS()));
+    obj.push_back(Pair("difficulty",    (double)GetDifficulty()));
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     obj.push_back(Pair("generate",      GetBoolArg("-gen")));
     obj.push_back(Pair("genproclimit",  (int)GetArg("-genproclimit", -1)));
     obj.push_back(Pair("hashespersec",  gethashespersec(params, false)));
     obj.push_back(Pair("networkhashps", getnetworkhashps(params, false)));
     obj.push_back(Pair("pooledtx",      (uint64_t)mempool.size()));
-
-    weight.push_back(Pair("minimum",    (uint64_t)nMinWeight));
-    weight.push_back(Pair("maximum",    (uint64_t)nMaxWeight));
-    weight.push_back(Pair("combined",  (uint64_t)nWeight));
-    obj.push_back(Pair("stakeweight", weight));
-
-    obj.push_back(Pair("stakeinterest",    (uint64_t)COIN_YEAR_REWARD));
     obj.push_back(Pair("testnet",       fTestNet));
+
+    // ppcoin
+    uint64 nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
+    pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
+    Object weight;
+    weight.push_back(Pair("minimum",  (uint64_t)nMinWeight));
+    weight.push_back(Pair("maximum",  (uint64_t)nMaxWeight));
+    weight.push_back(Pair("combined", (uint64_t)nWeight));
+    obj.push_back(Pair("stakeweight", weight));
+    obj.push_back(Pair("stakeinterest",  (uint64_t)COIN_YEAR_REWARD));
+    obj.push_back(Pair("netstakeweight", GetPoSKernelPS()));
     return obj;
 }
 
+// ppcoin
 Value getstakinginfo(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
