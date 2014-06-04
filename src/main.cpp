@@ -2427,8 +2427,8 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
             return error("CheckBlock() : CheckTransaction failed");
 
         // ppcoin: check transaction timestamp
-        if (GetBlockTime() < (int64)tx.nTime)
-            return error("CheckBlock() : block timestamp earlier than transaction timestamp");
+        if (IsProofOfStake() && GetBlockTime() < (int64)tx.nTime)
+            return error("CheckBlock() : block timestamp=%"PRI64d" earlier than transaction timestamp=%u", GetBlockTime(), tx.nTime);
     }
 
     // Build the merkle tree already. We need it anyway later, and it makes the
@@ -3208,6 +3208,8 @@ bool InitBlockIndex() {
         // Genesis block
         const char* pszTimestamp = "January 21st 2014 was such a nice day...";
         CTransaction txNew;
+        txNew.nVersion = 1;
+        txNew.nTime = 0;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));

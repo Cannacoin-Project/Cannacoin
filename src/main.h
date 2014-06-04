@@ -78,6 +78,8 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Reddcoin PoSV
+static const int POSV_MIN_TX_VERSION = 2;
+static const int POSV_MIN_BLOCK_VERSION = 3;
 static const int LAST_POW_BLOCK = 240000 - 1;
 static const int64 COIN_YEAR_REWARD = 5 * CENT; // 5% per year
 
@@ -513,7 +515,7 @@ class CTransaction
 public:
     static int64 nMinTxFee;
     static int64 nMinRelayTxFee;
-    static const int CURRENT_VERSION=1;
+    static const int CURRENT_VERSION=2;
     int nVersion;
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
@@ -532,7 +534,8 @@ public:
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
-        READWRITE(nTime); // ppcoin
+        if (nVersion >= POSV_MIN_TX_VERSION)
+            READWRITE(nTime); // ppcoin
     )
 
     void SetNull()
@@ -1354,7 +1357,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int CURRENT_VERSION=2;
+    static const int CURRENT_VERSION=3;
     int nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
@@ -1433,7 +1436,8 @@ public:
     (
         READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);
-        READWRITE(vchBlockSig); // ppcoin
+        if (nVersion >= POSV_MIN_BLOCK_VERSION)
+            READWRITE(vchBlockSig); // ppcoin
     )
 
     void SetNull()
