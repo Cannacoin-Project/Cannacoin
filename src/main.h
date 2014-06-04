@@ -515,7 +515,7 @@ class CTransaction
 public:
     static int64 nMinTxFee;
     static int64 nMinRelayTxFee;
-    static const int CURRENT_VERSION=2;
+    static const int CURRENT_VERSION=3;
     int nVersion;
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
@@ -530,12 +530,21 @@ public:
     IMPLEMENT_SERIALIZE
     (
         READWRITE(this->nVersion);
-        nVersion = this->nVersion;
+        // nVersion = this->nVersion;
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
-        if (nVersion >= POSV_MIN_TX_VERSION)
-            READWRITE(nTime); // ppcoin
+        if ((nType == SER_NETWORK && nVersion >= POSV_PROTOCOL_VERSION) ||
+            (nType == SER_DISK && nVersion >= POSV_CLIENT_VERSION))
+        {
+            // ppcoin
+            READWRITE(nTime);
+        }
+        else if (fRead)
+        {
+            CTransaction* pthis = const_cast<CTransaction*>(this);
+            pthis->nTime = 0;
+        }
     )
 
     void SetNull()
@@ -1436,7 +1445,8 @@ public:
     (
         READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);
-        if (nVersion >= POSV_MIN_BLOCK_VERSION)
+        if ((nType == SER_NETWORK && nVersion >= POSV_PROTOCOL_VERSION) ||
+            (nType == SER_DISK && nVersion >= POSV_CLIENT_VERSION))
             READWRITE(vchBlockSig); // ppcoin
     )
 

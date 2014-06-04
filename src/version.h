@@ -21,14 +21,19 @@ extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 extern const std::string CLIENT_DATE;
 
-//
-// database format versioning
-//
+// PoSV
+// database format versioning for checkpoints
 static const int DATABASE_VERSION = 80000;
+
+// PoSV
+// nTime field added to CTransaction
+// vchBlockSig field added to CBlock
+static const int POSV_CLIENT_VERSION = 1030000;
+static const int POSV_PROTOCOL_VERSION = 80000;
+
 // network protocol versioning
 //
-
-static const int PROTOCOL_VERSION = 70004;
+static const int PROTOCOL_VERSION = 80000;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
