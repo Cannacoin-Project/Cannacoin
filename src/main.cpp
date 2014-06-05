@@ -2503,30 +2503,30 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         if (!Checkpoints::CheckHardened(nHeight, hash))
             return state.DoS(100, error("AcceptBlock() : rejected by hardened checkpoint lock-in at %d", nHeight));
 
-        if (IsProofOfWork())
+        // Verify hash target and signature of coinstake tx
+        if (IsProofOfStake())
         {
-            // PoW is checked in CheckBlock()
-            hashProof = GetPoWHash();
-        }
-        else if (IsProofOfStake())
-        {
-            // Verify hash target and signature of coinstake tx
             uint256 targetProofOfStake;
             if (!CheckProofOfStake(vtx[1], nBits, hashProof, targetProofOfStake))
             {
                 printf("WARNING: AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str());
                 return false; // do not error here as we expect this during initial block download
             }
-
-            bool cpSatisfies = Checkpoints::CheckSync(hash, pindexPrev);
-
-            // Check that the block satisfies synchronized checkpoint
-            if (CheckpointsMode == Checkpoints::STRICT && !cpSatisfies)
-                return state.DoS(100, error("AcceptBlock() : rejected by synchronized checkpoint"));
-
-            if (CheckpointsMode == Checkpoints::ADVISORY && !cpSatisfies)
-                strMiscWarning = _("WARNING: syncronized checkpoint violation detected, but skipped!");
         }
+        else if (IsProofOfWork())
+        {
+            // PoW is checked in CheckBlock()
+            hashProof = GetPoWHash();
+        }
+
+        bool cpSatisfies = Checkpoints::CheckSync(hash, pindexPrev);
+
+        // Check that the block satisfies synchronized checkpoint
+        if (CheckpointsMode == Checkpoints::STRICT && !cpSatisfies)
+            return state.DoS(100, error("AcceptBlock() : rejected by synchronized checkpoint"));
+
+        if (CheckpointsMode == Checkpoints::ADVISORY && !cpSatisfies)
+            strMiscWarning = _("WARNING: syncronized checkpoint violation detected, but skipped!");
 
         // Don't accept any forks from the main chain prior to last checkpoint
         CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
@@ -2623,30 +2623,27 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
     if (!pblock->CheckBlock(state))
         return error("ProcessBlock() : CheckBlock FAILED");
 
-    CBlockIndex* pcheckpoint = NULL;
-    if (pblock->IsProofOfWork())
-        pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
-    else if (pblock->IsProofOfStake())
-        pcheckpoint = Checkpoints::GetLastSyncCheckpoint();
-
+    CBlockIndex* pcheckpoint = Checkpoints::GetLastSyncCheckpoint();
     if (pcheckpoint && pblock->hashPrevBlock != hashBestChain && !Checkpoints::WantedByPendingSyncCheckpoint(hash))
     {
         // Extra checks to prevent "fill up memory by spamming with bogus blocks"
         int64 deltaTime = pblock->GetBlockTime() - pcheckpoint->nTime;
         if (deltaTime < 0)
+        {
             return state.DoS(100, error("ProcessBlock() : block with timestamp before last checkpoint"));
-
+        }
         CBigNum bnNewBlock;
         bnNewBlock.SetCompact(pblock->nBits);
         CBigNum bnRequired;
-
         if (pblock->IsProofOfStake())
             bnRequired.SetCompact(ComputeMinStake(GetLastBlockIndex(pcheckpoint, true)->nBits, deltaTime));
         else
             bnRequired.SetCompact(ComputeMinWork(GetLastBlockIndex(pcheckpoint, false)->nBits, deltaTime));
 
         if (pblock->GetBlockTime() > CHECK_POW_FROM_NTIME && bnNewBlock > bnRequired)
+        {
             return state.DoS(100, error("ProcessBlock() : block with too little proof-of-%s", pblock->IsProofOfStake()? "stake" : "work"));
+        }
     }
 
     // ppcoin: ask for pending sync-checkpoint if any
@@ -2661,7 +2658,6 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
         // Accept orphans as long as there is a node to request its parents from
         if (pfrom) {
             CBlock* pblock2 = new CBlock(*pblock);
-
             // ppcoin: check proof-of-stake
             if (pblock2->IsProofOfStake())
             {
@@ -2672,13 +2668,11 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
                 else
                     setStakeSeenOrphan.insert(pblock2->GetProofOfStake());
             }
-
             mapOrphanBlocks.insert(make_pair(hash, pblock2));
             mapOrphanBlocksByPrev.insert(make_pair(pblock2->hashPrevBlock, pblock2));
 
             // Ask this guy to fill in what we're missing
             pfrom->PushGetBlocks(pindexBest, GetOrphanRoot(pblock2));
-
             // ppcoin: getblocks may not obtain the ancestor block rejected
             // earlier by duplicate-stake check so we ask for it again directly
             if (!IsInitialBlockDownload())
@@ -2707,10 +2701,7 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
             if (pblockOrphan->AcceptBlock(stateDummy))
                 vWorkQueue.push_back(pblockOrphan->GetHash());
             mapOrphanBlocks.erase(pblockOrphan->GetHash());
-
-            if (pblockOrphan->IsProofOfStake())
-                setStakeSeenOrphan.erase(pblockOrphan->GetProofOfStake());
-
+            setStakeSeenOrphan.erase(pblockOrphan->GetProofOfStake());
             delete pblockOrphan;
         }
         mapOrphanBlocksByPrev.erase(hashPrev);
