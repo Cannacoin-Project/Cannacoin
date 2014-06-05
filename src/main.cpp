@@ -1313,10 +1313,13 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     }
 
      /// debug print
-     printf("Difficulty Retarget - Kimoto Gravity Well\n");
-     printf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
-     printf("Before: %08x  %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
-     printf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
+    if (fDebug)
+    {
+        printf("Difficulty Retarget - Kimoto Gravity Well\n");
+        printf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
+        printf("Before: %08x  %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
+        printf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
+    }
 
      return bnNew.GetCompact();
 }

@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "db.h"
+#include "miner.h"
 #include "net.h"
 #include "init.h"
 #include "addrman.h"
@@ -1805,6 +1806,7 @@ void StartNode(boost::thread_group& threadGroup)
 bool StopNode()
 {
     printf("StopNode()\n");
+    GenerateReddcoins(false, NULL);
     MapPort(false);
     nTransactionsUpdated++;
     if (semOutbound)

@@ -16,6 +16,8 @@ class CReserveKey;
 class CScript;
 class CWallet;
 
+/** Run the miner threads */
+void GenerateReddcoins(bool fGenerate, CWallet* pwallet);
 /* Generate a new block, without valid proof-of-work */
 CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake=false);
 CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey);
