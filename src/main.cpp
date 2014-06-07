@@ -1326,7 +1326,12 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 {
     // always mine at the lowest diff on testnet
     if (fTestNet)
-        return bnProofOfWorkLimit.GetCompact();
+    {
+        if (pindexLast->nHeight < LAST_POW_BLOCK)
+            return bnProofOfWorkLimit.GetCompact();
+        else
+            return bnProofOfStakeLimit.GetCompact();
+    }
 
     static const int64 BlocksTargetSpacing = 1 * 60; // 1 Minute
     unsigned int       TimeDaySeconds      = 60 * 60 * 24;
