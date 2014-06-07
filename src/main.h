@@ -78,8 +78,6 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Reddcoin PoSV
-static const int POSV_MIN_TX_VERSION = 2;
-static const int POSV_MIN_BLOCK_VERSION = 3;
 static const int LAST_POW_BLOCK = 240000 - 1;
 static const int64 COIN_YEAR_REWARD = 5 * CENT; // 5% per year
 
@@ -534,8 +532,9 @@ public:
         READWRITE(vin);
         READWRITE(vout);
         READWRITE(nLockTime);
-        if ((nType == SER_NETWORK && nVersion >= POSV_PROTOCOL_VERSION) ||
-            (nType == SER_DISK && nVersion >= POSV_CLIENT_VERSION))
+        if (this->nVersion > POW_TX_VERSION &&
+            ((nType == SER_NETWORK && nVersion > POW_PROTOCOL_VERSION) ||
+             (nType == SER_DISK && nVersion >  POW_CLIENT_VERSION)))
         {
             // ppcoin
             READWRITE(nTime);
@@ -1445,8 +1444,9 @@ public:
     (
         READWRITE(*(CBlockHeader*)this);
         READWRITE(vtx);
-        if ((nType == SER_NETWORK && nVersion >= POSV_PROTOCOL_VERSION) ||
-            (nType == SER_DISK && nVersion >= POSV_CLIENT_VERSION))
+        if (this->nVersion > POW_BLOCK_VERSION &&
+            ((nType == SER_NETWORK && nVersion > POW_PROTOCOL_VERSION) ||
+             (nType == SER_DISK && nVersion > POW_CLIENT_VERSION)))
             READWRITE(vchBlockSig); // ppcoin
     )
 

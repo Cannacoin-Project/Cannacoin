@@ -13,6 +13,8 @@
 using namespace json_spirit;
 using namespace std;
 
+#define printf OutputDebugStringF
+
 // Return average network hashes per second based on the last 'lookup' blocks,
 // or from the last difficulty change if 'lookup' is nonpositive.
 // If 'height' is nonnegative, compute the estimate at the time when a given block was found.
@@ -214,7 +216,7 @@ Value getworkex(const Array& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Reddcoin is downloading blocks...");
 
-    if (pindexBest->nHeight > LAST_POW_BLOCK)
+    if (pindexBest->nHeight >= LAST_POW_BLOCK)
         throw JSONRPCError(RPC_MISC_ERROR, "No more PoW blocks");
 
     typedef map<uint256, pair<CBlock*, CScript> > mapNewBlock_t;
@@ -357,7 +359,7 @@ Value getwork(const Array& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Reddcoin is downloading blocks...");
 
-    if (pindexBest->nHeight > LAST_POW_BLOCK)
+    if (pindexBest->nHeight >= LAST_POW_BLOCK)
         throw JSONRPCError(RPC_MISC_ERROR, "No more PoW blocks");
 
     typedef map<uint256, pair<CBlock*, CScript> > mapNewBlock_t;
@@ -413,6 +415,10 @@ Value getwork(const Array& params, bool fHelp)
         // Save
         mapNewBlock[pblock->hashMerkleRoot] = make_pair(pblock, pblock->vtx[0].vin[0].scriptSig);
 
+        printf("getwork : sent     ver=%d, nTime=%u, nNonce=%u\n", pblock->nVersion, pblock->nTime, pblock->nNonce);
+        printf("getwork : sent     hashPrevBlock =%s\n", pblock->hashPrevBlock.ToString().c_str());
+        printf("getwork : sent     hashMerkleRoot=%s\n", pblock->hashMerkleRoot.ToString().c_str());
+
         // Pre-build hash buffers
         char pmidstate[32];
         char pdata[128];
@@ -441,6 +447,10 @@ Value getwork(const Array& params, bool fHelp)
             ((unsigned int*)pdata)[i] = ByteReverse(((unsigned int*)pdata)[i]);
 
         // Get saved block
+        printf("getwork : received ver=%d, nTime=%u, nNonce=%u\n", pdata->nVersion, pdata->nTime, pdata->nNonce);
+        printf("getwork : received hashPrevBlock =%s\n", pdata->hashPrevBlock.ToString().c_str());
+        printf("getwork : received hashMerkleRoot=%s\n", pdata->hashMerkleRoot.ToString().c_str());
+
         if (!mapNewBlock.count(pdata->hashMerkleRoot))
             return false;
         CBlock* pblock = mapNewBlock[pdata->hashMerkleRoot].first;
@@ -450,7 +460,12 @@ Value getwork(const Array& params, bool fHelp)
         pblock->vtx[0].vin[0].scriptSig = mapNewBlock[pdata->hashMerkleRoot].second;
         pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 
+        printf("getwork : check    ver=%d, nTime=%u, nNonce=%u\n", pblock->nVersion, pblock->nTime, pblock->nNonce);
+        printf("getwork : check    hashPrevBlock =%s\n", pblock->hashPrevBlock.ToString().c_str());
+        printf("getwork : check    hashMerkleRoot=%s\n", pblock->hashMerkleRoot.ToString().c_str());
+
         assert(pwalletMain != NULL);
+        printf("getwork: about to call CheckWork()\n");
         return CheckWork(pblock, *pwalletMain, *pMiningKey);
     }
 }
@@ -502,7 +517,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Reddcoin is downloading blocks...");
 
-    if (pindexBest->nHeight > LAST_POW_BLOCK)
+    if (pindexBest->nHeight >= LAST_POW_BLOCK)
         throw JSONRPCError(RPC_MISC_ERROR, "No more PoW blocks");
 
     // Update block
@@ -528,7 +543,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
             pblocktemplate = NULL;
         }
         CScript scriptDummy = CScript() << OP_TRUE;
-        pblocktemplate = CreateNewBlock(scriptDummy, false);
+        pblocktemplate = CreateNewBlock(scriptDummy);
         if (!pblocktemplate)
             throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
 
@@ -549,7 +564,7 @@ Value getblocktemplate(const Array& params, bool fHelp)
         uint256 txHash = tx.GetHash();
         setTxIndex[txHash] = i++;
 
-        if (tx.IsCoinBase() || tx.IsCoinStake())
+        if (tx.IsCoinBase())
             continue;
 
         Object entry;

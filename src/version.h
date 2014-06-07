@@ -28,8 +28,10 @@ static const int DATABASE_VERSION = 80000;
 // PoSV
 // nTime field added to CTransaction
 // vchBlockSig field added to CBlock
-static const int POSV_CLIENT_VERSION = 1030000;
-static const int POSV_PROTOCOL_VERSION = 80000;
+static const int POW_CLIENT_VERSION = 1020000;
+static const int POW_PROTOCOL_VERSION = 70003;
+static const int POW_TX_VERSION = 1;
+static const int POW_BLOCK_VERSION = 2;
 
 // network protocol versioning
 //

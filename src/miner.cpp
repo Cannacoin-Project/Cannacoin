@@ -110,7 +110,7 @@ public:
 };
 
 // CreateNewBlock: create new block (without proof-of-work/proof-of-stake)
-CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake)
+CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
 {
     // Create new block
     auto_ptr<CBlockTemplate> pblocktemplate(new CBlockTemplate());
@@ -118,6 +118,10 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
         return NULL;
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
     CBlockIndex* pindexPrev = pindexBest;
+
+    bool fProofOfStake = false;
+    if (pindexPrev->nHeight >= LAST_POW_BLOCK)
+        fProofOfStake = true;
 
     // Create coinbase tx
     CTransaction txNew;
@@ -127,6 +131,9 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
 
     if (!fProofOfStake)
     {
+        printf("CreateNewBlock : new PoW block\n");
+        pblock->nVersion = POW_BLOCK_VERSION;
+        txNew.nVersion = POW_TX_VERSION;
         txNew.vout[0].scriptPubKey = scriptPubKeyIn;
     }
     else
@@ -134,7 +141,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
         // Height first in coinbase required for block.version=2
         txNew.vin[0].scriptSig = (CScript() << pindexPrev->nHeight+1) + COINBASE_FLAGS;
         assert(txNew.vin[0].scriptSig.size() <= 100);
-
         txNew.vout[0].SetEmpty();
     }
 
@@ -178,6 +184,9 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, bool fProofOfStake
             CTransaction& tx = (*mi).second;
             if (tx.IsCoinBase() || tx.IsCoinStake() || !tx.IsFinal())
                 continue;
+
+            if (!fProofOfStake)
+                tx.nVersion = POW_TX_VERSION;
 
             COrphan* porphan = NULL;
             double dPriority = 0;
@@ -448,11 +457,13 @@ void FormatHashBuffers(CBlock* pblock, char* pmidstate, char* pdata, char* phash
 
 bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 {
-    uint256 hashBlock = pblock->GetHash();
+    uint256 hashBlock = pblock->GetPoWHash();
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
     if(!pblock->IsProofOfWork())
         return error("CheckWork() : %s is not a proof-of-work block", hashBlock.GetHex().c_str());
+
+    printf("CheckWork() : hash: %s\n  target: %s\n", hashBlock.GetHex().c_str(), hashTarget.GetHex().c_str());
 
     if (hashBlock > hashTarget)
         return false;
