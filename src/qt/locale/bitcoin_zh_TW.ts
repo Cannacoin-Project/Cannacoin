@@ -5,12 +5,12 @@
     <message>
         <location filename="../forms/aboutdialog.ui" line="+14"/>
         <source>About Reddcoin</source>
-        <translation>關於紅幣</translation>
+        <translation>關於紅迪幣</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>&lt;b&gt;Reddcoin&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;紅幣&lt;/b&gt;版本</translation>
+        <translation>&lt;b&gt;紅迪幣&lt;/b&gt;版本</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -35,7 +35,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+0"/>
         <source>The Reddcoin developers</source>
-        <translation>紅幣開發人員</translation>
+        <translation>紅迪幣開發人員</translation>
     </message>
 </context>
 <context>
@@ -68,7 +68,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../addressbookpage.cpp" line="+63"/>
         <source>These are your Reddcoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
-        <translation>這些是你用來收款的紅幣位址. 你可以提供不同的位址給不同的付款人, 來追蹤是誰支付給你.</translation>
+        <translation>這些是你用來收款的紅迪幣位址. 你可以提供不同的位址給不同的付款人, 來追蹤是誰支付給你.</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+14"/>
@@ -83,7 +83,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+11"/>
         <source>Sign a message to prove you own a Reddcoin address</source>
-        <translation>簽署訊息是用來證明紅幣位址是你的</translation>
+        <translation>簽署訊息是用來證明紅迪幣位址是你的</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -108,7 +108,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="-44"/>
         <source>Verify a message to ensure it was signed with a specified Reddcoin address</source>
-        <translation>驗證訊息是用來確認訊息是用指定的紅幣位址簽署的</translation>
+        <translation>驗證訊息是用來確認訊息是用指定的紅迪幣位址簽署的</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -123,7 +123,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location filename="../addressbookpage.cpp" line="-5"/>
         <source>These are your Reddcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>這是你用來付款的紅幣位址. 在付錢之前, 務必要檢查金額和收款位址是否正確.</translation>
+        <translation>這是你用來付款的紅迪幣位址. 在付錢之前, 務必要檢查金額和收款位址是否正確.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -249,7 +249,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+1"/>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR REDDCOINS&lt;/b&gt;!</source>
-        <translation>警告: 如果將錢包加密後忘記密碼, 你會&lt;b&gt;失去其中所有的紅幣&lt;/b&gt;!</translation>
+        <translation>警告: 如果將錢包加密後忘記密碼, 你會&lt;b&gt;失去其中所有的紅迪幣&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -276,7 +276,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="-56"/>
         <source>Reddcoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your reddcoins from being stolen by malware infecting your computer.</source>
-        <translation>紅幣現在要關閉以完成加密程序. 請記住, 加密錢包無法完全防止入侵電腦的惡意程式偷取你的紅幣.</translation>
+        <translation>紅迪幣現在要關閉以完成加密程序. 請記住, 加密錢包無法完全防止入侵電腦的惡意程式偷取你的紅迪幣.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -375,7 +375,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+4"/>
         <source>Show information about Reddcoin</source>
-        <translation>顯示紅幣相關資訊</translation>
+        <translation>顯示紅迪幣相關資訊</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -420,12 +420,12 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="-347"/>
         <source>Send coins to a Reddcoin address</source>
-        <translation>付錢到紅幣位址</translation>
+        <translation>付錢到紅迪幣位址</translation>
     </message>
     <message>
         <location line="+49"/>
         <source>Modify configuration options for Reddcoin</source>
-        <translation>修改紅幣的設定選項</translation>
+        <translation>修改紅迪幣的設定選項</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -456,7 +456,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <location line="-165"/>
         <location line="+530"/>
         <source>Reddcoin</source>
-        <translation>紅幣</translation>
+        <translation>紅迪幣</translation>
     </message>
     <message>
         <location line="-530"/>
@@ -481,7 +481,7 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+22"/>
         <source>&amp;About Reddcoin</source>
-        <translation>關於紅幣</translation>
+        <translation>關於紅迪幣</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -501,12 +501,12 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+7"/>
         <source>Sign messages with your Reddcoin addresses to prove you own them</source>
-        <translation>用紅幣位址簽署訊息來證明那是你的</translation>
+        <translation>用紅迪幣位址簽署訊息來證明那是你的</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Verify messages to ensure they were signed with specified Reddcoin addresses</source>
-        <translation>驗證訊息來確認是用指定的紅幣位址簽署的</translation>
+        <translation>驗證訊息來確認是用指定的紅迪幣位址簽署的</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -537,12 +537,12 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="+47"/>
         <source>Reddcoin client</source>
-        <translation>紅幣客戶端軟體</translation>
+        <translation>紅迪幣客戶端軟體</translation>
     </message>
     <message numerus="yes">
         <location line="+141"/>
         <source>%n active connection(s) to Reddcoin network</source>
-        <translation><numerusform>與紅幣網路有 %n 個連線在使用中</numerusform></translation>
+        <translation><numerusform>與紅迪幣網路有 %n 個連線在使用中</numerusform></translation>
     </message>
     <message>
         <location line="+22"/>
@@ -656,7 +656,7 @@ Address: %4
         <location line="-23"/>
         <location line="+23"/>
         <source>URI can not be parsed! This can be caused by an invalid Reddcoin address or malformed URI parameters.</source>
-        <translation>無法解析 URI! 也許紅幣位址無效或 URI 參數有誤.</translation>
+        <translation>無法解析 URI! 也許紅迪幣位址無效或 URI 參數有誤.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -671,7 +671,7 @@ Address: %4
     <message>
         <location filename="../bitcoin.cpp" line="+111"/>
         <source>A fatal error occurred. Reddcoin can no longer continue safely and will quit.</source>
-        <translation>發生了致命的錯誤. 紅幣程式無法再繼續安全執行, 只好結束.</translation>
+        <translation>發生了致命的錯誤. 紅迪幣程式無法再繼續安全執行, 只好結束.</translation>
     </message>
 </context>
 <context>
@@ -737,7 +737,7 @@ Address: %4
     <message>
         <location line="-5"/>
         <source>The entered address &quot;%1&quot; is not a valid Reddcoin address.</source>
-        <translation>輸入的位址 &quot;%1&quot; 並不是有效的紅幣位址.</translation>
+        <translation>輸入的位址 &quot;%1&quot; 並不是有效的紅迪幣位址.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -756,7 +756,7 @@ Address: %4
         <location filename="../guiutil.cpp" line="+424"/>
         <location line="+12"/>
         <source>Reddcoin-Qt</source>
-        <translation>紅幣-Qt</translation>
+        <translation>紅迪幣-Qt</translation>
     </message>
     <message>
         <location line="-12"/>
@@ -820,12 +820,12 @@ Address: %4
     <message>
         <location line="+31"/>
         <source>Automatically start Reddcoin after logging in to the system.</source>
-        <translation>在登入系統後自動啓動紅幣.</translation>
+        <translation>在登入系統後自動啓動紅迪幣.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>&amp;Start Reddcoin on system login</source>
-        <translation>系統登入時啟動紅幣</translation>
+        <translation>系統登入時啟動紅迪幣</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -855,7 +855,7 @@ Address: %4
     <message>
         <location line="+7"/>
         <source>Connect to the Reddcoin network through a SOCKS proxy (e.g. when connecting through Tor).</source>
-        <translation>透過 SOCKS 代理伺服器連線至紅幣網路 (比如說要透過 Tor 連線).</translation>
+        <translation>透過 SOCKS 代理伺服器連線至紅迪幣網路 (比如說要透過 Tor 連線).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -930,7 +930,7 @@ Address: %4
     <message>
         <location line="+13"/>
         <source>The user interface language can be set here. This setting will take effect after restarting Reddcoin.</source>
-        <translation>可以在這裡設定使用者介面的語言. 這個設定在紅幣程式重啓後才會生效.</translation>
+        <translation>可以在這裡設定使用者介面的語言. 這個設定在紅迪幣程式重啓後才會生效.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -945,7 +945,7 @@ Address: %4
     <message>
         <location line="+9"/>
         <source>Whether to show Reddcoin addresses in the transaction list or not.</source>
-        <translation>是否要在交易列表中顯示紅幣位址.</translation>
+        <translation>是否要在交易列表中顯示紅迪幣位址.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -997,7 +997,7 @@ Address: %4
         <location line="-9"/>
         <location line="+9"/>
         <source>This setting will take effect after restarting Reddcoin.</source>
-        <translation>這個設定會在紅幣程式重啓後生效.</translation>
+        <translation>這個設定會在紅迪幣程式重啓後生效.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1016,7 +1016,7 @@ Address: %4
         <location line="+50"/>
         <location line="+166"/>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Reddcoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>顯示的資訊可能是過期的. 與紅幣網路的連線建立後, 你的錢包會自動和網路同步, 但這個步驟還沒完成.</translation>
+        <translation>顯示的資訊可能是過期的. 與紅迪幣網路的連線建立後, 你的錢包會自動和網路同步, 但這個步驟還沒完成.</translation>
     </message>
     <message>
         <location line="-124"/>
@@ -1220,7 +1220,7 @@ Address: %4
     <message>
         <location line="+7"/>
         <source>Show the Reddcoin-Qt help message to get a list with possible Reddcoin command-line options.</source>
-        <translation>顯示紅幣-Qt的求助訊息, 來取得可用的命令列選項列表.</translation>
+        <translation>顯示紅迪幣-Qt的求助訊息, 來取得可用的命令列選項列表.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1240,12 +1240,12 @@ Address: %4
     <message>
         <location line="-104"/>
         <source>Reddcoin - Debug window</source>
-        <translation>紅幣 - 除錯視窗</translation>
+        <translation>紅迪幣 - 除錯視窗</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Reddcoin Core</source>
-        <translation>紅幣核心</translation>
+        <translation>紅迪幣核心</translation>
     </message>
     <message>
         <location line="+279"/>
@@ -1255,7 +1255,7 @@ Address: %4
     <message>
         <location line="+7"/>
         <source>Open the Reddcoin debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>從目前的資料目錄下開啓紅幣的除錯紀錄檔. 當紀錄檔很大時可能要花好幾秒的時間.</translation>
+        <translation>從目前的資料目錄下開啓紅迪幣的除錯紀錄檔. 當紀錄檔很大時可能要花好幾秒的時間.</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -1265,7 +1265,7 @@ Address: %4
     <message>
         <location filename="../rpcconsole.cpp" line="-30"/>
         <source>Welcome to the Reddcoin RPC console.</source>
-        <translation>歡迎使用紅幣 RPC 主控台.</translation>
+        <translation>歡迎使用紅迪幣 RPC 主控台.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1449,7 +1449,7 @@ Address: %4
     <message>
         <location filename="../sendcoinsentry.cpp" line="+1"/>
         <source>Enter a Reddcoin address (starts with R)</source>
-        <translation>輸入紅幣位址 (starts with R)</translation>
+        <translation>輸入紅迪幣位址 (starts with R)</translation>
     </message>
 </context>
 <context>
@@ -1514,7 +1514,7 @@ Address: %4
     <message>
         <location line="+21"/>
         <source>Sign the message to prove you own this Reddcoin address</source>
-        <translation>簽署訊息是用來證明這個紅幣位址是你的</translation>
+        <translation>簽署訊息是用來證明這個紅迪幣位址是你的</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1550,7 +1550,7 @@ Address: %4
     <message>
         <location line="+40"/>
         <source>Verify the message to ensure it was signed with the specified Reddcoin address</source>
-        <translation>驗證訊息是用來確認訊息是用指定的紅幣位址簽署的</translation>
+        <translation>驗證訊息是用來確認訊息是用指定的紅迪幣位址簽署的</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1566,7 +1566,7 @@ Address: %4
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
         <source>Enter a Reddcoin address (starts with R)</source>
-        <translation>輸入紅幣位址 (starts with R)</translation>
+        <translation>輸入紅迪幣位址 (starts with R)</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1576,7 +1576,7 @@ Address: %4
     <message>
         <location line="+3"/>
         <source>Enter Reddcoin signature</source>
-        <translation>輸入紅幣簽章</translation>
+        <translation>輸入紅迪幣簽章</translation>
     </message>
     <message>
         <location line="+82"/>
@@ -1650,7 +1650,7 @@ Address: %4
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
         <source>The Reddcoin developers</source>
-        <translation>紅幣開發人員</translation>
+        <translation>紅迪幣開發人員</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2188,7 +2188,7 @@ Address: %4
     <message>
         <location filename="../bitcoinstrings.cpp" line="+94"/>
         <source>Reddcoin version</source>
-        <translation>紅幣版本</translation>
+        <translation>紅迪幣版本</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -2343,7 +2343,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="+3"/>
         <source>Cannot obtain a lock on data directory %s. Reddcoin is probably already running.</source>
-        <translation>無法鎖定資料目錄 %s. 也許紅幣已經在執行了.</translation>
+        <translation>無法鎖定資料目錄 %s. 也許紅迪幣已經在執行了.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2388,7 +2388,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="+3"/>
         <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Reddcoin will not work properly.</source>
-        <translation>警告: 請檢查電腦時間與日期是否正確! 紅幣無法在時鐘不準的情況下正常運作.</translation>
+        <translation>警告: 請檢查電腦時間與日期是否正確! 紅迪幣無法在時鐘不準的情況下正常運作.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2508,7 +2508,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="+1"/>
         <source>Failed to write to coin database</source>
-        <translation>寫入紅幣資料庫失敗</translation>
+        <translation>寫入紅迪幣資料庫失敗</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2528,7 +2528,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="+1"/>
         <source>Generate coins (default: 0)</source>
-        <translation>生產紅幣 (預設值: 0)</translation>
+        <translation>生產紅迪幣 (預設值: 0)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2840,7 +2840,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="+93"/>
         <source>Wallet needed to be rewritten: restart Reddcoin to complete</source>
-        <translation>錢包需要重寫: 請重啟紅幣來完成</translation>
+        <translation>錢包需要重寫: 請重啟紅迪幣來完成</translation>
     </message>
     <message>
         <location line="-95"/>
@@ -2900,7 +2900,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     <message>
         <location line="-25"/>
         <source>Unable to bind to %s on this computer. Reddcoin is probably already running.</source>
-        <translation>無法和這台電腦上的 %s 繫結. 也許紅幣已經在執行了.</translation>
+        <translation>無法和這台電腦上的 %s 繫結. 也許紅迪幣已經在執行了.</translation>
     </message>
     <message>
         <location line="+64"/>
