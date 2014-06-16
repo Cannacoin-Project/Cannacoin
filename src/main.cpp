@@ -8,6 +8,7 @@
 #include "checkpoints.h"
 #include "db.h"
 #include "txdb.h"
+#include "txdb-leveldb.h"
 #include "net.h"
 #include "init.h"
 #include "ui_interface.h"
@@ -2510,30 +2511,31 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         if (!Checkpoints::CheckHardened(nHeight, hash))
             return state.DoS(100, error("AcceptBlock() : rejected by hardened checkpoint lock-in at %d", nHeight));
 
-        if (IsProofOfWork())
+        uint256 hashProof;
+        // Verify hash target and signature of coinstake tx
+        if (IsProofOfStake())
         {
-            // PoW is checked in CheckBlock()
-            hashProof = GetPoWHash();
-        }
-        else if (IsProofOfStake())
-        {
-            // Verify hash target and signature of coinstake tx
             uint256 targetProofOfStake;
             if (!CheckProofOfStake(vtx[1], nBits, hashProof, targetProofOfStake))
             {
                 printf("WARNING: AcceptBlock(): check proof-of-stake failed for block %s\n", hash.ToString().c_str());
                 return false; // do not error here as we expect this during initial block download
             }
-
-            bool cpSatisfies = Checkpoints::CheckSync(hash, pindexPrev);
-
-            // Check that the block satisfies synchronized checkpoint
-            if (CheckpointsMode == Checkpoints::STRICT && !cpSatisfies)
-                return state.DoS(100, error("AcceptBlock() : rejected by synchronized checkpoint"));
-
-            if (CheckpointsMode == Checkpoints::ADVISORY && !cpSatisfies)
-                strMiscWarning = _("WARNING: syncronized checkpoint violation detected, but skipped!");
         }
+        // PoW is checked in CheckBlock()
+        if (IsProofOfWork())
+        {
+            hashProof = GetPoWHash();
+        }
+
+        bool cpSatisfies = Checkpoints::CheckSync(hash, pindexPrev);
+
+        // Check that the block satisfies synchronized checkpoint
+        if (CheckpointsMode == Checkpoints::STRICT && !cpSatisfies)
+            return state.DoS(100, error("AcceptBlock() : rejected by synchronized checkpoint"));
+
+        if (CheckpointsMode == Checkpoints::ADVISORY && !cpSatisfies)
+            strMiscWarning = _("WARNING: syncronized checkpoint violation detected, but skipped!");
 
         // Don't accept any forks from the main chain prior to last checkpoint
         CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
@@ -3266,14 +3268,31 @@ bool InitBlockIndex() {
             CDiskBlockPos blockPos;
             CValidationState state;
             if (!FindBlockPos(state, blockPos, nBlockSize+8, 0, block.nTime))
-                return error("LoadBlockIndex() : FindBlockPos failed");
+                return error("InitBlockIndex() : FindBlockPos failed");
             if (!block.WriteToDisk(blockPos))
-                return error("LoadBlockIndex() : writing genesis block to disk failed");
+                return error("InitBlockIndex() : writing genesis block to disk failed");
             if (!block.AddToBlockIndex(state, blockPos, hashGenesisBlock))
-                return error("LoadBlockIndex() : genesis block not accepted");
+                return error("InitBlockIndex() : genesis block not accepted");
         } catch(std::runtime_error &e) {
-            return error("LoadBlockIndex() : failed to initialize block database: %s", e.what());
+            return error("InitBlockIndex() : failed to initialize block database: %s", e.what());
         }
+    }
+
+    string strPubKey = "";
+    CTxDB txdb("cr+");
+
+    // if checkpoint master key changed must reset sync-checkpoint
+    if (!txdb.ReadCheckpointPubKey(strPubKey) || strPubKey != CSyncCheckpoint::strMasterPubKey)
+    {
+        // write checkpoint master key to db
+        txdb.TxnBegin();
+        if (!txdb.WriteCheckpointPubKey(CSyncCheckpoint::strMasterPubKey))
+            return error("InitBlockIndex() : failed to write new checkpoint master key to db");
+        if (!txdb.TxnCommit())
+            return error("InitBlockIndex() : failed to commit new checkpoint master key to db");
+//        if ((!fTestNet) && !Checkpoints::ResetSyncCheckpoint())
+        if (!Checkpoints::ResetSyncCheckpoint())
+            return error("InitBlockIndex() : failed to reset sync-checkpoint");
     }
 
     return true;

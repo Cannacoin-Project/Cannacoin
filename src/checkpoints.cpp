@@ -262,7 +262,7 @@ namespace Checkpoints
         return false;
     }
 
-    // Automatically select a suitable sync-checkpoint 
+    // Automatically select a suitable sync-checkpoint
     uint256 AutoSelectSyncCheckpoint()
     {
         const CBlockIndex *pindex = pindexBest;
@@ -317,7 +317,8 @@ namespace Checkpoints
     bool ResetSyncCheckpoint()
     {
         LOCK(cs_hashSyncCheckpoint);
-        const uint256& hash = mapCheckpoints.rbegin()->second;
+        const MapCheckpoints& checkpoints = *Checkpoints().mapCheckpoints;
+        const uint256& hash = checkpoints.rbegin()->second;
         if (mapBlockIndex.count(hash) && !mapBlockIndex[hash]->IsInMainChain())
         {
             // checkpoint block accepted but not yet in main chain
@@ -336,7 +337,7 @@ namespace Checkpoints
             printf("ResetSyncCheckpoint: pending for sync-checkpoint %s\n", hashPendingCheckpoint.ToString().c_str());
         }
 
-        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, mapCheckpoints)
+        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints)
         {
             const uint256& hash = i.second;
             if (mapBlockIndex.count(hash) && mapBlockIndex[hash]->IsInMainChain())
@@ -361,12 +362,12 @@ namespace Checkpoints
     bool SetCheckpointPrivKey(std::string strPrivKey)
     {
         // do nothing for testnet
-        if (fTestNet)
-            return true;
+        // if (fTestNet)
+        //     return true;
 
         // Test signing a sync-checkpoint with genesis block
         CSyncCheckpoint checkpoint;
-        checkpoint.hashCheckpoint = hashGenesisBlock;
+        checkpoint.hashCheckpoint = fTestNet? hashGenesisBlockTestNet: hashGenesisBlock;
         CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
         sMsg << (CUnsignedSyncCheckpoint)checkpoint;
         checkpoint.vchMsg = std::vector<unsigned char>(sMsg.begin(), sMsg.end());
@@ -425,9 +426,8 @@ namespace Checkpoints
     }
 }
 
-// Reddcoin: FIXME
-// ppcoin: sync-checkpoint master key
-const std::string CSyncCheckpoint::strMasterPubKey = "04a18357665ed7a802dcf252ef528d3dc786da38653b51d1ab8e9f4820b55aca807892a056781967315908ac205940ec9d6f2fd0a85941966971eac7e475a27826";
+// Reddcoin: sync-checkpoint master key
+const std::string CSyncCheckpoint::strMasterPubKey = "0437b4b0f5d356f205c17ffff6c46dc9ec4680ffb7f8a9a4e6eebcebd5f340d01df00ef304faea7779d97d8f1addbe1e87308ea237aae3ead96e0a736c7e9477a1";
 
 std::string CSyncCheckpoint::strMasterPrivKey = "";
 
