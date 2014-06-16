@@ -73,6 +73,7 @@ public:
 class CWallet : public CCryptoKeyStore
 {
 private:
+    bool SelectCoinsSimple(int64 nTargetValue, unsigned int nSpendTime, int nMinConf, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64& nValueRet) const;
     bool SelectCoins(int64 nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64& nValueRet, const CCoinControl *coinControl=NULL) const;
 
     CWalletDB *pwalletdbEncryption;
@@ -129,6 +130,7 @@ public:
     // check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf) { return nWalletMaxVersion >= wf; }
 
+    void AvailableCoinsMinConf(std::vector<COutput>& vCoins, int nConf) const;
     void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true, const CCoinControl *coinControl=NULL) const;
     bool SelectCoinsMinConf(int64 nTargetValue, int nConfMine, int nConfTheirs, std::vector<COutput> vCoins, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64& nValueRet) const;
     bool IsLockedCoin(uint256 hash, unsigned int n) const;
@@ -189,6 +191,9 @@ public:
                            CWalletTx& wtxNew, CReserveKey& reservekey, int64& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl=NULL);
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey);
 
+    // ppcoin
+    int64 GetStake() const;
+    int64 GetNewMint() const;
     bool GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint64& nMaxWeight, uint64& nWeight);
     bool CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, int64 nFees, CTransaction& txNew, CKey& key);
 
@@ -313,7 +318,6 @@ public:
     // get the current wallet format (the oldest client version guaranteed to understand this wallet)
     int GetVersion() { return nWalletVersion; }
 
-    void FixSpentCoins(int& nMismatchSpent, int64& nBalanceInQuestion, bool fCheckOnly = false);
     void DisableTransaction(const CTransaction &tx);
 
     /** Address book entry changed.
@@ -590,7 +594,7 @@ public:
     int64 GetCredit(bool fUseCache=true) const
     {
         // Must wait until coinbase is safely deep enough in the chain before valuing it
-        if (IsCoinBase() && GetBlocksToMaturity() > 0)
+        if ((IsCoinBase() || IsCoinStake()) && GetBlocksToMaturity() > 0)
             return 0;
 
         // GetBalance can assume transactions in mapWallet won't change
@@ -618,7 +622,7 @@ public:
     int64 GetAvailableCredit(bool fUseCache=true) const
     {
         // Must wait until coinbase is safely deep enough in the chain before valuing it
-        if (IsCoinBase() && GetBlocksToMaturity() > 0)
+        if ((IsCoinBase() || IsCoinStake()) && GetBlocksToMaturity() > 0)
             return 0;
 
         if (fUseCache && fAvailableCreditCached)
