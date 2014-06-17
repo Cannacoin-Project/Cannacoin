@@ -548,8 +548,7 @@ void StakeMiner(CWallet *pwallet)
     CReserveKey reservekey(pwallet);
     bool fTryToSync = true;
 
-    while (true)
-    {
+    try { loop {
         while (pwallet->IsLocked())
         {
             nLastCoinStakeSearchInterval = 0;
@@ -591,7 +590,15 @@ void StakeMiner(CWallet *pwallet)
             MilliSleep(500);
         }
         else
+        {
+            // printf("StakeMiner : Failed to sign the new block.\n");
             MilliSleep(nMinerSleep);
+        }
+    } }
+    catch (boost::thread_interrupted)
+    {
+        printf("StakeMiner terminated\n");
+        throw;
     }
 }
 
@@ -619,6 +626,14 @@ void static ReddcoinMiner(CWallet *pwallet)
         if (!pblocktemplate.get())
             return;
         CBlock *pblock = &pblocktemplate->block;
+
+        // exit if received a PoSV block template
+        if (pblock->vtx[0].vout[0].IsEmpty())
+        {
+            printf("ReddcoinMiner : no more PoW blocks\n");
+            return;
+        }
+
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
         printf("Running ReddcoinMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
@@ -744,6 +759,10 @@ void GenerateReddcoins(bool fGenerate, CWallet* pwallet)
         return;
 
     minerThreads = new boost::thread_group();
+    // start threads for PoW CPU mining
     for (int i = 0; i < nThreads; i++)
         minerThreads->create_thread(boost::bind(&ReddcoinMiner, pwallet));
+
+    // start one thread for PoSV minting
+    minerThreads->create_thread(boost::bind(&StakeMiner, pwallet));
 }

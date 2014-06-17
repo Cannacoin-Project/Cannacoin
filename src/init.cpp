@@ -508,7 +508,7 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     // ********************************************************* Step 2: parameter interactions
 
-    nMinerSleep = GetArg("-minersleep", 500);
+    nMinerSleep = GetArg("-minersleep", 1000);
 
     CheckpointsMode = Checkpoints::STRICT;
     std::string strCpMode = GetArg("-cppolicy", "strict");
