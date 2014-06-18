@@ -276,6 +276,9 @@ namespace Checkpoints
     bool CheckSync(const uint256& hashBlock, const CBlockIndex* pindexPrev)
     {
         //if (fTestNet) return true; // Testnet has no checkpoints
+        if (!hashSyncCheckpoint)
+            return true;
+
         int nHeight = pindexPrev->nHeight + 1;
 
         LOCK(cs_hashSyncCheckpoint);
@@ -349,7 +352,7 @@ namespace Checkpoints
             }
         }
 
-        return false;
+        return true;
     }
 
     void AskForPendingSyncCheckpoint(CNode* pfrom)
