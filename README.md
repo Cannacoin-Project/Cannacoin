@@ -22,7 +22,7 @@ Reddcoin is in transition to its own designed Proof-of-Stake-Velocity (PoSV) whi
 will replace Proof-of-Work (PoW) in second half of 2014.
  - 1 minute block target
  - subsidy halves every 50,000 blocks starting at block 140,000
- - ~30 billion mined during the PoW era
+ - ~27.5 billion mined during the PoW era
  - 5% annual interest once in PoSV era
  - academic paper: http://www.reddcoin.com/papers/PoSV.pdf
  - FAQs paper: http://www.reddcoin.com/papers/PoSV_FAQ.pdf
