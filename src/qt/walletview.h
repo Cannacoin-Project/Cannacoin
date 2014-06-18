@@ -95,6 +95,8 @@ public slots:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
+    /** Ask for passphrase to unlock wallet temporarily for staking only */
+    void unlockWalletStakingOnly();
 
     void setEncryptionStatus();
 

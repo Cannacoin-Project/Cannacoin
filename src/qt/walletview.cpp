@@ -271,3 +271,16 @@ void WalletView::unlockWallet()
         dlg.exec();
     }
 }
+
+void WalletView::unlockWalletStakingOnly()
+{
+    if(!walletModel)
+        return;
+    // Unlock wallet when requested by wallet model
+    if (walletModel->getEncryptionStatus() == WalletModel::Locked)
+    {
+        AskPassphraseDialog dlg(AskPassphraseDialog::UnlockStaking, this);
+        dlg.setModel(walletModel);
+        dlg.exec();
+    }
+}
