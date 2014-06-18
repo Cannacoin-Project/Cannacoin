@@ -1047,6 +1047,8 @@ void ListTransactions(const CWalletTx& wtx, const string& strAccount, int nMinDe
                         entry.push_back(Pair("category", "orphan"));
                     else if (wtx.GetBlocksToMaturity() > 0)
                         entry.push_back(Pair("category", "immature"));
+                    else if (wtx.IsCoinStake())
+                        entry.push_back(Pair("category", "stake"));
                     else
                         entry.push_back(Pair("category", "generate"));
                 }
