@@ -146,12 +146,6 @@ void WalletStack::unlockWallet()
     if (walletView) walletView->unlockWallet();
 }
 
-void WalletStack::unlockWalletStakingOnly()
-{
-    WalletView *walletView = (WalletView*)currentWidget();
-    if (walletView) walletView->unlockWalletStakingOnly();
-}
-
 void WalletStack::setEncryptionStatus()
 {
     WalletView *walletView = (WalletView*)currentWidget();

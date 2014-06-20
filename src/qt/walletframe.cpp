@@ -145,13 +145,6 @@ void WalletFrame::unlockWallet()
         walletView->unlockWallet();
 }
 
-void WalletFrame::unlockWalletStakingOnly()
-{
-    WalletView *walletView = currentWalletView();
-    if (walletView)
-        walletView->unlockWalletStakingOnly();
-}
-
 void WalletFrame::setEncryptionStatus()
 {
     WalletView *walletView = currentWalletView();

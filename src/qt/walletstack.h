@@ -92,8 +92,6 @@ public slots:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
-    /** Ask for passphrase to unlock wallet temporarily for staking only */
-    void unlockWalletStakingOnly();
 
     /** Set the encryption status as shown in the UI.
      @param[in] status            current encryption status
