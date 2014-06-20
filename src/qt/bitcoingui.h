@@ -36,6 +36,8 @@ class QPushButton;
 class QAction;
 QT_END_NAMESPACE
 
+typedef unsigned long long uint64;
+
 /**
   Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
@@ -118,6 +120,9 @@ private:
     QMovie *syncIconMovie;
     /** Keep track of previous number of blocks, to detect progress */
     int prevBlocks;
+
+    /** local weight for staking */
+    uint64 nWeight;
 
     /** Create the main UI actions. */
     void createActions();

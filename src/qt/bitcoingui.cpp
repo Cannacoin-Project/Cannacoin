@@ -67,7 +67,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent) :
     trayIcon(0),
     notificator(0),
     rpcConsole(0),
-    prevBlocks(0)
+    prevBlocks(0),
+    nWeight(0)
 {
     restoreWindowGeometry();
     setWindowTitle(tr("Reddcoin") + " - " + tr("Wallet"));
