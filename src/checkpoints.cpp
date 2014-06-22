@@ -377,12 +377,18 @@ namespace Checkpoints
 
         std::vector<unsigned char> vchPrivKey = ParseHex(strPrivKey);
         CKey key;
-        key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()), false); // if key is not correct openssl may crash
+
+        // if key is not correct openssl may crash
+        key.Set(vchPrivKey.begin(), vchPrivKey.end(), false);
+        if (!key.IsValid())
+            return error("SetCheckpointPrivKey: failed to set private key.");
+
         if (!key.Sign(Hash(checkpoint.vchMsg.begin(), checkpoint.vchMsg.end()), checkpoint.vchSig))
-            return false;
+            return error("SetCheckpointPrivKey: failed to test sign.");
 
         // Test signing successful, proceed
         CSyncCheckpoint::strMasterPrivKey = strPrivKey;
+        printf("SetCheckpointPrivKey: successfully set private key.");
         return true;
     }
 
@@ -395,10 +401,16 @@ namespace Checkpoints
         checkpoint.vchMsg = std::vector<unsigned char>(sMsg.begin(), sMsg.end());
 
         if (CSyncCheckpoint::strMasterPrivKey.empty())
-            return error("SendSyncCheckpoint: Checkpoint master key unavailable.");
+            return error("SendSyncCheckpoint: Checkpoint master private key unavailable.");
+
         std::vector<unsigned char> vchPrivKey = ParseHex(CSyncCheckpoint::strMasterPrivKey);
         CKey key;
-        key.SetPrivKey(CPrivKey(vchPrivKey.begin(), vchPrivKey.end()), false); // if key is not correct openssl may crash
+
+        // if key is not correct openssl may crash
+        key.Set(vchPrivKey.begin(), vchPrivKey.end(), false);
+        if (!key.IsValid())
+            return error("SendSyncCheckpoint: failed to set private key.");
+
         if (!key.Sign(Hash(checkpoint.vchMsg.begin(), checkpoint.vchMsg.end()), checkpoint.vchSig))
             return error("SendSyncCheckpoint: Unable to sign checkpoint, check private key?");
 
