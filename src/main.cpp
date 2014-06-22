@@ -3205,6 +3205,23 @@ bool LoadBlockIndex()
     if (!fReindex && !LoadBlockIndexDB())
         return false;
 
+    string strPubKey = "";
+    CTxDB txdb("cr+");
+
+    // if checkpoint master key changed must reset sync-checkpoint
+    if (!txdb.ReadCheckpointPubKey(strPubKey) || strPubKey != CSyncCheckpoint::strMasterPubKey)
+    {
+        // write checkpoint master key to db
+        txdb.TxnBegin();
+        if (!txdb.WriteCheckpointPubKey(CSyncCheckpoint::strMasterPubKey))
+            return error("InitBlockIndex() : failed to write new checkpoint master key to db");
+        if (!txdb.TxnCommit())
+            return error("InitBlockIndex() : failed to commit new checkpoint master key to db");
+//      if ((!fTestNet) && !Checkpoints::ResetSyncCheckpoint())
+        if (!Checkpoints::ResetSyncCheckpoint())
+            return error("InitBlockIndex() : failed to reset sync-checkpoint");
+    }
+
     return true;
 }
 
@@ -3276,23 +3293,6 @@ bool InitBlockIndex() {
         } catch(std::runtime_error &e) {
             return error("InitBlockIndex() : failed to initialize block database: %s", e.what());
         }
-    }
-
-    string strPubKey = "";
-    CTxDB txdb("cr+");
-
-    // if checkpoint master key changed must reset sync-checkpoint
-    if (!txdb.ReadCheckpointPubKey(strPubKey) || strPubKey != CSyncCheckpoint::strMasterPubKey)
-    {
-        // write checkpoint master key to db
-        txdb.TxnBegin();
-        if (!txdb.WriteCheckpointPubKey(CSyncCheckpoint::strMasterPubKey))
-            return error("InitBlockIndex() : failed to write new checkpoint master key to db");
-        if (!txdb.TxnCommit())
-            return error("InitBlockIndex() : failed to commit new checkpoint master key to db");
-//        if ((!fTestNet) && !Checkpoints::ResetSyncCheckpoint())
-        if (!Checkpoints::ResetSyncCheckpoint())
-            return error("InitBlockIndex() : failed to reset sync-checkpoint");
     }
 
     return true;
@@ -4014,6 +4014,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         CSyncCheckpoint checkpoint;
         vRecv >> checkpoint;
 
+        printf("checkpoint message received\n");
         if (checkpoint.ProcessSyncCheckpoint(pfrom))
         {
             // Relay

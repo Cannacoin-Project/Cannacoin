@@ -276,9 +276,6 @@ namespace Checkpoints
     bool CheckSync(const uint256& hashBlock, const CBlockIndex* pindexPrev)
     {
         //if (fTestNet) return true; // Testnet has no checkpoints
-        if (!hashSyncCheckpoint)
-            return true;
-
         int nHeight = pindexPrev->nHeight + 1;
 
         LOCK(cs_hashSyncCheckpoint);
@@ -352,7 +349,17 @@ namespace Checkpoints
             }
         }
 
-        return true;
+        // last resort. set sync checkpoint to genesis before downloading any blockchain
+        if (WriteSyncCheckpoint(fTestNet? hashGenesisBlockTestNet : hashGenesisBlock))
+        {
+            printf("ResetSyncCheckpoint: sync-checkpoint reset to hashGenesisBlock\n");
+            return true;
+        }
+        else
+        {
+            printf("ResetSyncCheckpoint: failed to reset sync-checkpoint to hashGenesisBlock\n");
+            return false;
+        }
     }
 
     void AskForPendingSyncCheckpoint(CNode* pfrom)
@@ -420,6 +427,7 @@ namespace Checkpoints
             return false;
         }
 
+        printf("SendSyncCheckpoint: about to relay checkpoint.\n");
         // Relay checkpoint
         {
             LOCK(cs_vNodes);
@@ -454,6 +462,7 @@ bool CSyncCheckpoint::CheckSignature()
         return error("CSyncCheckpoint::CheckSignature() : verify signature failed");
 
     // Now unserialize the data
+    printf("CSyncCheckpoint::CheckSignature() : successfully verified signature\n");
     CDataStream sMsg(vchMsg, SER_NETWORK, PROTOCOL_VERSION);
     sMsg >> *(CUnsignedSyncCheckpoint*)this;
     return true;
@@ -486,7 +495,6 @@ bool CSyncCheckpoint::ProcessSyncCheckpoint(CNode* pfrom)
     if (!Checkpoints::ValidateSyncCheckpoint(hashCheckpoint))
         return false;
 
-    CTxDB txdb;
     CBlockIndex* pindexCheckpoint = mapBlockIndex[hashCheckpoint];
     if (!pindexCheckpoint->IsInMainChain())
     {
