@@ -3214,14 +3214,19 @@ bool LoadBlockIndex()
         // write checkpoint master key to db
         txdb.TxnBegin();
         if (!txdb.WriteCheckpointPubKey(CSyncCheckpoint::strMasterPubKey))
-            return error("InitBlockIndex() : failed to write new checkpoint master key to db");
+            return error("LoadBlockIndex() : failed to write new checkpoint master key to db");
         if (!txdb.TxnCommit())
-            return error("InitBlockIndex() : failed to commit new checkpoint master key to db");
+            return error("LoadBlockIndex() : failed to commit new checkpoint master key to db");
 //      if ((!fTestNet) && !Checkpoints::ResetSyncCheckpoint())
         if (!Checkpoints::ResetSyncCheckpoint())
-            return error("InitBlockIndex() : failed to reset sync-checkpoint");
+            return error("LoadBlockIndex() : failed to reset sync-checkpoint");
     }
 
+    // load hashSyncCheckpoint
+    if (!txdb.ReadSyncCheckpoint(Checkpoints::hashSyncCheckpoint))
+        return error("LoadBlockIndex() : hashSyncCheckpoint not loaded");
+
+    printf("LoadBlockIndex() : synchronized checkpoint %s\n", Checkpoints::hashSyncCheckpoint.ToString().c_str());
     return true;
 }
 
