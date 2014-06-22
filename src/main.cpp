@@ -1782,7 +1782,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("bitcoin-scriptch");
+    RenameThread("reddcoin-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -1800,6 +1800,7 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
     if (GetHash() == hashGenesisBlock) {
         view.SetBestBlock(pindex);
         pindexGenesisBlock = pindex;
+        pindexGenesisBlock->nMoneySupply = 10000 * COIN;
         return true;
     }
 
@@ -2755,8 +2756,10 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
+        printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
         if (wallet.CreateCoinStake(wallet, nBits, nSearchTime-nLastCoinStakeSearchTime, nFees, txCoinStake, key))
         {
+            printf("CBlock::SignBlock : coinstake created\n");
             if (txCoinStake.nTime >= max(pindexBest->GetMedianTimePast()+1, PastDrift(pindexBest->GetBlockTime())))
             {
                 // make sure coinstake would meet timestamp protocol

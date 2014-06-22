@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 
-#include "main.h"
+#include "txdb.h"
 #include "key.h"
 #include "keystore.h"
 #include "script.h"
@@ -305,7 +305,7 @@ public:
 
     bool GetTransaction(const uint256 &hashTx, CWalletTx& wtx);
 
-    bool GetTransaction(const uint256 &hashTx, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow);
+    bool GetTransaction(const uint256 &hash, CTransaction &txOut, uint256 &hashBlock, bool fAllowSlow);
 
     bool SetDefaultKey(const CPubKey &vchPubKey);
 

@@ -102,6 +102,7 @@ Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex)
 
     result.push_back(Pair("flags", strprintf("%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work")));
     result.push_back(Pair("proofhash", blockindex->hashProof.GetHex()));
+    result.push_back(Pair("moneysupply", ValueFromAmount(blockindex->nMoneySupply)));
 
     if (block.IsProofOfStake())
     {

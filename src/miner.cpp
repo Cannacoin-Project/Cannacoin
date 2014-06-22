@@ -754,17 +754,17 @@ void GenerateReddcoins(bool fGenerate, CWallet* pwallet)
         minerThreads = NULL;
     }
 
+    minerThreads = new boost::thread_group();
+
     // start one thread for PoSV minting
     minerThreads->create_thread(boost::bind(&StakeMiner, pwallet));
 
     int nThreads = GetArg("-genproclimit", 0);
+    if (nThreads == 0)
+        return;
     if (nThreads < 0)
         nThreads = boost::thread::hardware_concurrency();
 
-    if (nThreads == 0)
-        return;
-
-    minerThreads = new boost::thread_group();
     // start threads for PoW CPU mining
     for (int i = 0; i < nThreads; i++)
         minerThreads->create_thread(boost::bind(&ReddcoinMiner, pwallet));
