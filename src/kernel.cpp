@@ -26,7 +26,7 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints =
 // Hard checkpoints of stake modifiers to ensure they are deterministic (testNet)
 static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
     boost::assign::map_list_of
-        ( 0, 0x0e00670bu )
+        ( 0, 0xfd11f4e7 )
     ;
 
 // PoSV: Coin-aging function
@@ -67,6 +67,8 @@ static int64 GetStakeModifierSelectionInterval()
     int64 nSelectionInterval = 0;
     for (int nSection=0; nSection<64; nSection++)
         nSelectionInterval += GetStakeModifierSelectionIntervalSection(nSection);
+
+    printf("GetStakeModifierSelectionInterval : %lld\n", nSelectionInterval);
     return nSelectionInterval;
 }
 
@@ -388,6 +390,7 @@ unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 // Check stake modifier hard checkpoints
 bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
 {
+    printf("CheckStakeModifierCheckpoints : nHeight=%d, nStakeModifierChecksum=%08x\n", nHeight, nStakeModifierChecksum);
     MapModifierCheckpoints& checkpoints = (fTestNet ? mapStakeModifierCheckpointsTestNet : mapStakeModifierCheckpoints);
 
     if (checkpoints.count(nHeight))
