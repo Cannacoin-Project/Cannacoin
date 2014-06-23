@@ -222,12 +222,25 @@ bool CBlockTreeDB::LoadBlockIndexGuts()
                 pindexNew->nStatus        = diskindex.nStatus;
                 pindexNew->nTx            = diskindex.nTx;
 
+                // ppcoin
+                pindexNew->nMint          = diskindex.nMint;
+                pindexNew->nMoneySupply   = diskindex.nMoneySupply;
+                pindexNew->nFlags         = diskindex.nFlags;
+                pindexNew->nStakeModifier = diskindex.nStakeModifier;
+                pindexNew->hashProof      = diskindex.hashProof;
+                pindexNew->prevoutStake   = diskindex.prevoutStake;
+                pindexNew->nStakeTime     = diskindex.nStakeTime;
+
                 // Watch for genesis block
                 if (pindexGenesisBlock == NULL && diskindex.GetBlockHash() == hashGenesisBlock)
                     pindexGenesisBlock = pindexNew;
 
                 if (!pindexNew->CheckIndex())
                     return error("LoadBlockIndex() : CheckIndex failed: %s", pindexNew->ToString().c_str());
+
+                // ppcoin: build setStakeSeen
+                if (pindexNew->IsProofOfStake())
+                    setStakeSeen.insert(make_pair(pindexNew->prevoutStake, pindexNew->nStakeTime));
 
                 pcursor->Next();
             } else {

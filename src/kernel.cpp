@@ -235,8 +235,8 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
         if (!pindex->pnext)
         {   // reached best block; may happen if node is behind on block chain
             if (fPrintProofOfStake || (pindex->GetBlockTime() + nStakeMinAge - nStakeModifierSelectionInterval > GetAdjustedTime()))
-                return error("GetKernelStakeModifier() : reached best block %s at height %d from block %s",
-                    pindex->GetBlockHash().ToString().c_str(), pindex->nHeight, hashBlockFrom.ToString().c_str());
+                return error("GetKernelStakeModifier() : reached best block at height %d from block at hight %d",
+                    pindex->nHeight, pindexFrom->nHeight);
             else
                 return false;
         }
@@ -245,6 +245,7 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
         {
             nStakeModifierHeight = pindex->nHeight;
             nStakeModifierTime = pindex->GetBlockTime();
+            printf("GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
         }
     }
     nStakeModifier = pindex->nStakeModifier;
