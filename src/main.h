@@ -1005,7 +1005,23 @@ public:
 
     // equality test
     friend bool operator==(const CCoins &a, const CCoins &b) {
-         return a.fCoinBase == b.fCoinBase &&
+        if (a.fCoinStake || b.fCoinStake)
+        {
+            if (a.fCoinBase == b.fCoinBase)
+                printf("CCoins: fCoinBase==\n");
+            if (a.fCoinStake == b.fCoinStake)
+                printf("CCoins: fCoinStake==\n");
+            if (a.nTime == b.nTime)
+                printf("CCoins: nTime==\n");
+            if (a.nHeight == b.nHeight)
+                printf("CCoins: nHeight==\n");
+            if (a.nVersion == b.nVersion)
+                printf("CCoins: nVersion==\n");
+            if (a.vout == b.vout)
+                printf("CCoins: vout==\n");
+        }
+
+        return a.fCoinBase == b.fCoinBase &&
                 a.fCoinStake == b.fCoinStake &&
                 a.nTime == b.nTime &&
                 a.nHeight == b.nHeight &&
@@ -1065,6 +1081,11 @@ public:
                 nSize += ::GetSerializeSize(CTxOutCompressor(REF(vout[i])), nType, nVersion);
         // height
         nSize += ::GetSerializeSize(VARINT(nHeight), nType, nVersion);
+        // tx timestamp
+        nSize += ::GetSerializeSize(VARINT(nTime), nType, nVersion);
+        // coinstake
+        char nCoinStake = fCoinStake ? 1 : 0;
+        nSize += ::GetSerializeSize(VARINT(nCoinStake), nType, nVersion);
         return nSize;
     }
 
@@ -1095,6 +1116,11 @@ public:
         }
         // coinbase height
         ::Serialize(s, VARINT(nHeight), nType, nVersion);
+        // tx timestamp
+        ::Serialize(s, VARINT(nTime), nType, nVersion);
+        // coinstake
+        char nCoinStake = fCoinStake ? 1 : 0;
+        ::Serialize(s, VARINT(nCoinStake), nType, nVersion);
     }
 
     template<typename Stream>
@@ -1128,6 +1154,12 @@ public:
         }
         // coinbase height
         ::Unserialize(s, VARINT(nHeight), nType, nVersion);
+        // tx timestamp
+        ::Unserialize(s, VARINT(nTime), nType, nVersion);
+        // coinstake
+        char nCoinStake = 0;
+        ::Unserialize(s, VARINT(nCoinStake), nType, nVersion);
+        fCoinStake = nCoinStake & 1;
         Cleanup();
     }
 

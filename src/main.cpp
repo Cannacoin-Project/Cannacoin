@@ -1705,7 +1705,10 @@ bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoin
         if (outsBlock.nVersion < 0)
             outs.nVersion = outsBlock.nVersion;
         if (outs != outsBlock)
+        {
             fClean = fClean && error("DisconnectBlock() : added transaction mismatch? database corrupted");
+            printf("CBlock::DisconnectBlock : %d\n", i);
+        }
 
         // remove outputs
         outs = CCoins();
@@ -1895,7 +1898,7 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
         CTxUndo txundo;
         tx.UpdateCoins(state, view, txundo, pindex->nHeight, GetTxHash(i));
         // FIXME should add tx.IsCoinStake() or not?
-        if (!tx.IsCoinBase() && !tx.IsCoinStake())
+        if (!tx.IsCoinBase())
             blockundo.vtxundo.push_back(txundo);
 
         vPos.push_back(std::make_pair(GetTxHash(i), pos));
