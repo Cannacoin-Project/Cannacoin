@@ -138,6 +138,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
     }
     else
     {
+        printf("CreateNewBlock : new PoSV block\n");
         // Height first in coinbase required for block.version=2
         txNew.vin[0].scriptSig = (CScript() << pindexPrev->nHeight+1) + COINBASE_FLAGS;
         assert(txNew.vin[0].scriptSig.size() <= 100);

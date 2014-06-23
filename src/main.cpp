@@ -1823,8 +1823,10 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
     bool fEnforceBIP30 = true;
 
     if (fEnforceBIP30) {
-        for (unsigned int i=0; i<vtx.size(); i++) {
+        bool fProofOfStake = pindex->nHeight > LAST_POW_BLOCK;
+        for (unsigned int i=fProofOfStake ? 1 : 0; i<vtx.size(); i++) {
             uint256 hash = GetTxHash(i);
+            printf("CBlock::ConnectBlock : nHeight=%u, PoS=%d, vts=%u\n", pindex->nHeight, fProofOfStake, i);
             if (view.HaveCoins(hash) && !view.GetCoins(hash).IsPruned())
                 return state.DoS(100, error("ConnectBlock() : tried to overwrite transaction"));
         }
