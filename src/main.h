@@ -534,7 +534,8 @@ public:
         READWRITE(nLockTime);
         if (this->nVersion > POW_TX_VERSION &&
             ((nType == SER_NETWORK && nVersion > POW_PROTOCOL_VERSION) ||
-             (nType == SER_DISK && nVersion >  POW_CLIENT_VERSION)))
+             (nType == SER_GETHASH && nVersion > POW_PROTOCOL_VERSION) ||
+             (nType == SER_DISK    && nVersion > POW_CLIENT_VERSION)))
         {
             // ppcoin
             READWRITE(nTime);
@@ -1478,7 +1479,8 @@ public:
         READWRITE(vtx);
         if (this->nVersion > POW_BLOCK_VERSION &&
             ((nType == SER_NETWORK && nVersion > POW_PROTOCOL_VERSION) ||
-             (nType == SER_DISK && nVersion > POW_CLIENT_VERSION)))
+             (nType == SER_GETHASH && nVersion > POW_PROTOCOL_VERSION) ||
+             (nType == SER_DISK    && nVersion > POW_CLIENT_VERSION)))
             READWRITE(vchBlockSig); // ppcoin
     )
 

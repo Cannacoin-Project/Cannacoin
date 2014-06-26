@@ -2667,6 +2667,11 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
     if (!IsInitialBlockDownload())
         Checkpoints::AskForPendingSyncCheckpoint(pfrom);
 
+    // PoSV: for old transactions, set the nTime to block time
+    BOOST_FOREACH(CTransaction& tx, pblock->vtx)
+        if (tx.nTime == 0)
+            tx.nTime = pblock->nTime;
+
     // If we don't already have its previous block, shunt it off to holding area until we get it
     if (pblock->hashPrevBlock != 0 && !mapBlockIndex.count(pblock->hashPrevBlock))
     {
