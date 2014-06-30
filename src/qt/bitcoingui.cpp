@@ -129,7 +129,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent) :
     {
         QTimer *timerStakingIcon = new QTimer(labelStakingIcon);
         connect(timerStakingIcon, SIGNAL(timeout()), this, SLOT(updateStakingIcon()));
-        timerStakingIcon->start(30 * 1000);
+        timerStakingIcon->start(10 * 1000);
         updateStakingIcon();
     }
 
