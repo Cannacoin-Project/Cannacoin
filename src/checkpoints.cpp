@@ -11,7 +11,7 @@
 #include "main.h"
 #include "uint256.h"
 
-
+// Reddcoin: auto-select a checkpoint among the latest blocks
 static const int nCheckpointSpan = 10;
 
 namespace Checkpoints

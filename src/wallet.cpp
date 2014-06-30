@@ -20,8 +20,14 @@ bool bSpendZeroConfChange = true;
 
 // ppcoin
 typedef vector<unsigned char> valtype;
-unsigned int nStakeSplitAge = 24 * 60 * 60;
-int64 nStakeCombineThreshold = 1000 * COIN;
+// if a young transaction manages to successfully generate a kernel,
+// we assume it contains a large number of coins. Therefore we split
+// the output in two to avoid compounding more coins in one transaction.
+unsigned int nStakeSplitAge = 30 * 24 * 60 * 60; // 30 days
+// avoid concentraded transactions. on average, each block contains:
+// generated interest  ~= 27.5b * 5% / 365 / 1440 ~= 2.6k
+// corresponding stake ~= 27.5b / 365 / 1440 ~= 52k
+int64 nStakeCombineThreshold = 50000 * COIN;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -1641,7 +1647,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
 
-                if (GetWeight(block.GetBlockTime(), (int64_t)txNew.nTime) < nStakeSplitAge)
+                if (GetWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);

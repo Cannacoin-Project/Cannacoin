@@ -88,7 +88,7 @@ set<pair<COutPoint, unsigned int> > setStakeSeen;
 set<pair<COutPoint, unsigned int> > setStakeSeenOrphan;
 static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
 int64 nReserveBalance = 0;
-unsigned int nStakeMinAge = 2 * 60 * 60; // 2 hours
+unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
 // unsigned int nStakeMinAge = 0;
 unsigned int nStakeMaxAge = -1; // unlimited
 unsigned int nModifierInterval = 1 * 60; // time to elapse before new modifier is computed
@@ -1227,7 +1227,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     double EventHorizonDeviationSlow;
 
     bool fProofOfStake = false;
-    if (BlockLastSolved && BlockLastSolved->nHeight > LAST_POW_BLOCK)
+    if (pindexLast && pindexLast->nHeight >= LAST_POW_BLOCK)
         fProofOfStake = true;
 
     if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64)BlockLastSolved->nHeight < PastBlocksMin)
@@ -1236,7 +1236,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     }
     else if (fProofOfStake && (uint64)(BlockLastSolved->nHeight - LAST_POW_BLOCK) < PastBlocksMin)
     {
-        // difficulty is reset to minimum at the first PoSV block
+        // difficulty is reset to minimum at the first PoSV blocks
         return bnProofOfStakeLimit.GetCompact();
     }
 
@@ -1826,7 +1826,7 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
         bool fProofOfStake = pindex->nHeight > LAST_POW_BLOCK;
         for (unsigned int i=fProofOfStake ? 1 : 0; i<vtx.size(); i++) {
             uint256 hash = GetTxHash(i);
-            printf("CBlock::ConnectBlock : nHeight=%u, PoS=%d, vts=%u\n", pindex->nHeight, fProofOfStake, i);
+            printf("CBlock::ConnectBlock : nHeight=%u, PoSV=%d, vts=%u\n", pindex->nHeight, fProofOfStake, i);
             if (view.HaveCoins(hash) && !view.GetCoins(hash).IsPruned())
                 return state.DoS(100, error("ConnectBlock() : tried to overwrite transaction"));
         }
@@ -1899,7 +1899,6 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
 
         CTxUndo txundo;
         tx.UpdateCoins(state, view, txundo, pindex->nHeight, GetTxHash(i));
-        // FIXME should add tx.IsCoinStake() or not?
         if (!tx.IsCoinBase())
             blockundo.vtxundo.push_back(txundo);
 
@@ -2527,9 +2526,9 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
                 return false; // do not error here as we expect this during initial block download
             }
         }
-        // PoW is checked in CheckBlock()
-        if (IsProofOfWork())
+        else if (IsProofOfWork())
         {
+            // PoW is checked in CheckBlock()
             hashProof = GetPoWHash();
         }
 
@@ -3062,7 +3061,6 @@ bool static LoadBlockIndexDB()
     {
         CBlockIndex* pindex = item.second;
         vSortedByHeight.push_back(make_pair(pindex->nHeight, pindex));
-        // printf("LoadBlockIndexDB : %s\n", pindex->ToString().c_str());
     }
     sort(vSortedByHeight.begin(), vSortedByHeight.end());
     BOOST_FOREACH(const PAIRTYPE(int, CBlockIndex*)& item, vSortedByHeight)
@@ -3272,7 +3270,7 @@ bool InitBlockIndex() {
         const char* pszTimestamp = "January 21st 2014 was such a nice day...";
         CTransaction txNew;
         txNew.nVersion = 1;
-        txNew.nTime = 0;
+        txNew.nTime = 1390280400;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
@@ -3283,14 +3281,14 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1390280400;
-        block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 222583475;
+        block.nTime = 1390280400;
+        block.nBits = 0x1e0ffff0;
+        block.nNonce = 222583475;
 
         if (fTestNet)
         {
-            block.nTime    = 1399544585;
-            block.nNonce   = 1403777;
+            txNew.nTime = block.nTime = 1399544585;
+            block.nNonce = 1403777;
         }
 
         //// debug print

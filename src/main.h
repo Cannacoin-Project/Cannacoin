@@ -513,7 +513,7 @@ class CTransaction
 public:
     static int64 nMinTxFee;
     static int64 nMinRelayTxFee;
-    static const int CURRENT_VERSION=3;
+    static const int CURRENT_VERSION=2;
     int nVersion;
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
@@ -1006,20 +1006,20 @@ public:
 
     // equality test
     friend bool operator==(const CCoins &a, const CCoins &b) {
-        if (a.fCoinStake || b.fCoinStake)
+        if (fDebug && (a.fCoinStake || b.fCoinStake))
         {
             if (a.fCoinBase == b.fCoinBase)
-                printf("CCoins: fCoinBase==\n");
+                printf("CCoins: fCoinBase match\n");
             if (a.fCoinStake == b.fCoinStake)
-                printf("CCoins: fCoinStake==\n");
+                printf("CCoins: fCoinStake match\n");
             if (a.nTime == b.nTime)
-                printf("CCoins: nTime==\n");
+                printf("CCoins: nTime match\n");
             if (a.nHeight == b.nHeight)
-                printf("CCoins: nHeight==\n");
+                printf("CCoins: nHeight match\n");
             if (a.nVersion == b.nVersion)
-                printf("CCoins: nVersion==\n");
+                printf("CCoins: nVersion match\n");
             if (a.vout == b.vout)
-                printf("CCoins: vout==\n");
+                printf("CCoins: vout match\n");
         }
 
         return a.fCoinBase == b.fCoinBase &&
