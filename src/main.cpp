@@ -2178,6 +2178,8 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
         uint256 hashBlock = 0;
         if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
             continue;  // previous transaction not in main chain
+        if (txPrev.nTime == 0)
+            return false; // problem with missing timestamps in PoW blocks
         if (nTime < txPrev.nTime)
             return false;  // Transaction timestamp violation
 
