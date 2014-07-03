@@ -2178,8 +2178,6 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
         uint256 hashBlock = 0;
         if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
             continue;  // previous transaction not in main chain
-        if (txPrev.nTime == 0)
-            return false; // problem with missing timestamps in PoW blocks
         if (nTime < txPrev.nTime)
             return false;  // Transaction timestamp violation
 
@@ -2191,6 +2189,10 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
             return false; // unable to read block of previous transaction
         if (block.GetBlockTime() + nStakeMinAge > nTime)
             continue; // only count coins meeting min age requirement
+
+        // deal with missing timestamps in PoW blocks
+        if (txPrev.nTime == 0)
+            txPrev.nTime = block.GetBlockTime();
 
         int64 nValueIn = txPrev.vout[txin.prevout.n].nValue;
         bnCentSecond += CBigNum(nValueIn) * (nTime-txPrev.nTime) / CENT;
@@ -2668,11 +2670,6 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
     // ppcoin: ask for pending sync-checkpoint if any
     if (!IsInitialBlockDownload())
         Checkpoints::AskForPendingSyncCheckpoint(pfrom);
-
-    // PoSV: for old transactions, set the nTime to block time
-    BOOST_FOREACH(CTransaction& tx, pblock->vtx)
-        if (tx.nTime == 0)
-            tx.nTime = pblock->nTime;
 
     // If we don't already have its previous block, shunt it off to holding area until we get it
     if (pblock->hashPrevBlock != 0 && !mapBlockIndex.count(pblock->hashPrevBlock))
