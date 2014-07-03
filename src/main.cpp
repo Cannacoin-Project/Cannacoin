@@ -1687,7 +1687,7 @@ bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoin
         return error("DisconnectBlock() : block and undo data inconsistent");
 
     // undo transactions in reverse order
-    for (int i = vtx.size() - 1; i >= 0; i--) {
+    for (int i = vtx.size() - 1; i >= IsProofOfStake() ? 1 : 0; i--) {
         const CTransaction &tx = vtx[i];
         uint256 hash = tx.GetHash();
 
