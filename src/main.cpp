@@ -2178,8 +2178,6 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
         uint256 hashBlock = 0;
         if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
             continue;  // previous transaction not in main chain
-        if (nTime < txPrev.nTime)
-            return false;  // Transaction timestamp violation
 
         // Read block header
         CBlock block;
@@ -2192,7 +2190,10 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
 
         // deal with missing timestamps in PoW blocks
         if (txPrev.nTime == 0)
-            txPrev.nTime = block.GetBlockTime();
+            txPrev.nTime = block.nTime;
+
+        if (nTime < txPrev.nTime)
+            return false;  // Transaction timestamp violation
 
         int64 nValueIn = txPrev.vout[txin.prevout.n].nValue;
         bnCentSecond += CBigNum(nValueIn) * (nTime-txPrev.nTime) / CENT;
