@@ -3311,6 +3311,9 @@ bool InitBlockIndex() {
                 return error("InitBlockIndex() : writing genesis block to disk failed");
             if (!block.AddToBlockIndex(state, blockPos, hashGenesisBlock))
                 return error("InitBlockIndex() : genesis block not accepted");
+            // ppcoin: initialize synchronized checkpoint
+            if (!Checkpoints::WriteSyncCheckpoint((!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet)))
+                return error("InitBlockIndex() : failed to init sync checkpoint");
         } catch(std::runtime_error &e) {
             return error("InitBlockIndex() : failed to initialize block database: %s", e.what());
         }
