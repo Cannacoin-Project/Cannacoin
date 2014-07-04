@@ -1327,14 +1327,9 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
-    // always mine at the lowest diff on testnet
-    if (fTestNet)
-    {
-        if (pindexLast->nHeight < LAST_POW_BLOCK)
-            return bnProofOfWorkLimit.GetCompact();
-        else
-            return bnProofOfStakeLimit.GetCompact();
-    }
+    // always mine PoW blocks at the lowest diff on testnet
+    if (fTestNet && pindexLast->nHeight < LAST_POW_BLOCK)
+        return bnProofOfWorkLimit.GetCompact();
 
     static const int64 BlocksTargetSpacing = 1 * 60; // 1 Minute
     unsigned int       TimeDaySeconds      = 60 * 60 * 24;
