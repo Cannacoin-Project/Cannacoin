@@ -1,0 +1,7 @@
+rm -rf Reddcoin-Qt.app
+rm -f Reddcoin-Qt.temp.dmg
+rm -rf build
+rm -rf dist
+rm -f Makefile
+rm -f qrc_bitcoin.cpp
+

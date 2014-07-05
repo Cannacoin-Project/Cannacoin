@@ -218,13 +218,16 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 
  OSX binaries are compiled on Maverick using QT 4.8. Due to the complication with libstdc++ vs libc++, one should install the latest QT library using Homebrew:
 
+1) setup
 	brew update
 	brew install qt --HEAD
-	/usr/local/bin/qmake -spec unsupported/macx-clang-libc++ reddcoin-qt.pro USE_UPNP=1 STATIC=1
-	make
-	export QTDIR=/usr/local/Cellar/qt/4.8.5/  # needed to find translations/qt_*.qm files
-	T=$(contrib/qt_translations.py $QTDIR/translations src/qt/locale)
-	python2.7 share/qt/clean_mac_info_plist.py
-	python2.7 contrib/macdeploy/macdeployqtplus Reddcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
+	patch -p1 < contrib/homebrew/reddcoin-qt.pro.patch
 
- Build output expected: Reddcoin-Qt.dmg
+2) build
+	source contrib/homebrew/build-reddcoin-qt.osx
+
+   Build output expected: Reddcoin-Qt.dmg
+
+3) cleanup
+	source contrib/homebrew/clean-reddcoin-qt.osx
+

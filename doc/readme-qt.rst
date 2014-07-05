@@ -50,7 +50,11 @@ An executable named `reddcoin-qt` will be built.
 Mac OS X
 --------
 
-- Download and install the `Qt Mac OS X SDK`_. It is recommended to also install Apple's Xcode with UNIX tools.
+there are 2 ways you can build the reddcoin Qt wallet. Using Qt creator or directlly from the command line
+
+1) Qt creator
+
+- Download and install the `Qt Mac OS X SDK` 4.8. It is recommended to also install Apple's Xcode with UNIX tools.
 
 - Download and install either `MacPorts`_ or `HomeBrew`_.
 
@@ -68,9 +72,9 @@ Mac OS X
 	brew update
 	brew install boost miniupnpc openssl berkeley-db4
 
-- If using HomeBrew,  edit `reddcoin-qt.pro` to account for library location differences. There's a diff in `contrib/homebrew/bitcoin-qt-pro.patch` that shows what you need to change, or you can just patch by doing
+- If using HomeBrew,  edit `reddcoin-qt.pro` to account for library location differences. There's a diff in `contrib/homebrew/reddcoin-qt-pro.patch` that shows what you need to change, or you can just patch by doing
 
-        patch -p1 < contrib/homebrew/bitcoin.qt.pro.patch
+        patch -p1 < contrib/homebrew/reddcoin-qt.pro.patch
 
 - Open the reddcoin-qt.pro file in Qt Creator and build as normal (cmd-B)
 
@@ -78,6 +82,9 @@ Mac OS X
 .. _`MacPorts`: http://www.macports.org/install.php
 .. _`HomeBrew`: http://mxcl.github.io/homebrew/
 
+2) command line
+
+the instructions are provided at the bottom of the `doc/release-process.md`
 
 Build configuration options
 ============================
