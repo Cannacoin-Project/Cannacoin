@@ -131,14 +131,18 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
 
     if (!fProofOfStake)
     {
-        printf("CreateNewBlock : new PoW block\n");
+        if (fDebug)
+           printf("CreateNewBlock : new PoW block\n");
+
         pblock->nVersion = POW_BLOCK_VERSION;
         txNew.nVersion = POW_TX_VERSION;
         txNew.vout[0].scriptPubKey = scriptPubKeyIn;
     }
     else
     {
-        printf("CreateNewBlock : new PoSV block\n");
+        if (fDebug)
+            printf("CreateNewBlock : new PoSV block\n");
+
         // Height first in coinbase required for block.version=2
         txNew.vin[0].scriptSig = (CScript() << pindexPrev->nHeight+1) + COINBASE_FLAGS;
         assert(txNew.vin[0].scriptSig.size() <= 100);
@@ -354,7 +358,9 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
 
         nLastBlockTx = nBlockTx;
         nLastBlockSize = nBlockSize;
-        printf("CreateNewBlock(): total size %"PRI64u"\n", nBlockSize);
+
+        if (fDebug)
+            printf("CreateNewBlock(): total size %"PRI64u"\n", nBlockSize);
 
         if (!fProofOfStake)
             pblock->vtx[0].vout[0].nValue = GetBlockValue(pindexPrev->nHeight+1, nFees);
