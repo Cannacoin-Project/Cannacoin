@@ -246,7 +246,7 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
         {
             nStakeModifierHeight = pindex->nHeight;
             nStakeModifierTime = pindex->GetBlockTime();
-            printf("GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
+            // printf("GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
         }
     }
     nStakeModifier = pindex->nStakeModifier;
