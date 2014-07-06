@@ -2761,7 +2761,8 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
-        printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
+        if (fDebug)
+            printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
         if (wallet.CreateCoinStake(wallet, nBits, nSearchTime-nLastCoinStakeSearchTime, nFees, txCoinStake, key))
         {
             printf("CBlock::SignBlock : coinstake created\n");
