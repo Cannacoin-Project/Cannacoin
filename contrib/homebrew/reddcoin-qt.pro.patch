@@ -1,0 +1,55 @@
+diff --git a/reddcoin-qt.pro b/reddcoin-qt.pro
+index 6c5ad7d..c81d66d 100644
+--- a/reddcoin-qt.pro
++++ b/reddcoin-qt.pro
+@@ -64,6 +64,14 @@ contains(USE_QRCODE, 1) {
+ #  or: qmake "USE_UPNP=0" (disabled by default)
+ #  or: qmake "USE_UPNP=-" (not supported)
+ # miniupnpc (http://miniupnp.free.fr/files/) must be installed for support
++isEmpty(MINIUPNPC_LIB_PATH) {
++    macx:MINIUPNPC_LIB_PATH = /usr/local/opt/miniupnpc/lib
++}
++
++isEmpty(MINIUPNPC_INCLUDE_PATH) {
++    macx:MINIUPNPC_INCLUDE_PATH = /usr/local/opt/miniupnpc/include
++}
++
+ contains(USE_UPNP, -) {
+     message(Building without UPNP support)
+ } else {
+@@ -375,7 +383,7 @@ isEmpty(BOOST_THREAD_LIB_SUFFIX) {
+ }
+ 
+ isEmpty(BDB_LIB_PATH) {
+-    macx:BDB_LIB_PATH = /usr/local/lib/db48
++    macx:BDB_LIB_PATH = /usr/local/opt/berkeley-db4/lib
+ }
+ 
+ isEmpty(BDB_LIB_SUFFIX) {
+@@ -383,15 +391,23 @@ isEmpty(BDB_LIB_SUFFIX) {
+ }
+ 
+ isEmpty(BDB_INCLUDE_PATH) {
+-    macx:BDB_INCLUDE_PATH = /usr/local/include/db48
++    macx:BDB_INCLUDE_PATH = /usr/local/opt/berkeley-db4/include
+ }
+ 
+ isEmpty(BOOST_LIB_PATH) {
+-    macx:BOOST_LIB_PATH = /usr/local/lib
++    macx:BOOST_LIB_PATH = /usr/local/opt/boost/lib
+ }
+ 
+ isEmpty(BOOST_INCLUDE_PATH) {
+-    macx:BOOST_INCLUDE_PATH = /usr/local/include
++    macx:BOOST_INCLUDE_PATH = /usr/local/opt/boost/include
++}
++
++isEmpty(OPENSSL_LIB_PATH) {
++    macx:OPENSSL_LIB_PATH = /usr/local/opt/openssl/lib
++}
++
++isEmpty(OPENSSL_INCLUDE_PATH) {
++    macx:OPENSSL_INCLUDE_PATH = /usr/local/opt/openssl/include
+ }
+ 
+ win32:DEFINES += WIN32
