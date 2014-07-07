@@ -134,8 +134,8 @@ extern int64 AmountFromValue(const json_spirit::Value& value);
 extern json_spirit::Value ValueFromAmount(int64 amount);
 extern double GetDifficulty(const CBlockIndex* blockindex = NULL);
 
-// ppcoin
-extern double GetPoSKernelPS();
+// PoSV
+extern double GetPoSVKernelPS();
 
 extern std::string HexBits(unsigned int nBits);
 extern std::string HelpRequiringPassphrase();

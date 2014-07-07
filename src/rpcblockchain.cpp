@@ -44,34 +44,14 @@ double GetDifficulty(const CBlockIndex* blockindex)
 }
 
 
-// ppcoin
-double GetPoSKernelPS()
+// PoSV
+double GetPoSVKernelPS()
 {
-    int nPoSInterval = 72;
-    double dStakeKernelsTriedAvg = 0;
-    int nStakesHandled = 0, nStakesTime = 0;
-
-    CBlockIndex* pindex = pindexBest;;
-    CBlockIndex* pindexPrevStake = NULL;
-
-    if (pindex == NULL || pindex->nHeight < (LAST_POW_BLOCK + nPoSInterval))
+    if (pindexBest == NULL || pindexBest->nHeight <= LAST_POW_BLOCK || !pindexBest->IsProofOfStake())
         return 0;
 
-    while (pindex && nStakesHandled < nPoSInterval)
-    {
-        if (pindex->IsProofOfStake())
-        {
-            // 2^32
-            dStakeKernelsTriedAvg += GetDifficulty(pindex) * 4294967296.0;
-            nStakesTime += pindexPrevStake ? (pindexPrevStake->nTime - pindex->nTime) : 0;
-            pindexPrevStake = pindex;
-            nStakesHandled++;
-        }
-
-        pindex = pindex->pprev;
-    }
-
-    return nStakesTime ? dStakeKernelsTriedAvg / nStakesTime : 0;
+    double dStakeKernelsTriedAvg = GetDifficulty(pindexBest) * 4294967296.0; // 2^32
+    return dStakeKernelsTriedAvg / nTargetSpacing;
 }
 
 

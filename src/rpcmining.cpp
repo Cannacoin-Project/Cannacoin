@@ -163,7 +163,7 @@ Value getmininginfo(const Array& params, bool fHelp)
     weight.push_back(Pair("combined", (uint64_t)nWeight));
     obj.push_back(Pair("stakeweight", weight));
     obj.push_back(Pair("stakeinterest",  (uint64_t)COIN_YEAR_REWARD));
-    obj.push_back(Pair("netstakeweight", GetPoSKernelPS()));
+    obj.push_back(Pair("netstakeweight", GetPoSVKernelPS()));
     return obj;
 }
 
@@ -178,7 +178,7 @@ Value getstakinginfo(const Array& params, bool fHelp)
     uint64 nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
     pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
 
-    uint64 nNetworkWeight = GetPoSKernelPS();
+    uint64 nNetworkWeight = GetPoSVKernelPS();
     bool staking = nLastCoinStakeSearchInterval && nWeight;
     int nExpectedTime = staking ? (nTargetSpacing * nNetworkWeight / nWeight) : -1;
 
