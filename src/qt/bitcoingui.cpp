@@ -54,7 +54,7 @@
 
 const QString BitcoinGUI::DEFAULT_WALLET = "~Default";
 extern int64 nLastCoinStakeSearchInterval;
-double GetPoSKernelPS();
+double GetPoSVKernelPS();
 
 BitcoinGUI::BitcoinGUI(QWidget *parent) :
     QMainWindow(parent),
@@ -893,7 +893,7 @@ void BitcoinGUI::updateStakingIcon()
 
     if (nLastCoinStakeSearchInterval && nWeight)
     {
-        uint64 nNetworkWeight = GetPoSKernelPS();
+        uint64 nNetworkWeight = GetPoSVKernelPS();
         unsigned nEstimateTime = nTargetSpacing * nNetworkWeight / nWeight;
 
         QString text;
