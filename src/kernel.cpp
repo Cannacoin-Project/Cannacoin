@@ -22,7 +22,6 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints =
         ( 7000, 0x4da1176e )
     ;
 
-// FIXME
 // Hard checkpoints of stake modifiers to ensure they are deterministic (testNet)
 static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
     boost::assign::map_list_of
@@ -357,8 +356,8 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
 
     // FIXME
     // Verify signature
-    // if (!VerifySignature(txPrev, tx, 0, 0))
-    //     return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
+    if (!VerifySignature(txPrev, tx, 0, 0))
+        return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());
 
     // Read block header
     if (!mapBlockIndex.count(hashBlock))

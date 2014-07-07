@@ -1567,9 +1567,18 @@ bool CScriptCheck::operator()() const {
     return true;
 }
 
-bool VerifySignature(const CCoins& txFrom, const CTransaction& txTo, unsigned int nIn, unsigned int flags, int nHashType)
+bool VerifySignature(const CTransaction& txFrom, const CTransaction& txTo, unsigned int nIn, int nHashType)
 {
-    return CScriptCheck(txFrom, txTo, nIn, flags, nHashType)();
+    assert(nIn < txTo.vin.size());
+    const CTxIn& txin = txTo.vin[nIn];
+    if (txin.prevout.n >= txFrom.vout.size())
+        return false;
+    const CTxOut& txout = txFrom.vout[txin.prevout.n];
+
+    if (txin.prevout.hash != txFrom.GetHash())
+        return false;
+
+    return VerifyScript(txin.scriptSig, txout.scriptPubKey, txTo, nIn, (SCRIPT_VERIFY_NOCACHE | SCRIPT_VERIFY_P2SH), nHashType);
 }
 
 bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs, bool fScriptChecks, unsigned int flags, std::vector<CScriptCheck> *pvChecks) const
@@ -1602,7 +1611,7 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
 
             // ppcoin: check transaction timestamp
             if (coins.nTime > nTime)
-                return state.DoS(100, error("ConnectInputs() : transaction timestamp earlier than input transaction"));
+                return state.DoS(100, error("CheckInputs() : transaction timestamp earlier than input transaction"));
 
             // Check for negative or overflow input values
             nValueIn += coins.vout[prevout.n].nValue;
