@@ -23,7 +23,7 @@ typedef vector<unsigned char> valtype;
 // if a young transaction manages to successfully generate a kernel,
 // we assume it contains a large number of coins. Therefore we split
 // the output in two to avoid compounding more coins in one transaction.
-unsigned int nStakeSplitAge = 30 * 24 * 60 * 60; // 30 days
+unsigned int nStakeSplitAge = 90 * 24 * 60 * 60; // 90 days
 // avoid concentraded transactions. on average, each block contains:
 // generated interest  ~= 27.5b * 5% / 365 / 1440 ~= 2.6k
 // corresponding stake ~= 27.5b / 365 / 1440 ~= 52k
@@ -1498,7 +1498,7 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
                 continue;
         }
 
-        int64 nTimeWeight = GetWeight((int64)pcoin.first->nTime, (int64)GetTime());
+        int64 nTimeWeight = GetCoinAgeWeight((int64)pcoin.first->nTime, (int64)GetTime());
         CBigNum bnCoinDayWeight = CBigNum(pcoin.first->vout[pcoin.second].nValue) * nTimeWeight / COIN / (24 * 60 * 60);
 
         // Weight is greater than zero
@@ -1650,7 +1650,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
 
-                if (GetWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge)
+                if (GetCoinAgeWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
@@ -1673,7 +1673,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (txNew.vout.size() == 2 && ((pcoin.first->vout[pcoin.second].scriptPubKey == scriptPubKeyKernel || pcoin.first->vout[pcoin.second].scriptPubKey == txNew.vout[1].scriptPubKey))
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
-            int64 nTimeWeight = GetWeight((int64)pcoin.first->nTime, (int64)txNew.nTime);
+            int64 nTimeWeight = GetCoinAgeWeight((int64)pcoin.first->nTime, (int64)txNew.nTime);
 
             // Stop adding more inputs if already too many inputs
             if (txNew.vin.size() >= 100)

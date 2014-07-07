@@ -32,7 +32,7 @@ static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
 
 // PoSV: Coin-aging function
 // This is where implement our monetary policies.
-int64 GetWeight(int64 nIntervalBeginning, int64 nIntervalEnd)
+int64 GetCoinAgeWeight(int64 nIntervalBeginning, int64 nIntervalEnd)
 {
     // Kernel hash weight starts from 0 at the min age
     // this change increases active coins participating the hash and helps
@@ -292,7 +292,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     bnTargetPerCoinDay.SetCompact(nBits);
     int64 nValueIn = txPrev.vout[prevout.n].nValue;
     uint256 hashBlockFrom = blockFrom.GetHash();
-    CBigNum bnCoinDayWeight = CBigNum(nValueIn) * GetWeight((int64)nTimeTxPrev, (int64)nTimeTx) / COIN / (24 * 60 * 60);
+    CBigNum bnCoinDayWeight = CBigNum(nValueIn) * GetCoinAgeWeight((int64)nTimeTxPrev, (int64)nTimeTx) / COIN / (24 * 60 * 60);
     targetProofOfStake = (bnCoinDayWeight * bnTargetPerCoinDay).getuint256();
 
     // Calculate hash
