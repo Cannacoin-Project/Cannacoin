@@ -4,7 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <boost/assign/list_of.hpp>
-
+#include <math.h>
 #include "kernel.h"
 #include "txdb.h"
 #include "script.h"
@@ -30,15 +30,57 @@ static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
         ( 2000, 0x3216b8e3 )
     ;
 
-// PoSV: Coin-aging function
-// This is where implement our monetary policies.
-int64 GetCoinAgeWeight(int64 nIntervalBeginning, int64 nIntervalEnd)
+// linear coin-aging function
+int64 GetCoinAgeWeightLinear(int64 nIntervalBeginning, int64 nIntervalEnd)
 {
     // Kernel hash weight starts from 0 at the min age
     // this change increases active coins participating the hash and helps
     // to secure the network when proof-of-stake difficulty is low
+    return max((int64)0, min(nIntervalEnd - nIntervalBeginning - nStakeMinAge, (int64)nStakeMaxAge));
+}
 
-    return min(nIntervalEnd - nIntervalBeginning - nStakeMinAge, (int64)nStakeMaxAge);
+/* PoSV: Coin-aging function
+ * =================================================
+ * WARNING
+ * =================================================
+ * The parameters used in this function are the
+ * solutions to a set of intricate mathematical
+ * equations chosen specifically to incentivise
+ * owners of Reddcoin to participate in minting.
+ * These parameters are also affected by the values
+ * assigned to other variables such as expected
+ * block confirmation time.
+ * If you are merely forking the source code of
+ * Reddcoin, it's highly UNLIKELY that this set of
+ * parameters work for your purpose. In particular,
+ * if you have tweaked the values of other variables,
+ * this set of parameters are certainly no longer
+ * valid. You should revert back to the linear
+ * function above or the security of your network
+ * will be significantly impaired.
+ * In short, do not use or change this function
+ * unless you have spoken to the author.
+ * =================================================
+ * DO NOT USE OR CHANGE UNLESS YOU ABSOLUTELY
+ * KNOW WHAT YOU ARE DOING.
+ * =================================================
+ */
+int64 GetCoinAgeWeight(int64 nIntervalBeginning, int64 nIntervalEnd)
+{
+    int64 nSeconds = max((int64)0, nIntervalEnd - nIntervalBeginning - nStakeMinAge);
+    double days = double(nSeconds) / (24 * 60 * 60);
+    double weight = 0;
+
+    if (days <= 7)
+    {
+        weight = -0.00408163 * pow(days, 3) + 0.05714286 * pow(days, 2) + days;
+    }
+    else
+    {
+        weight = 8.4 * log(days) - 7.94564525;
+    }
+
+    return min((int64)(weight * 24 * 60 * 60), (int64)nStakeMaxAge);
 }
 
 // Get the last stake modifier and its generation time from a given block
