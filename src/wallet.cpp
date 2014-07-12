@@ -18,13 +18,11 @@ using namespace std;
 
 bool bSpendZeroConfChange = true;
 
-// ppcoin
 typedef vector<unsigned char> valtype;
-// if a young transaction manages to successfully generate a kernel,
-// we assume it contains a large number of coins. Therefore we split
-// the output in two to avoid compounding more coins in one transaction.
-unsigned int nStakeSplitAge = 90 * 24 * 60 * 60; // 90 days
-// avoid concentraded transactions. on average, each block contains:
+// we split the coinstake value in two to avoid concentrating
+// too many coins in one output.
+unsigned int nStakeSplitAge = 45 * 24 * 60 * 60; // 45 days
+// avoid concentrated transactions. on average, each block contains:
 // generated interest  ~= 27.5b * 5% / 365 / 1440 ~= 2.6k
 // corresponding stake ~= 27.5b / 365 / 1440 ~= 52k
 int64 nStakeCombineThreshold = 50000 * COIN;
