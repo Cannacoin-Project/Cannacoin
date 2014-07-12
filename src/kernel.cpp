@@ -396,7 +396,6 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
     if (!GetTransaction(hashTxPrev, txPrev, hashBlock, true))
         return error("CheckProofOfStake() : INFO: read txPrev failed");  // previous transaction not in main chain, may occur during initial download
 
-    // FIXME
     // Verify signature
     if (!VerifySignature(txPrev, tx, 0, 0))
         return error("CheckProofOfStake() : VerifySignature failed on coinstake %s", tx.GetHash().ToString().c_str());

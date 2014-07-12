@@ -2211,11 +2211,12 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
             return false;  // Transaction timestamp violation
 
         int64 nValueIn = txPrev.vout[txin.prevout.n].nValue;
-        bnCentSecond += CBigNum(nValueIn) * (nTime-txPrev.nTime) / CENT;
+        int64 nTimeWeight = GetCoinAgeWeight(txPrev.nTime, nTime);
+        bnCentSecond += CBigNum(nValueIn) * nTimeWeight / CENT;
 
         if (fDebug && GetBoolArg("-printcoinage"))
-            printf("coin age nValueIn=%"PRI64d" nTime=%d, txPrev.nTime=%d, nTimeDiff=%d bnCentSecond=%s\n",
-                nValueIn, nTime, txPrev.nTime, nTime - txPrev.nTime, bnCentSecond.ToString().c_str());
+            printf("coin age nValueIn=%"PRI64d" nTime=%d, txPrev.nTime=%d, nTimeWeight=%"PRI64d" bnCentSecond=%s\n",
+                nValueIn, nTime, txPrev.nTime, nTimeWeight, bnCentSecond.ToString().c_str());
     }
 
     CBigNum bnCoinDay = bnCentSecond * CENT / COIN / (24 * 60 * 60);
