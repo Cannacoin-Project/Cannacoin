@@ -579,6 +579,9 @@ void StakeMiner(CWallet *pwallet)
             }
         }
 
+        while (pindexBest->nHeight < LAST_POW_BLOCK)
+            MilliSleep(60000);
+
         //
         // Create new block
         //

@@ -1518,7 +1518,7 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
         }
     }
 
-    printf("CWallet::GetStakeWeight: %lld\n", nWeight);
+    // printf("CWallet::GetStakeWeight: %lld\n", nWeight);
     return true;
 }
 
