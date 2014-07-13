@@ -32,7 +32,7 @@ bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx);
 unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex);
 
 // Check stake modifier hard checkpoints
-bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum);
+bool CheckStakeModifierCheckpoints(int nHeight, uint64 nStakeModifierChecksum);
 
 // Get time weight using supplied timestamps
 int64 GetCoinAgeWeight(int64 nIntervalBeginning, int64 nIntervalEnd);

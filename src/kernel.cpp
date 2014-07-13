@@ -11,11 +11,16 @@
 
 using namespace std;
 
-typedef std::map<int, unsigned int> MapModifierCheckpoints;
+typedef std::map<int, uint64> MapModifierCheckpoints;
+
+// This leads to a modifier selection interval of 27489 seconds,
+// which is roughly 7 hours 38 minutes, just a bit shorter than
+// the minimum stake age of 8 hours.
+unsigned int nModifierInterval = 13 * 60;
 
 // FIXME
 // Hard checkpoints of stake modifiers to ensure they are deterministic
-static std::map<int, unsigned int> mapStakeModifierCheckpoints =
+static std::map<int, uint64> mapStakeModifierCheckpoints =
     boost::assign::map_list_of
         ( 0, 0x0e00670bu )
         ( 1600, 0x1b3404a2 )
@@ -23,11 +28,11 @@ static std::map<int, unsigned int> mapStakeModifierCheckpoints =
     ;
 
 // Hard checkpoints of stake modifiers to ensure they are deterministic (testNet)
-static std::map<int, unsigned int> mapStakeModifierCheckpointsTestNet =
+static std::map<int, uint64> mapStakeModifierCheckpointsTestNet =
     boost::assign::map_list_of
         (    0, 0xfd11f4e7 )
-        ( 1000, 0x21c9b3b0 )
-        ( 2000, 0x3216b8e3 )
+        ( 1000, 0x83df903d )
+        ( 2000, 0xbd536e75 )
     ;
 
 // linear coin-aging function
@@ -111,7 +116,9 @@ static int64 GetStakeModifierSelectionInterval()
     for (int nSection=0; nSection<64; nSection++)
         nSelectionInterval += GetStakeModifierSelectionIntervalSection(nSection);
 
-    // printf("GetStakeModifierSelectionInterval : %lld\n", nSelectionInterval);
+    if (fDebug)
+        printf("GetStakeModifierSelectionInterval : %lld\n", nSelectionInterval);
+
     return nSelectionInterval;
 }
 
@@ -436,11 +443,12 @@ unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 }
 
 // Check stake modifier hard checkpoints
-bool CheckStakeModifierCheckpoints(int nHeight, unsigned int nStakeModifierChecksum)
+bool CheckStakeModifierCheckpoints(int nHeight, uint64 nStakeModifierChecksum)
 {
-    // printf("CheckStakeModifierCheckpoints : nHeight=%d, nStakeModifierChecksum=%08x\n", nHeight, nStakeModifierChecksum);
-    MapModifierCheckpoints& checkpoints = (fTestNet ? mapStakeModifierCheckpointsTestNet : mapStakeModifierCheckpoints);
+    if (fDebug)
+        printf("CheckStakeModifierCheckpoints : nHeight=%d, nStakeModifierChecksum=0x%016"PRI64x"\n", nHeight, nStakeModifierChecksum);
 
+    MapModifierCheckpoints& checkpoints = (fTestNet ? mapStakeModifierCheckpointsTestNet : mapStakeModifierCheckpoints);
     if (checkpoints.count(nHeight))
         return nStakeModifierChecksum == checkpoints[nHeight];
     return true;
