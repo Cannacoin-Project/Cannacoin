@@ -1709,7 +1709,7 @@ bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoin
         if (outs != outsBlock)
         {
             fClean = fClean && error("DisconnectBlock() : added transaction mismatch? database corrupted");
-            printf("CBlock::DisconnectBlock : %d\n", i);
+            printf("CBlock::DisconnectBlock : %d, %s\n", i, hash.ToString().c_str());
         }
 
         // remove outputs

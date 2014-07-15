@@ -1006,20 +1006,20 @@ public:
 
     // equality test
     friend bool operator==(const CCoins &a, const CCoins &b) {
-        if (fDebug && (a.fCoinStake || b.fCoinStake))
+        if (fDebug)
         {
-            if (a.fCoinBase == b.fCoinBase)
-                printf("CCoins: fCoinBase match\n");
-            if (a.fCoinStake == b.fCoinStake)
-                printf("CCoins: fCoinStake match\n");
-            if (a.nTime == b.nTime)
-                printf("CCoins: nTime match\n");
-            if (a.nHeight == b.nHeight)
-                printf("CCoins: nHeight match\n");
-            if (a.nVersion == b.nVersion)
-                printf("CCoins: nVersion match\n");
-            if (a.vout == b.vout)
-                printf("CCoins: vout match\n");
+            if (a.fCoinBase != b.fCoinBase)
+                printf("CCoins: fCoinBase mismatch\n");
+            if (a.fCoinStake != b.fCoinStake)
+                printf("CCoins: fCoinStake mismatch\n");
+            if (a.nTime != b.nTime)
+                printf("CCoins: nTime mismatch\n");
+            if (a.nHeight != b.nHeight)
+                printf("CCoins: nHeight mismatch\n");
+            if (a.nVersion != b.nVersion)
+                printf("CCoins: nVersion mismatch\n");
+            if (a.vout != b.vout)
+                printf("CCoins: vout mismatch\n");
         }
 
         return a.fCoinBase == b.fCoinBase &&
