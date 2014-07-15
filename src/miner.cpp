@@ -597,7 +597,7 @@ void StakeMiner(CWallet *pwallet)
             SetThreadPriority(THREAD_PRIORITY_NORMAL);
             CheckStake(pblock, *pwallet, reservekey);
             SetThreadPriority(THREAD_PRIORITY_LOWEST);
-            MilliSleep(1000);
+            MilliSleep(500);
         }
         else
         {
@@ -754,15 +754,15 @@ void GenerateReddcoins(bool fGenerate, CWallet* pwallet)
 {
     static boost::thread_group* minerThreads = NULL;
 
-    if (!fGenerate)
-        return;
-
     if (minerThreads != NULL)
     {
         minerThreads->interrupt_all();
         delete minerThreads;
         minerThreads = NULL;
     }
+
+    if (!fGenerate)
+        return;
 
     minerThreads = new boost::thread_group();
 
