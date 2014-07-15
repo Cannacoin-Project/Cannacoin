@@ -122,7 +122,8 @@ private:
     int prevBlocks;
 
     /** local weight for staking */
-    uint64 nWeight;
+    uint64 nAverageWeight;
+    uint64 nTotalWeight;
 
     /** Create the main UI actions. */
     void createActions();

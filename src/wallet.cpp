@@ -1468,8 +1468,7 @@ bool CWallet::CreateTransaction(CScript scriptPubKey, int64 nValue,
     return CreateTransaction(vecSend, wtxNew, reservekey, nFeeRet, strFailReason, coinControl);
 }
 
-// NovaCoin: get current stake weight
-bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint64& nMaxWeight, uint64& nWeight)
+bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nAverageWeight, uint64& nTotalWeight)
 {
     // Choose coins to use
     int64 nBalance = GetBalance();
@@ -1488,7 +1487,7 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
     if (setCoins.empty())
         return false;
 
-    nMinWeight = nMaxWeight = nWeight = 0;
+    nAverageWeight = nTotalWeight = 0;
 
     BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
     {
@@ -1506,23 +1505,13 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nMinWeight, uint
         // Weight is greater than zero
         if (nTimeWeight > 0)
         {
-            nWeight += bnCoinDayWeight.getuint64();
-        }
-
-        // Weight is greater than zero, but the maximum value isn't reached yet
-        if (nTimeWeight > 0 && nTimeWeight < nStakeMaxAge)
-        {
-            nMinWeight += bnCoinDayWeight.getuint64();
-        }
-
-        // Maximum weight was reached
-        if (nTimeWeight == nStakeMaxAge)
-        {
-            nMaxWeight += bnCoinDayWeight.getuint64();
+            nTotalWeight += bnCoinDayWeight.getuint64();
         }
     }
 
-    // printf("CWallet::GetStakeWeight: %lld\n", nWeight);
+    if (setCoins.size() > 0)
+        nAverageWeight = nTotalWeight / (uint64)setCoins.size();
+
     return true;
 }
 

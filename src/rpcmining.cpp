@@ -155,12 +155,11 @@ Value getmininginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("testnet",       fTestNet));
 
     // ppcoin
-    uint64 nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
-    pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
+    uint64 nAverageWeight = 0, nTotalWeight = 0;
+    pwalletMain->GetStakeWeight(*pwalletMain, nAverageWeight, nTotalWeight);
     Object weight;
-    weight.push_back(Pair("minimum",  (uint64_t)nMinWeight));
-    weight.push_back(Pair("maximum",  (uint64_t)nMaxWeight));
-    weight.push_back(Pair("combined", (uint64_t)nWeight));
+    weight.push_back(Pair("average", (uint64_t)nAverageWeight));
+    weight.push_back(Pair("total",   (uint64_t)nTotalWeight));
     obj.push_back(Pair("stakeweight", weight));
     obj.push_back(Pair("stakeinterest",  (uint64_t)COIN_YEAR_REWARD));
     obj.push_back(Pair("netstakeweight", GetPoSVKernelPS()));
@@ -175,12 +174,12 @@ Value getstakinginfo(const Array& params, bool fHelp)
             "getstakinginfo\n"
             "Returns an object containing staking-related information.");
 
-    uint64 nMinWeight = 0, nMaxWeight = 0, nWeight = 0;
-    pwalletMain->GetStakeWeight(*pwalletMain, nMinWeight, nMaxWeight, nWeight);
+    uint64 nAverageWeight = 0, nTotalWeight = 0;
+    pwalletMain->GetStakeWeight(*pwalletMain, nAverageWeight, nTotalWeight);
 
     uint64 nNetworkWeight = GetPoSVKernelPS();
-    bool staking = nLastCoinStakeSearchInterval && nWeight;
-    int nExpectedTime = staking ? (nTargetSpacing * nNetworkWeight / nWeight) : -1;
+    bool staking = nLastCoinStakeSearchInterval && nAverageWeight;
+    int nExpectedTime = staking ? (nTargetSpacing * nNetworkWeight / nAverageWeight) : -1;
 
     Object obj;
 
@@ -194,9 +193,9 @@ Value getstakinginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("difficulty", (double)GetDifficulty(GetLastBlockIndex(pindexBest, true))));
     obj.push_back(Pair("search-interval", (int)nLastCoinStakeSearchInterval));
 
-    obj.push_back(Pair("weight", (uint64_t)nWeight));
+    obj.push_back(Pair("averageweight", (uint64_t)nAverageWeight));
+    obj.push_back(Pair("totalweight", (uint64_t)nTotalWeight));
     obj.push_back(Pair("netstakeweight", (uint64_t)nNetworkWeight));
-
     obj.push_back(Pair("expectedtime", nExpectedTime));
 
     return obj;
