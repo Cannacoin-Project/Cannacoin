@@ -193,7 +193,6 @@ public:
 
     // ppcoin
     int64 GetStake() const;
-    int64 GetNewMint() const;
     bool GetStakeWeight(const CKeyStore& keystore, uint64& nAverageWeight, uint64& nTotalWeight);
     bool CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, int64 nFees, CTransaction& txNew, CKey& key);
 
