@@ -1476,29 +1476,36 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nAverageWeight, 
         return false;
 
     nAverageWeight = nTotalWeight = 0;
+    uint64 nWeightCount = 0;
 
     BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
     {
+        CTransaction tx;
+        uint256 hashBlock = 0;
         {
             LOCK2(cs_main, cs_wallet);
-            CTransaction tx;
-            uint256 hashBlock = 0;
             if (!GetTransaction(pcoin.first->GetHash(), tx, hashBlock, true))
+                continue;
+            if (!mapBlockIndex.count(hashBlock))
                 continue;
         }
 
-        int64 nTimeWeight = GetCoinAgeWeight((int64)pcoin.first->nTime, (int64)GetTime());
+        // Deal with transaction timestmap
+        unsigned int nTimeTx = tx.nTime ? tx.nTime : mapBlockIndex[hashBlock]->nTime;
+
+        int64 nTimeWeight = GetCoinAgeWeight((int64)nTimeTx, (int64)GetTime());
         CBigNum bnCoinDayWeight = CBigNum(pcoin.first->vout[pcoin.second].nValue) * nTimeWeight / COIN / (24 * 60 * 60);
 
         // Weight is greater than zero
         if (nTimeWeight > 0)
         {
             nTotalWeight += bnCoinDayWeight.getuint64();
+            nWeightCount++;
         }
     }
 
-    if (setCoins.size() > 0)
-        nAverageWeight = nTotalWeight / (uint64)setCoins.size();
+    if (nWeightCount > 0)
+        nAverageWeight = nTotalWeight / nWeightCount;
 
     return true;
 }
@@ -1652,8 +1659,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         if (txNew.vout.size() == 2 && ((pcoin.first->vout[pcoin.second].scriptPubKey == scriptPubKeyKernel || pcoin.first->vout[pcoin.second].scriptPubKey == txNew.vout[1].scriptPubKey))
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
-            int64 nTimeWeight = GetCoinAgeWeight((int64)pcoin.first->nTime, (int64)txNew.nTime);
-
             // Stop adding more inputs if already too many inputs
             if (txNew.vin.size() >= 100)
                 break;
@@ -1666,8 +1671,22 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             // Do not add additional significant input
             if (pcoin.first->vout[pcoin.second].nValue >= nStakeCombineThreshold)
                 continue;
+
+            CTransaction tx;
+            uint256 hashBlock = 0;
+            {
+                LOCK2(cs_main, cs_wallet);
+                if (!GetTransaction(pcoin.first->GetHash(), tx, hashBlock, true))
+                    continue;
+                if (!mapBlockIndex.count(hashBlock))
+                    continue;
+            }
+
+            // Deal with transaction timestmap
+            unsigned int nTimeTx = tx.nTime ? tx.nTime : mapBlockIndex[hashBlock]->nTime;
+
             // Do not add input that is still too young
-            if (nTimeWeight == 0)
+            if (!GetCoinAgeWeight((int64)nTimeTx, (int64)txNew.nTime))
                 continue;
 
             txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));

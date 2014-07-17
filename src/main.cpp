@@ -2199,7 +2199,7 @@ bool CTransaction::GetCoinAge(uint64& nCoinAge) const
             return false; // unable to read block of previous transaction
         if (!block.ReadFromDisk(mapBlockIndex[hashBlock]))
             return false; // unable to read block of previous transaction
-        if (block.GetBlockTime() + nStakeMinAge > nTime)
+        if (block.nTime + nStakeMinAge > nTime)
             continue; // only count coins meeting min age requirement
 
         // deal with missing timestamps in PoW blocks

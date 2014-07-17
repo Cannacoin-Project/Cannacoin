@@ -72,6 +72,12 @@ int64 GetCoinAgeWeightLinear(int64 nIntervalBeginning, int64 nIntervalEnd)
  */
 int64 GetCoinAgeWeight(int64 nIntervalBeginning, int64 nIntervalEnd)
 {
+    if (nIntervalBeginning <= 0)
+    {
+        printf("WARNING *** GetCoinAgeWeight: nIntervalBeginning (%"PRI64d") <= 0\n", nIntervalBeginning);
+        return 0;
+    }
+
     int64 nSeconds = max((int64)0, nIntervalEnd - nIntervalBeginning - nStakeMinAge);
     double days = double(nSeconds) / (24 * 60 * 60);
     double weight = 0;
