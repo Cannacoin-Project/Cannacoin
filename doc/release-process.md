@@ -190,7 +190,7 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 **Windows .zip and setup.exe:**
 
 	unzip reddcoin-${VERSION}-win-gitian.zip -d reddcoin-${VERSION}-win
-	mv reddcoin-${VERSION}-win/reddcoin-*-setup.exe .
+	cp reddcoin-${VERSION}-win/32/reddcoin-*-setup.exe .
 	zip -r reddcoin-${VERSION}-win.zip reddcoin-${VERSION}-win
 	rm -rf reddcoin-${VERSION}-win
 
