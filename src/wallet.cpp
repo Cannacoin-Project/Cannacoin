@@ -519,6 +519,14 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
             boost::thread t(runCommand, strCmd); // thread runs free
         }
 
+        // notify an external script when a coinstake transaction is created
+        strCmd = GetArg("-stakenotify", "");
+
+        if ( !strCmd.empty() && wtxIn.IsCoinStake())
+        {
+            boost::replace_all(strCmd, "%s", wtxIn.GetHash().GetHex());
+            boost::thread t(runCommand, strCmd); // thread runs free
+        }
     }
     return true;
 }
