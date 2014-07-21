@@ -87,6 +87,7 @@ int64 nMinimumInputValue = DUST_HARD_LIMIT;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 set<pair<COutPoint, unsigned int> > setStakeSeenOrphan;
 static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
+static CBigNum bnProofOfStakeReset(1);
 int64 nReserveBalance = 0;
 unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
 unsigned int nStakeMaxAge = 45 * 24 *  60 * 60; // 45 days
@@ -1234,8 +1235,11 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     }
     else if (fProofOfStake && (uint64)(BlockLastSolved->nHeight - LAST_POW_BLOCK) < PastBlocksMin)
     {
-        // difficulty is reset to minimum at the first PoSV blocks
-        return bnProofOfStakeLimit.GetCompact();
+        // difficulty is reset at the first PoSV blocks
+        if (fTestNet)
+            return bnProofOfStakeLimit.GetCompact();
+        else
+            return bnProofOfStakeReset.GetCompact();
     }
 
     for (unsigned int i = 1; BlockReading && BlockReading->nHeight > (fProofOfStake ? LAST_POW_BLOCK : 0); i++)
