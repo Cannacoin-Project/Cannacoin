@@ -3237,7 +3237,13 @@ bool LoadBlockIndex()
     // Load block index from databases
     //
     if (!fReindex && !LoadBlockIndexDB())
-        return false;
+    {
+        // (partially) missing blockchain. reset checkpoint.
+        if (!Checkpoints::ResetSyncCheckpoint())
+            return error("LoadBlockIndex() : failed to reset sync-checkpoint");
+        else
+            return false;
+    }
 
     string strPubKey = "";
     CTxDB txdb("cr+");
