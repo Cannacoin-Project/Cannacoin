@@ -87,7 +87,7 @@ int64 nMinimumInputValue = DUST_HARD_LIMIT;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 set<pair<COutPoint, unsigned int> > setStakeSeenOrphan;
 static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
-static CBigNum bnProofOfStakeReset(1);
+static CBigNum bnProofOfStakeReset(~uint256(0) >> 32); // 1
 int64 nReserveBalance = 0;
 unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
 unsigned int nStakeMaxAge = 45 * 24 *  60 * 60; // 45 days
