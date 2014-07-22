@@ -686,6 +686,10 @@ bool CTxMemPool::accept(CValidationState &state, CTransaction &tx, bool fCheckIn
     if (tx.IsCoinStake())
         return state.DoS(100, error("CTxMemPool::accept() : coinstake as individual tx"));
 
+    // PoSV: refuse transactions with old versions
+    if(pindexBest->nHeight >= LAST_POW_BLOCK && tx.nVersion <= POW_TX_VERSION)
+        return state.DoS(100, error("CTxMemPool::accept() : tx with old pre-PoSV version"));
+
     // To help v0.1.5 clients who would see it as a negative number
     if ((int64)tx.nLockTime > std::numeric_limits<int>::max())
         return error("CTxMemPool::accept() : not accepting nLockTime beyond 2038 yet");

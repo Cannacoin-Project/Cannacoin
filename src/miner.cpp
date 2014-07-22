@@ -119,9 +119,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
     CBlock *pblock = &pblocktemplate->block; // pointer for convenience
     CBlockIndex* pindexPrev = pindexBest;
 
-    bool fProofOfStake = false;
-    if (pindexPrev->nHeight >= LAST_POW_BLOCK)
-        fProofOfStake = true;
+    bool fProofOfStake = pindexPrev->nHeight >= LAST_POW_BLOCK;
 
     // Create coinbase tx
     CTransaction txNew;
