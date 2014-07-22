@@ -304,7 +304,7 @@ std::string HelpMessage()
         "  -?                     " + _("This help message") + "\n" +
         "  -conf=<file>           " + _("Specify configuration file (default: reddcoin.conf)") + "\n" +
         "  -pid=<file>            " + _("Specify pid file (default: reddcoind.pid)") + "\n" +
-        "  -gen                   " + _("Generate coins (default: 0)") + "\n" +
+        "  -staking               " + _("Stake your coins to support network and gain reward (default: 1)") + "\n" +
         "  -datadir=<dir>         " + _("Specify data directory") + "\n" +
         "  -dbcache=<n>           " + _("Set database cache size in megabytes (default: 25)") + "\n" +
         "  -timeout=<n>           " + _("Specify connection timeout in milliseconds (default: 5000)") + "\n" +
@@ -1163,7 +1163,7 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     // Generate coins in the background
     if (pwalletMain)
-        GenerateReddcoins(GetBoolArg("-gen", true), pwalletMain);
+        GenerateReddcoins(GetBoolArg("-staking", true), pwalletMain);
 
     // ********************************************************* Step 12: finished
 

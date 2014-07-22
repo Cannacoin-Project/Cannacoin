@@ -90,7 +90,7 @@ Value getgenerate(const Array& params, bool fHelp)
     if (!pMiningKey)
         return false;
 
-    return GetBoolArg("-gen");
+    return GetBoolArg("-staking");
 }
 
 
@@ -113,7 +113,7 @@ Value setgenerate(const Array& params, bool fHelp)
         if (nGenProcLimit == 0)
             fGenerate = false;
     }
-    mapArgs["-gen"] = (fGenerate ? "1" : "0");
+    mapArgs["-staking"] = (fGenerate ? "1" : "0");
 
     assert(pwalletMain != NULL);
     GenerateReddcoins(fGenerate, pwalletMain);
@@ -147,7 +147,7 @@ Value getmininginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("currentblocktx",(uint64_t)nLastBlockTx));
     obj.push_back(Pair("difficulty",    (double)GetDifficulty()));
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
-    obj.push_back(Pair("generate",      GetBoolArg("-gen")));
+    obj.push_back(Pair("generate",      GetBoolArg("-staking")));
     obj.push_back(Pair("genproclimit",  (int)GetArg("-genproclimit", 0)));
     obj.push_back(Pair("hashespersec",  gethashespersec(params, false)));
     obj.push_back(Pair("networkhashps", getnetworkhashps(params, false)));
