@@ -190,8 +190,16 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
             if (tx.IsCoinBase() || tx.IsCoinStake() || !tx.IsFinal())
                 continue;
 
-            if (!fProofOfStake)
+            if (fProofOfStake && tx.nVersion <= POW_TX_VERSION)
+            {
+                // In PoSV blocks, stop processing transactions of older versions.
+                continue;
+            }
+            else if (!fProofOfStake && tx.nVersion > POW_TX_VERSION)
+            {
+                // In PoW blocks, delay processing transactions of new versions.
                 tx.nVersion = POW_TX_VERSION;
+            }
 
             COrphan* porphan = NULL;
             double dPriority = 0;
