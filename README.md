@@ -10,25 +10,25 @@ Copyright (c) 2014 Reddcoin Developers
 What is Reddcoin?
 ----------------
 
-Reddcoin first started in January 2014 as a variant of Litecoin using Scrypt as
-the Proof-of-Work hash algorithm.
+On 2nd August 2014 at block 260,800 Reddcoin transitioned to its own original Proof-of-Stake-Velocity (PoSV)
+algorithm which replaced Proof-of-Work (PoW).
  - 1 minute block target
- - subsidy halves in 500,000 blocks
- - ~109 billion total coins
- - 100,000 coins per block
- - Difficulty Retarget: Every block using Kimoto's gravity well.
-
-Reddcoin is in transition to its own designed Proof-of-Stake-Velocity (PoSV) which
-will replace Proof-of-Work (PoW) in second half of 2014.
- - 1 minute block target
- - subsidy halves every 50,000 blocks starting at block 140,000
- - ~30 billion mined during the PoW era
- - 5% annual interest once in PoSV era
- - academic paper: http://www.reddcoin.com/papers/PoSV.pdf
+ - just under 27 billion mined in PoW phase
+ - 5% annual interest in PoSV phase
+ - difficulty retarget: every block using Kimoto's gravity well
+ - white paper: http://www.reddcoin.com/papers/PoSV.pdf
  - FAQs paper: http://www.reddcoin.com/papers/PoSV_FAQ.pdf
 
+Reddcoin first started in January 2014 as a variant of Litecoin using Scrypt as
+the Proof-of-Work (PoW) hash algorithm.
+ - 1 minute block target
+ - 100,000 coins per block
+ - subsidy halves every 500,000 blocks
+ - subsidy halves every 50,000 blocks starting at block 140,000
+ - difficulty retarget: every block using Kimoto's gravity well
+
 For more information, as well as an immediately useable, binary version of
-the Reddcoin client sofware, see http://www.reddcoin.com.
+the Reddcoin wallet client, please visit http://www.reddcoin.com.
 
 License
 -------
