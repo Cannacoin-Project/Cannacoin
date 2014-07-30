@@ -1157,8 +1157,8 @@ public:
         // tx timestamp
         ::Unserialize(s, VARINT(nTime), nType, nVersion);
         // coinstake
-        char nCoinStake = 0;
-        ::Unserialize(s, VARINT(nCoinStake), nType, nVersion);
+        unsigned char nCoinStake = 0;
+        ::Unserialize(s, nCoinStake, nType, nVersion);
         fCoinStake = nCoinStake & 1;
         Cleanup();
     }
