@@ -1120,7 +1120,7 @@ public:
         ::Serialize(s, VARINT(nTime), nType, nVersion);
         // coinstake
         unsigned char nCoinStake = fCoinStake ? 1 : 0;
-        ::Serialize(s, VARINT(nCoinStake), nType, nVersion);
+        ::Serialize(s, nCoinStake, nType, nVersion);
     }
 
     template<typename Stream>
