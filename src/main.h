@@ -1085,8 +1085,7 @@ public:
         // tx timestamp
         nSize += ::GetSerializeSize(VARINT(nTime), nType, nVersion);
         // coinstake
-        char nCoinStake = fCoinStake ? 1 : 0;
-        nSize += ::GetSerializeSize(VARINT(nCoinStake), nType, nVersion);
+        nSize += 1;
         return nSize;
     }
 
@@ -1120,7 +1119,7 @@ public:
         // tx timestamp
         ::Serialize(s, VARINT(nTime), nType, nVersion);
         // coinstake
-        char nCoinStake = fCoinStake ? 1 : 0;
+        unsigned char nCoinStake = fCoinStake ? 1 : 0;
         ::Serialize(s, VARINT(nCoinStake), nType, nVersion);
     }
 
