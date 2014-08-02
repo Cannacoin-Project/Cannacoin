@@ -1714,6 +1714,9 @@ bool CBlock::DisconnectBlock(CValidationState &state, CBlockIndex *pindex, CCoin
         // but it must be corrected before txout nversion ever influences a network rule.
         if (outsBlock.nVersion < 0)
             outs.nVersion = outsBlock.nVersion;
+        // Old tx in orphaned blocks do not have nTime set to block nTime. Set them now.
+        if (outs.nTime == 0 && outsBlock.nTime != 0)
+            outs.nTime = outsBlock.nTime;
         if (outs != outsBlock)
         {
             fClean = fClean && error("DisconnectBlock() : added transaction mismatch? database corrupted");
