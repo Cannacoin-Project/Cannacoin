@@ -1554,6 +1554,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     CScript scriptPubKeyKernel;
     BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
     {
+        boost::this_thread::interruption_point();
+
         CTransaction tx;
         uint256 hashBlock = 0;
         {
