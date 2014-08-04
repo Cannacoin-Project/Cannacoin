@@ -145,7 +145,7 @@ namespace Checkpoints
     }
 
     // ppcoin: synchronized checkpoint (centrally broadcasted)
-    uint256 hashSyncCheckpoint = 0;
+    uint256 hashSyncCheckpoint = fTestNet ? hashGenesisBlockTestNet : hashGenesisBlock;
     uint256 hashPendingCheckpoint = 0;
     CSyncCheckpoint checkpointMessage;
     CSyncCheckpoint checkpointMessagePending;
@@ -352,7 +352,7 @@ namespace Checkpoints
         }
 
         // last resort. set sync checkpoint to genesis before downloading any blockchain
-        if (WriteSyncCheckpoint(fTestNet? hashGenesisBlockTestNet : hashGenesisBlock))
+        if (WriteSyncCheckpoint(fTestNet ? hashGenesisBlockTestNet : hashGenesisBlock))
         {
             printf("ResetSyncCheckpoint: sync-checkpoint reset to hashGenesisBlock\n");
             return true;
@@ -379,7 +379,7 @@ namespace Checkpoints
 
         // Test signing a sync-checkpoint with genesis block
         CSyncCheckpoint checkpoint;
-        checkpoint.hashCheckpoint = fTestNet? hashGenesisBlockTestNet: hashGenesisBlock;
+        checkpoint.hashCheckpoint = fTestNet ? hashGenesisBlockTestNet: hashGenesisBlock;
         CDataStream sMsg(SER_NETWORK, PROTOCOL_VERSION);
         sMsg << (CUnsignedSyncCheckpoint)checkpoint;
         checkpoint.vchMsg = std::vector<unsigned char>(sMsg.begin(), sMsg.end());
