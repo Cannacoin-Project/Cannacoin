@@ -915,7 +915,7 @@ void BitcoinGUI::updateStakingIcon()
         }
 
         labelStakingIcon->setPixmap(QIcon(":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
-        labelStakingIcon->setToolTip(tr("Staking.<br>Your average weight is %1<br>Your total weight is %2<br>Network weight is %3<br>Expected time to earn reward is %4").arg(nAverageWeight).arg(nTotalWeight).arg(nNetworkWeight).arg(text));
+        labelStakingIcon->setToolTip(tr("Staking.<br>Your average weight is %1<br>Your total weight is %2<br>Network weight is %3<br>Expected to earn reward once every %4").arg(nAverageWeight).arg(nTotalWeight).arg(nNetworkWeight).arg(text));
     }
     else
     {
