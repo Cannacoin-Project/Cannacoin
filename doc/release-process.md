@@ -222,6 +222,7 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 	brew install qt --HEAD
 	/usr/local/bin/qmake -spec unsupported/macx-clang-libc++ reddcoin-qt.pro USE_UPNP=1 STATIC=1
 	make
+	codesign -s "Developer ID" Reddcoin-Qt.app
 	export QTDIR=/usr/local/Cellar/qt/4.8.6/  # needed to find translations/qt_*.qm files
 	T=$(contrib/qt_translations.py $QTDIR/translations src/qt/locale)
 	python2.7 share/qt/clean_mac_info_plist.py
