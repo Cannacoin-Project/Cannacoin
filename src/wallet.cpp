@@ -19,13 +19,16 @@ using namespace std;
 bool bSpendZeroConfChange = true;
 
 typedef vector<unsigned char> valtype;
-// we split the coinstake value in two to avoid concentrating
-// too many coins in one output.
+
+// we split the coinstake output in two to avoid concentrating
+// too many coins in one output. currently almost always split.
 unsigned int nStakeSplitAge = 45 * 24 * 60 * 60; // 45 days
 // avoid concentrated transactions. on average, each block contains:
-// generated interest  ~= 27.5b * 5% / 365 / 1440 ~= 2.6k
-// corresponding stake ~= 27.5b / 365 / 1440 ~= 52k
-int64 nStakeCombineThreshold = 50000 * COIN;
+// generated interest  ~= 27b * 5% / 365 / 1440 ~= 2.5k
+// corresponding stake ~= 27b / 365 / 1440 ~= 50k
+// optimally each output stakes once every week so 50k * 52 = 2.6m
+// but only a fraction of the total money supply is staked on the network
+int64 nStakeCombineThreshold = 2000000 * COIN;
 
 //////////////////////////////////////////////////////////////////////////////
 //
