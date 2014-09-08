@@ -1649,7 +1649,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
 
-                if (GetCoinAgeWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge)
+                if (GetCoinAgeWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge && nCredit >= nStakeCombineThreshold)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
