@@ -1616,8 +1616,8 @@ bool CTransaction::CheckInputs(CValidationState &state, CCoinsViewCache &inputs,
             }
 
             // ppcoin: check transaction timestamp
-            if (coins.nTime > nTime)
-                return state.DoS(100, error("CheckInputs() : transaction timestamp earlier than input transaction"));
+            if ((unsigned int)coins.nTime > nTime)
+                return state.DoS(100, error("CheckInputs() : transaction timestamp %u earlier than input transaction %"PRI64d"", nTime, coins.nTime));
 
             // Check for negative or overflow input values
             nValueIn += coins.vout[prevout.n].nValue;
@@ -1839,7 +1839,8 @@ bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsVi
         bool fProofOfStake = pindex->nHeight > LAST_POW_BLOCK;
         for (unsigned int i=fProofOfStake ? 1 : 0; i<vtx.size(); i++) {
             uint256 hash = GetTxHash(i);
-            printf("CBlock::ConnectBlock : nHeight=%u, PoSV=%d, vts=%u\n", pindex->nHeight, fProofOfStake, i);
+            if (fDebug)
+                printf("CBlock::ConnectBlock : nHeight=%u, PoSV=%d, vts=%u\n", pindex->nHeight, fProofOfStake, i);
             if (view.HaveCoins(hash) && !view.GetCoins(hash).IsPruned())
                 return state.DoS(100, error("ConnectBlock() : tried to overwrite transaction"));
         }
