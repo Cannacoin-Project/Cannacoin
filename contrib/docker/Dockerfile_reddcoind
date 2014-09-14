@@ -3,34 +3,36 @@
 # Based on Ubuntu
 ############################################################
 
-FROM ubuntu
+FROM ubuntu:14.04
 MAINTAINER laudney
 
 RUN apt-get update
 RUN apt-get install -y git make g++ python-leveldb libboost-all-dev libssl-dev libdb++-dev pkg-config libminiupnpc-dev wget xz-utils
+RUN apt-get clean
 
 RUN adduser reddcoin --disabled-password
-RUN su - reddcoin
-RUN mkdir ~/bin ~/src
-RUN echo PATH=\"\$HOME/bin:\$PATH\" >> ~/.bash_profile
-RUN echo $PATH
+USER reddcoin
 
-RUN cd ~/src
+WORKDIR /home/reddcoin
+RUN mkdir bin src
+RUN echo PATH=\"\$HOME/bin:\$PATH\" >> .bash_profile
+
+WORKDIR /home/reddcoin/src
 RUN git clone https://github.com/reddcoin-project/reddcoin.git
-RUN cd reddcoin/src
+
+WORKDIR	/home/reddcoin/src/reddcoin/src
 RUN make -f makefile.unix
-RUN strip ~/src/reddcoin/src/reddcoind
-RUN cp -f ~/src/reddcoin/src/reddcoind ~/bin/reddcoind
+RUN strip reddcoind
+RUN cp -f reddcoind /home/reddcoin/bin/
+RUN make -f makefile.unix clean
 
-RUN mkdir ~/.reddcoin
-RUN cp ~/src/reddcoin/contrib/docker/reddcoin.conf ~/.reddcoin/
+WORKDIR	 /home/reddcoin
+RUN mkdir .reddcoin
+RUN cp -f src/reddcoin/contrib/docker/reddcoin.conf .reddcoin/
 
-RUN cd ~/.reddcoin
-RUN wget https://github.com/reddcoin-project/reddcoin/releases/download/v1.3.1.2/bootstrap.dat.xz
-RUN xz -d bootstrap.dat.xz
-RUN ~/bin/reddcoind
+RUN cd .reddcoin
+RUN wget -q https://github.com/reddcoin-project/reddcoin/releases/download/v1.3.1.2/bootstrap.dat.xz
 
 EXPOSE 8332
 USER reddcoin
-WORKDIR ~/
-ENTRYPOINT ~/bin/reddcoind
+ENTRYPOINT /home/reddcoin/bin/reddcoind
