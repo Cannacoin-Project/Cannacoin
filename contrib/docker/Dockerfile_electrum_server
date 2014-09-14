@@ -12,7 +12,6 @@ RUN apt-get clean
 RUN easy_install jsonrpclib irc plyvel
 
 RUN adduser reddcoin --disabled-password
-RUN adduser electrum --disabled-password
 USER reddcoin
 
 WORKDIR /home/reddcoin
@@ -29,14 +28,14 @@ RUN python setup.py install
 
 WORKDIR /var
 RUN touch /var/log/electrum.log
-RUN chown electrum:electrum /var/log/electrum.log
+RUN chown reddcoin:reddcoin /var/log/electrum.log
 RUN wget -q http://reddwallet.org/electrum.tar.gz
 RUN tar -zxvf electrum.tar.gz
 RUN rm electrum.tar.gz
-RUN chown electrum:electrum -R electrum-server
+RUN chown reddcoin:reddcoin -R electrum-server
 
-RUN echo "electrum hard nofile 65536" >> /etc/security/limits.conf
-RUN echo "electrum soft nofile 65536" >> /etc/security/limits.conf
+RUN echo "reddcoin hard nofile 65536" >> /etc/security/limits.conf
+RUN echo "reddcoin soft nofile 65536" >> /etc/security/limits.conf
 
 USER reddcoin
 WORKDIR	/home/reddcoin
@@ -46,6 +45,6 @@ RUN rm server.pass.key
 RUN openssl req -new -key server.key -out server.csr -subj '/CN=www.my.com/O=My Company Name LTD./C=US'
 RUN openssl x509 -req -days 730 -in server.csr -signkey server.key -out server.crt
 
+ENV HOME /root
 EXPOSE 50001 50002
 USER root
-ENTRYPOINT electrum-server start

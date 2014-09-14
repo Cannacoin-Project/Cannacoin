@@ -30,9 +30,9 @@ WORKDIR	 /home/reddcoin
 RUN mkdir .reddcoin
 RUN cp -f src/reddcoin/contrib/docker/reddcoin.conf .reddcoin/
 
-RUN cd .reddcoin
+WORKDIR /home/reddcoin/.reddcoin
 RUN wget -q https://github.com/reddcoin-project/reddcoin/releases/download/v1.3.1.2/bootstrap.dat.xz
 
+ENV HOME /home/reddcoin
 EXPOSE 8332
 USER reddcoin
-ENTRYPOINT /home/reddcoin/bin/reddcoind
