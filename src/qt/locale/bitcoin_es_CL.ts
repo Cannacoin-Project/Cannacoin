@@ -2631,7 +2631,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>Opciones SSL: (ver la Reddcoin Wiki para instrucciones de configuración SSL)</translation>
     </message>
     <message>

@@ -2639,7 +2639,7 @@ rpcpassword=%s
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>SSL选项：(参见Reddcoin Wiki关于SSL设置栏目)</translation>
     </message>
     <message>

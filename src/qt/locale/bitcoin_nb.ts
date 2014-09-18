@@ -2627,7 +2627,7 @@ For eksempel: varselmelding=echo %%s | mail -s &quot;Reddcoin varsel&quot; admin
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>SSL valg: (se Reddcoin Wiki for instruksjoner for oppsett av SSL)</translation>
     </message>
     <message>
