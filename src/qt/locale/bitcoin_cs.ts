@@ -2237,8 +2237,8 @@ Adresa: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>Čekat na spojení na &lt;portu&gt; (výchozí: 45444 nebo testnet: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>Čekat na spojení na &lt;portu&gt; (výchozí: 45444 nebo testnet: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>

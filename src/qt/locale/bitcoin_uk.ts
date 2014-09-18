@@ -2237,8 +2237,8 @@ Address: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>Чекати на з&apos;єднання на &lt;port&gt; (типово: 45444 або тестова мережа: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>Чекати на з&apos;єднання на &lt;port&gt; (типово: 45444 або тестова мережа: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>
