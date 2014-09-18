@@ -2235,8 +2235,8 @@ Address: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>برای اتصالات به &lt;port&gt; (پیش‌فرض: 45444 یا تست‌نت: 145444) گوش کنید</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>برای اتصالات به &lt;port&gt; (پیش‌فرض: 45444 یا تست‌نت: 55444) گوش کنید</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2615,7 +2615,7 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>گزینه ssl (به ویکیreddcoin برای راهنمای راه اندازی ssl مراجعه شود)</translation>
     </message>
     <message>

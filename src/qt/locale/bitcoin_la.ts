@@ -2236,8 +2236,8 @@ Inscriptio: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>Ausculta pro conexionibus in &lt;porta&gt; (praedefinitum: 45444 vel testnet: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>Ausculta pro conexionibus in &lt;porta&gt; (praedefinitum: 45444 vel testnet: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2626,7 +2626,7 @@ exempli gratia: alertnotify=echo %%s | mail -s &quot;Reddcoin Notificatio&quot; 
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>Optiones SSL: (vide vici de Reddcoin pro instructionibus SSL configurationis)</translation>
     </message>
     <message>

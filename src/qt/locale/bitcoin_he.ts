@@ -2236,8 +2236,8 @@ Address: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 45444 או ברשת הבדיקה: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>האזן לחיבורים ב&lt;פורט&gt; (ברירת מחדל: 45444 או ברשת הבדיקה: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2626,7 +2626,7 @@ rpcpassword=%s
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>אפשרויות SSL: (ראה את הויקי של לייטקוין עבור הוראות הגדרת SSL)</translation>
     </message>
     <message>

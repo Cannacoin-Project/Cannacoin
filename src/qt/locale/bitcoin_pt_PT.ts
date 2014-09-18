@@ -2237,8 +2237,8 @@ Endereço: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>Escute por ligações em &lt;port&gt; (por defeito: 45444 ou testnet: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>Escute por ligações em &lt;port&gt; (por defeito: 45444 ou testnet: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2627,7 +2627,7 @@ por exemplo: alertnotify=echo %%s | mail -s &quot;Alerta Reddcoin&quot; admin@fo
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>Opções SSL: (ver a Wiki Reddcoin para instruções de configuração SSL)</translation>
     </message>
     <message>

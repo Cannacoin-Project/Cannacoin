@@ -2244,8 +2244,8 @@ Address: %4
     </message>
     <message>
         <location line="-28"/>
-        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 145444)</source>
-        <translation>在通訊埠 &lt;port&gt; 聽候連線 (預設: 45444, 或若為測試網路: 145444)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 45444 or testnet: 55444)</source>
+        <translation>在通訊埠 &lt;port&gt; 聽候連線 (預設: 45444, 或若為測試網路: 55444)</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2637,7 +2637,7 @@ alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see the Reddcoin Wiki for SSL setup instructions)</source>
+        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
         <translation>SSL 選項: (SSL 設定程序請見 Reddcoin Wiki)</translation>
     </message>
     <message>
