@@ -7,7 +7,7 @@ DEPSDIR:=/usr/i686-w64-mingw32
 CC := i686-w64-mingw32-gcc
 CXX := i686-w64-mingw32-g++
 
-USE_UPNP:=0
+USE_UPNP:=1
 USE_IPV6:=1
 
 INCLUDEPATHS= \
