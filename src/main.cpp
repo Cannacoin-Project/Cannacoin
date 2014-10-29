@@ -1142,7 +1142,7 @@ int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees)
 }
 
 static const int64 nTargetTimespan = .1 * 24 * 60 * 60;  
-static const int64 nTargetSpacing = 1 * 60; // Cannacoin: 60 Seconds
+const int64 nTargetSpacing = 1 * 60; // Cannacoin: 60 Seconds
 
 //
 // maximum nBits value could possible be required nTime after
