@@ -43,6 +43,7 @@ map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xf1b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
 uint256 hashGenesisBlockTestNet("0xc2b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
+static CBigNum bnStartDiff(~uint256(0) >> 26);
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 uint256 nBestChainWork = 0;
@@ -1301,26 +1302,12 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
+
     // always mine PoW blocks at the lowest diff on testnet
     if (fTestNet && pindexLast->nHeight < LAST_POW_BLOCK)
         return bnProofOfWorkLimit.GetCompact();
 
-    static const int64 BlocksTargetSpacing = 1 * 60; // 1 Minute
-    unsigned int       TimeDaySeconds      = 60 * 60 * 24;
-
-    int64 PastSecondsMin = TimeDaySeconds * 0.25;
-    int64 PastSecondsMax = TimeDaySeconds * 7;
-
-    if (pindexLast->nHeight < 6000)
-    {
-        PastSecondsMin = TimeDaySeconds * 0.01;
-        PastSecondsMax = TimeDaySeconds * 0.14;
-    }
-
-    uint64 PastBlocksMin = PastSecondsMin / BlocksTargetSpacing;
-    uint64 PastBlocksMax = PastSecondsMax / BlocksTargetSpacing;
-
-    return KimotoGravityWell(pindexLast, pblock, BlocksTargetSpacing, PastBlocksMin, PastBlocksMax);
+      return KimotoGravityWell(pindexLast, pblock);
 }
 
 bool CheckProofOfWork(uint256 hash, unsigned int nBits)
