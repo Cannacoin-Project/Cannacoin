@@ -57,10 +57,10 @@ static const int64 DUST_SOFT_LIMIT = 100000000; // 1 RDD
 /** Dust Hard Limit, ignored as wallet inputs (mininput default) */
 static const int64 DUST_HARD_LIMIT = 1000000;   // 0.01 RDD mininput
 /** No amount larger than this (in satoshi) is valid */
-static const int64 MAX_MONEY = 92233720368 * COIN; // Maximum or compile warning, will fix in future release.
+static const int64 MAX_MONEY = 13140000 * COIN; // Maximum or compile warning, will fix in future release.
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
-static const int COINBASE_MATURITY = 30;
+static const int COINBASE_MATURITY = 50;
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Maximum number of script-checking threads allowed */
@@ -79,7 +79,7 @@ inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 mi
 
 // Reddcoin PoSV
 static const int LAST_POW_BLOCK = 260800 - 1;
-static const int64 COIN_YEAR_REWARD = 5 * CENT; // 5% per year
+static const int64 COIN_YEAR_REWARD = 1 * CENT; // 5% per year
 
 extern CScript COINBASE_FLAGS;
 
