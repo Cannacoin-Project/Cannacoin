@@ -41,7 +41,7 @@ static const int PROTOCOL_VERSION = 2000000;
 static const int INIT_PROTO_VERSION = 209;
 
 // disconnect from peers older than this proto version
-static const int MIN_PEER_PROTO_VERSION = 70003;
+static const int MIN_PEER_PROTO_VERSION = 1000000;
 
 // nTime field added to CAddress, starting with this version;
 // if possible, avoid requesting addresses nodes older than this
@@ -52,9 +52,9 @@ static const int NOBLKS_VERSION_START = 32000;
 static const int NOBLKS_VERSION_END = 32400;
 
 // BIP 0031, pong message, is enabled for all versions AFTER this one
-static const int BIP0031_VERSION = 60000;
+static const int BIP0031_VERSION = 1000000;
 
 // "mempool" command, enhanced "getdata" behavior starts with this version:
-static const int MEMPOOL_GD_VERSION = 60002;
+static const int MEMPOOL_GD_VERSION = 1000001;
 
 #endif
