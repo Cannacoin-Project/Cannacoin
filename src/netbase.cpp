@@ -356,10 +356,7 @@ bool static ConnectSocketDirectly(const CService &addrConnect, SOCKET& hSocketRe
             fd_set fdset;
             FD_ZERO(&fdset);
             FD_SET(hSocket, &fdset);
-
-            // printf("SELECT(): %i\n", select(hSocket + 1, NULL, &fdset, NULL, &timeout));
-
-            int nRet = 0;
+            int nRet = select(hSocket + 1, NULL, &fdset, NULL, &timeout);
             if (nRet == 0)
             {
                 if (fDebug)
@@ -386,15 +383,8 @@ bool static ConnectSocketDirectly(const CService &addrConnect, SOCKET& hSocketRe
                 return false;
             }
             if (nRet != 0)
-            {   
-                 
-                printf("SOL_SOCKET %i\n", SOL_SOCKET);
-                printf("SO_ERROR is %i\n", SO_ERROR);
-                printf("SOCKET_ERROR %i\n", SOCKET_ERROR);
-                printf("nRet is %i\n", nRet);
-                printf("nRetSize is %i\n", nRetSize);
-
-                printf(" connect() failed after select(): %s\n",strerror(nRet));
+            {
+                printf("connect() failed after select(): %s\n",strerror(nRet));
                 closesocket(hSocket);
                 return false;
             }
