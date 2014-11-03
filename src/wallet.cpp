@@ -1555,7 +1555,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Select coins with suitable depth
     if (!SelectCoinsSimple(nBalance - nReserveBalance, txNew.nTime, COINBASE_MATURITY + 20, setCoins, nValueIn)){
-        printf("No coins with suitable depth")
+        printf("No coins with suitable depth");
         return false;
     }
 
