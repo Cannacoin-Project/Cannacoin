@@ -2727,6 +2727,10 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
 // novacoin: attempt to generate suitable proof-of-stake
 bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 {
+
+    printf("Inside sign block (SubCreative)\n");
+    printf("IsProofOfStake() (1=true, 0=false): %d\n", IsProofOfStake());
+
     // if we are trying to sign
     //    something except proof-of-stake block template
     if (!vtx[0].vout[0].IsEmpty())
@@ -2735,14 +2739,15 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
     // if we are trying to sign
     //    a complete proof-of-stake block
     if (IsProofOfStake())
-        return true;
+        return true; 
 
     static int64 nLastCoinStakeSearchTime = GetAdjustedTime(); // startup timestamp
+    printf("nLastCoinStakeSearchTime : %llu\n", nLastCoinStakeSearchTime);
 
     CKey key;
     CTransaction txCoinStake;
     int64 nSearchTime = txCoinStake.nTime; // search to current time
-
+    printf("nSearchTime : %llu\n", nSearchTime);
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
         if (fDebug)

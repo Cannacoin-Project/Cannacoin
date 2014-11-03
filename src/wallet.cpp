@@ -1,3 +1,4 @@
+    CBlockIndex* pindexPrev = pindexBest;
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014 The Reddcoin developers
@@ -1523,8 +1524,12 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nAverageWeight, 
 
 bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, int64 nFees, CTransaction& txNew, CKey& key)
 {
+    printf("Inside CreateCoinStake - SubCreative\n");
+
     CBlockIndex* pindexPrev = pindexBest;
+
     CBigNum bnTargetPerCoinDay;
+
     bnTargetPerCoinDay.SetCompact(nBits);
 
     txNew.vin.clear();
@@ -1537,6 +1542,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Choose coins to use
     int64 nBalance = GetBalance();
+    printf("Balance %llu\n", nBalance);
+    printf("ReserveBalance %llu\n", nReserveBalance);
 
     if (nBalance <= nReserveBalance)
         return false;
@@ -1547,8 +1554,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64 nValueIn = 0;
 
     // Select coins with suitable depth
-    if (!SelectCoinsSimple(nBalance - nReserveBalance, txNew.nTime, COINBASE_MATURITY + 20, setCoins, nValueIn))
+    if (!SelectCoinsSimple(nBalance - nReserveBalance, txNew.nTime, COINBASE_MATURITY + 20, setCoins, nValueIn)){
+        printf("No coins with suitable depth")
         return false;
+    }
 
     if (setCoins.empty())
         return false;
@@ -1720,7 +1729,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     // Set output amount
-    if (txNew.vout.size() == 3)
+    if (txNew.vout.size() == 3) 
     {
         txNew.vout[1].nValue = (nCredit / 2 / CENT) * CENT;
         txNew.vout[2].nValue = nCredit - txNew.vout[1].nValue;
