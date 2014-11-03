@@ -607,7 +607,7 @@ void StakeMiner(CWallet *pwallet)
         }
         else
         {
-            // printf("StakeMiner : Failed to sign the new block.\n");
+            printf("StakeMiner : Failed to sign the new block.\n");
             MilliSleep(nMinerSleep);
         }
     } }
