@@ -567,7 +567,7 @@ void StakeMiner(CWallet *pwallet)
             nLastCoinStakeSearchInterval = 0;
             MilliSleep(1000);
         }
-
+        /* REMOVE NODE REQUIREMENT (SUBCREATIVE)
         while (vNodes.empty() || IsInitialBlockDownload())
         {
             nLastCoinStakeSearchInterval = 0;
@@ -583,7 +583,7 @@ void StakeMiner(CWallet *pwallet)
                 MilliSleep(60000);
                 continue;
             }
-        }
+        } */
 
         while (pindexBest->nHeight < LAST_POW_BLOCK)
             MilliSleep(60000);
