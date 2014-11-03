@@ -1,4 +1,3 @@
-    CBlockIndex* pindexPrev = pindexBest;
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014 The Reddcoin developers
@@ -1527,9 +1526,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     printf("Inside CreateCoinStake - SubCreative\n");
 
     CBlockIndex* pindexPrev = pindexBest;
-
     CBigNum bnTargetPerCoinDay;
-
     bnTargetPerCoinDay.SetCompact(nBits);
 
     txNew.vin.clear();
