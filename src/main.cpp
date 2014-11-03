@@ -2729,7 +2729,6 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 {
 
     printf("Inside sign block (SubCreative)\n");
-    printf("IsProofOfStake() (1=true, 0=false): %d\n", IsProofOfStake());
 
     // if we are trying to sign
     //    something except proof-of-stake block template
@@ -2738,8 +2737,13 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 
     // if we are trying to sign
     //    a complete proof-of-stake block
-    if (IsProofOfStake())
+    if (IsProofOfStake()){
+        printf("IsProofOfStake() = True!");
         return true; 
+    } else {
+        printf("IsProofOfStake() = False!"); 
+    }
+        
 
     static int64 nLastCoinStakeSearchTime = GetAdjustedTime(); // startup timestamp
     printf("nLastCoinStakeSearchTime : %llu\n", nLastCoinStakeSearchTime);
