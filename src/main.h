@@ -452,12 +452,21 @@ public:
 
     void SetEmpty()
     {
+        
         nValue = 0;
         scriptPubKey.clear();
+        printf("CTxOut SetEmpty() - nVaule: (EXPECTED: 0)%llu\n", nValue);
+        printf("CTxOut SetEmpty() - scriptPubKey: (EXPECTED (NULL) BLANK LINE):\n");
+        scriptPubKey.print();
     }
 
     bool IsEmpty() const
     {
+        printf("CTxOut IsEmpty() - nValue: (EXPECTED 0)%llu\n", nValue);
+        printf("CTxOut IsEmpty() - scriptPubKey (EXPECTED (NULL) BLANK LINE)\n");
+        scriptPubKey.print();
+        printf("CTxOut IsEmpty() - scriptPubKey.empty(): (EXPECTED 1) %d\n", scriptPubKey.empty());
+
         return (nValue == 0 && scriptPubKey.empty());
     }
 
@@ -618,7 +627,14 @@ public:
 
     // ppcoin: the coin stake transaction is marked with the first output empty
     bool IsCoinStake() const
-    {
+    {   
+        printf("CTransaction IsCoinStake() - vin.size() (EXPECTED RESULT > 0): %lu\n", vin.size());
+        printf("CTransaction IsCoinStake() - vin[0].prevout.IsNull() (EXPECTED EMPTY FALSE or 0): %d\n", vin[0].prevout.IsNull());
+        printf("IsCoinStake() - vout[0] (EXPECTED EMPTY OUTPUT ON NEW LINE)\n");
+        vout[0].print();
+        printf("CTransaction IsCoinStake() - vout.size() (EXPECTED RESULT >= 2) %lu\n", vout.size());
+        printf("CTransaction IsCoinStake() - vout[0].IsEmpty() (EXPECTED TRUE OR 1) %d\n", vout[0].IsEmpty());
+
         return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
     }
 
