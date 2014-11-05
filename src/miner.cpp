@@ -146,7 +146,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         assert(txNew.vin[0].scriptSig.size() <= 100);
         txNew.vout[0].SetEmpty();
 
-        printf("CreateNewBlock() Miner.cpp - txNew.vout[0].print();  ");
+        printf("SubCreative - CreateNewBlock() Miner.cpp - txNew.vout[0].print();  ");
         txNew.vout[0].print();
     }
 
@@ -620,7 +620,7 @@ void StakeMiner(CWallet *pwallet)
     } }
     catch (boost::thread_interrupted)
     {
-        printf("StakeMiner terminated\n");
+        printf("StakeMiner terminated: ");
         throw;
     }
 }

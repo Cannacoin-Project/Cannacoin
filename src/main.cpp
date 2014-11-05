@@ -2780,10 +2780,10 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
     // if we are trying to sign
     //    a complete proof-of-stake block
     if (IsProofOfStake()){
-        printf("IsProofOfStake() = True!\n");
+        printf("SubCreative - IsProofOfStake() = True!\n");
         return true; 
     } else {
-        printf("IsProofOfStake() = False!\n"); 
+        printf("SubCreative - IsProofOfStake() = False!\n"); 
     }
         
 
@@ -2799,9 +2799,9 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
         if (fDebug)
 
             printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
-            printf("CBlock::SignBlock : txCoinStake ");
+            printf("SubCreative - CBlock::SignBlock : txCoinStake ");
             txCoinStake.print();
-            printf("CBlock::SignBlock : nBits %d\n", nBits);
+            printf("SubCreative - CBlock::SignBlock : nBits %d\n", nBits);
 
         if (wallet.CreateCoinStake(wallet, nBits, nSearchTime-nLastCoinStakeSearchTime, nFees, txCoinStake, key))
         {

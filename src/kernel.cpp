@@ -374,10 +374,10 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     }
     // Now check if proof-of-stake hash meets target protocol
     if (CBigNum(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay){
-        printf("CheckStakeKernelHash() : Proof-of-stake DOES NOT hash meets target protocol\n");
-        printf("CheckStakeKernelHash() : hashProofOfStake: %s\n", hashProofOfStake.ToString().c_str());
-        printf("CheckStakeKernelHash() : bnCoinDayWeight: %s\n", bnCoinDayWeight.ToString().c_str());
-        printf("CheckStakeKernelHash() : bnTargetPerCoinDay: %s\n", bnTargetPerCoinDay.ToString().c_str());
+        printf("SubCreative - CheckStakeKernelHash() : Proof-of-stake DOES NOT hash meets target protocol\n");
+        printf("SubCreative - CheckStakeKernelHash() : hashProofOfStake: %s\n", hashProofOfStake.ToString().c_str());
+        printf("SubCreative - CheckStakeKernelHash() : bnCoinDayWeight: %s\n", bnCoinDayWeight.ToString().c_str());
+        printf("SubCreative - CheckStakeKernelHash() : bnTargetPerCoinDay: %s\n", bnTargetPerCoinDay.ToString().c_str());
         return false; 
     }
     if (fDebug && !fPrintProofOfStake)
@@ -392,7 +392,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
             nTimeBlockFrom, nTxPrevOffset, nTimeTxPrev, prevout.n, nTimeTx,
             hashProofOfStake.ToString().c_str());
     }
-    printf("CheckStakeKernelHash() SUCCESS: proof-of-stake hash meets target protocol\n");
+    printf("SubCreative - CheckStakeKernelHash() SUCCESS: proof-of-stake hash meets target protocol\n");
     return true;
 }
 
