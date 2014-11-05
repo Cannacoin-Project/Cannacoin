@@ -1196,40 +1196,51 @@ const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfSta
     return pindex;
 }
 
-unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
+unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBlockHeader *pblock, uint64 TargetBlocksSpacingSeconds, uint64 PastBlocksMin, uint64 PastBlocksMax)
 {
+    
     if (pindexLast->nHeight+1 == 160)
         return bnStartDiff.GetCompact();
 
-    // Kimoto Gravity Well (Patched for Time-warp exploit 4/5/14)
-    static const int64  BlocksTargetSpacing = 1 * 60; // 1 minute
-    unsigned int    TimeDaySeconds  = 60 * 60 * 24;
-    int64   PastSecondsMin  = TimeDaySeconds * 0.1;
-    int64   PastSecondsMax  = TimeDaySeconds * 2.8;
-    uint64  PastBlocksMin   = PastSecondsMin / BlocksTargetSpacing;
-    uint64  PastBlocksMax   = PastSecondsMax / BlocksTargetSpacing; 
+    // Kimoto Gravity Well (Patched for Time-warp exploit 4/5/14 - SubCreative)  
+    const CBlockIndex  *BlockLastSolved = pindexLast;
+    const CBlockIndex  *BlockReading    = pindexLast;
 
-    uint64 TargetBlocksSpacingSeconds = BlocksTargetSpacing;
-
-    const CBlockIndex *BlockLastSolved  = pindexLast;
-    const CBlockIndex *BlockReading = pindexLast;
-    uint64  PastBlocksMass  = 0;
-    int64   PastRateActualSeconds   = 0;
-    int64   PastRateTargetSeconds   = 0;
-    double  PastRateAdjustmentRatio = double(1);
+    uint64  PastBlocksMass              = 0;
+    int64   PastRateActualSeconds       = 0;
+    int64   PastRateTargetSeconds       = 0;
+    double  PastRateAdjustmentRatio     = double(1);
     CBigNum PastDifficultyAverage;
     CBigNum PastDifficultyAveragePrev;
-    double  EventHorizonDeviation;
-    double  EventHorizonDeviationFast;
-    double  EventHorizonDeviationSlow;
 
-    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64)BlockLastSolved->nHeight < PastBlocksMin) { return bnProofOfWorkLimit.GetCompact(); }
+    double EventHorizonDeviation;
+    double EventHorizonDeviationFast;
+    double EventHorizonDeviationSlow;
+
+    bool fProofOfStake = false;
+    if (pindexLast && pindexLast->nHeight >= LAST_POW_BLOCK)
+        fProofOfStake = true;
+
+    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || (uint64)BlockLastSolved->nHeight < PastBlocksMin) { 
+
+        return bnProofOfWorkLimit.GetCompact(); 
+
+    } else if (fProofOfStake && (uint64)(BlockLastSolved->nHeight - LAST_POW_BLOCK) < PastBlocksMin) {
+        // difficulty is reset at the first PoSV blocks
+        if (fTestNet)
+            return bnProofOfStakeLimit.GetCompact();
+        else
+            return bnProofOfStakeReset.GetCompact();
+    }
 
     int64 LatestBlockTime = BlockLastSolved->GetBlockTime();
 
-    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-        if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
-                PastBlocksMass++;
+    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > (fProofOfStake ? LAST_POW_BLOCK : 0); i++) {
+        if (PastBlocksMax > 0 && i > PastBlocksMax) { 
+            break; 
+        }
+
+        PastBlocksMass++;
     
         if (i == 1){
             PastDifficultyAverage.SetCompact(BlockReading->nBits);
@@ -1238,13 +1249,14 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
         }
     
         PastDifficultyAveragePrev = PastDifficultyAverage;
-        PastRateActualSeconds   = BlockLastSolved->GetBlockTime() - BlockReading->GetBlockTime();
-    
+        PastRateActualSeconds   = LatestBlockTime - BlockReading->GetBlockTime();
+
         if (LatestBlockTime < BlockReading->GetBlockTime()) {
-                if (BlockReading->nHeight > 16000) { // HARD Fork block number
+                if (BlockReading->nHeight > 16000) { // Cannacoin HARD Fork block number 16000 (Use current block time instead of lastsolved blocktime) 
                         LatestBlockTime = BlockReading->GetBlockTime();        
                 }
         }            
+
         PastRateActualSeconds   = LatestBlockTime - BlockReading->GetBlockTime();
         PastRateTargetSeconds   = TargetBlocksSpacingSeconds * PastBlocksMass;
         PastRateAdjustmentRatio = double(1);
@@ -1252,6 +1264,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
         if (PastRateActualSeconds < 0) {
             PastRateActualSeconds = 0;
         }
+
         if (BlockReading->nHeight > 16000) { // HARD Fork block number
             if (PastRateActualSeconds < 1) {
                 PastRateActualSeconds = 1;
@@ -1259,6 +1272,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
         } else {
             if (PastRateActualSeconds < 0) { PastRateActualSeconds = 0; }
         }
+
         if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
             PastRateAdjustmentRatio = double(PastRateTargetSeconds) / double(PastRateActualSeconds);
         }
@@ -1280,16 +1294,20 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const CBloc
     }
     
     CBigNum bnNew(PastDifficultyAverage);
+
     if (PastRateActualSeconds != 0 && PastRateTargetSeconds != 0) {
         bnNew *= PastRateActualSeconds;
         bnNew /= PastRateTargetSeconds;
     }
-    if (bnNew > bnProofOfWorkLimit) {
+
+    if (!fProofOfStake && bnNew > bnProofOfWorkLimit){
         bnNew = bnProofOfWorkLimit;
+    } else if (fProofOfStake && bnNew > bnProofOfStakeLimit){
+        bnNew = bnProofOfStakeLimit;
     }
 
     /// debug print
-    printf("Difficulty Retarget - Gravity Well\n");
+    printf("Difficulty Retarget - Kimoto Gravity Well (Time-warp patched 4/5/14)\n");
     printf("PastRateAdjustmentRatio = %g\n", PastRateAdjustmentRatio);
     printf("Before: %08x %s\n", BlockLastSolved->nBits, CBigNum().SetCompact(BlockLastSolved->nBits).getuint256().ToString().c_str());
     printf("After: %08x %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
@@ -1304,7 +1322,22 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     if (fTestNet && pindexLast->nHeight < LAST_POW_BLOCK)
         return bnProofOfWorkLimit.GetCompact();
 
-      return KimotoGravityWell(pindexLast, pblock);
+    static const int64 BlocksTargetSpacing  = 1 * 60; // 1 Minute
+    unsigned int TimeDaySeconds             = 60 * 60 * 24;
+
+    int64   PastSecondsMin  = TimeDaySeconds * 0.1;
+    int64   PastSecondsMax  = TimeDaySeconds * 2.8;
+    /* Commented out, removed from Reddcoin 
+    if (pindexLast->nHeight < 60000)
+    {
+        PastSecondsMin = TimeDaySeconds * 0.01;
+        PastSecondsMax = TimeDaySeconds * 0.14;
+    }
+    */
+    uint64 PastBlocksMin = PastSecondsMin / BlocksTargetSpacing;
+    uint64 PastBlocksMax = PastSecondsMax / BlocksTargetSpacing;
+
+    return KimotoGravityWell(pindexLast, pblock, BlocksTargetSpacing, PastBlocksMin, PastBlocksMax);
 }
 
 bool CheckProofOfWork(uint256 hash, unsigned int nBits)

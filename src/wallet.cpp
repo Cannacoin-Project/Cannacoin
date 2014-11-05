@@ -1671,7 +1671,13 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     if (nCredit == 0 || nCredit > nBalance - nReserveBalance){
-        printf("CWallet::CreateCoinStake - (nCredit == 0 || nCredit > nBalance - nReserveBalance)");
+        
+        printf("CreateCoinStake : (nCredit == 0 || nCredit > nBalance - nReserveBalance) - Returned False \n");
+        
+        printf("CreateCoinStake : nCredits: %llu\n", nCredit); 
+        printf("CreateCoinStake : nBalance: %llu\n", nBalance); 
+        printf("CreateCoinStake : nReserveBalance: %llu\n", nReserveBalance); 
+
         return false;
     }
 
@@ -1683,7 +1689,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             && pcoin.first->GetHash() != txNew.vin[0].prevout.hash)
         {
             // Stop adding more inputs if already too many inputs
-            if (txNew.vin.size() >= 100)
+            if (txNew.vin.size() >= 100) 
                 break;
             // Stop adding more inputs if value is already pretty significant
             if (nCredit >= nStakeCombineThreshold)

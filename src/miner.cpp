@@ -145,7 +145,8 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         txNew.vin[0].scriptSig = (CScript() << pindexPrev->nHeight+1) + COINBASE_FLAGS;
         assert(txNew.vin[0].scriptSig.size() <= 100);
         txNew.vout[0].SetEmpty();
-        printf("PRINTTTTTTTTT\n");
+
+        printf("CreateNewBlock() Miner.cpp - txNew.vout[0].print();  ");
         txNew.vout[0].print();
     }
 
