@@ -392,10 +392,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         CValidationState state;
         if (!pblock->ConnectBlock(state, &indexDummy, viewNew, true))
             throw std::runtime_error("CreateNewBlock() : ConnectBlock failed");
-
-        
-        printf("Sub's pblock-print()\n");
-        pblock->print();
     }
 
     return pblocktemplate.release();
@@ -615,6 +611,8 @@ void StakeMiner(CWallet *pwallet)
         }
         else
         {
+            printf("StakeMiner: SubCreative's block print \n"); 
+            pblock->print(); 
             printf("StakeMiner : Failed to sign the new block.\n");
             MilliSleep(nMinerSleep);
         }

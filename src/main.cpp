@@ -2534,15 +2534,19 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         // Reject block.nVersion=1 blocks when 95% (75% on testnet) of the network has upgraded:
         if (nVersion < 2)
         {
+            printf("nVersion is < 2 (SubCreative) - Main.cpp ln. 2357\n");
             if ((!fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 950, 1000)) ||
                 (fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 75, 100)))
             {
+                printf("AcceptBlock() : rejected nVersion=1 block\n");
+
                 return state.Invalid(error("AcceptBlock() : rejected nVersion=1 block"));
             }
         }
         // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
         if (nVersion >= 2)
-        {
+        { 
+            printf("nVersion is >= 2 (SubCreative) - Main.cpp ln. 2549\n");
             // if 750 of the last 1,000 blocks are version 2 or greater (51/100 if testnet):
             if ((!fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 750, 1000)) ||
                 (fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 51, 100)))
@@ -2590,6 +2594,11 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
 
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
 {
+    printf("Inside IsSuperMajority: (SubCreative) \n");
+    printf("minVersion: %i \n", minVersion);
+    printf("nRequired: %i \n", nRequired);
+    printf("nToCheck: %i \n", nToCheck);
+
     // Reddcoin: temporarily disable v2 block lockin until we are ready for v2 transition
     return false;
     unsigned int nFound = 0;
@@ -2738,10 +2747,10 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
     // if we are trying to sign
     //    a complete proof-of-stake block
     if (IsProofOfStake()){
-        printf("IsProofOfStake() = True!");
+        printf("IsProofOfStake() = True!\n");
         return true; 
     } else {
-        printf("IsProofOfStake() = False!"); 
+        printf("IsProofOfStake() = False!\n"); 
     }
         
 
@@ -2755,7 +2764,12 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
         if (fDebug)
+
             printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
+            printf("CBlock::SignBlock : txCoinStake ");
+            txCoinStake.print();
+            printf("CBlock::SignBlock : nBits %d\n", nBits);
+
         if (wallet.CreateCoinStake(wallet, nBits, nSearchTime-nLastCoinStakeSearchTime, nFees, txCoinStake, key))
         {
             printf("CBlock::SignBlock : coinstake created\n");

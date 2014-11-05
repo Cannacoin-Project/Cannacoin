@@ -1552,12 +1552,15 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Select coins with suitable depth
     if (!SelectCoinsSimple(nBalance - nReserveBalance, txNew.nTime, COINBASE_MATURITY + 20, setCoins, nValueIn)){
-        printf("No coins with suitable depth");
+        printf("CWallet::CreateCoinStake - No coins with suitable depth");
         return false;
     }
 
-    if (setCoins.empty())
+    if (setCoins.empty()){
+        printf("CWallet::CreateCoinStake - setCoins.empty()");
         return false;
+    }
+        
 
     int64 nCredit = 0;
     CScript scriptPubKeyKernel;
@@ -1593,6 +1596,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         {
             // Search backward in time from the given txNew timestamp
             // Search nSearchInterval seconds back up to nMaxStakeSearchInterval
+            printf("Search backward in time from the given txNew timestamp - Search nSearchInterval seconds back up to nMaxStakeSearchInterval\n");
             uint256 hashProofOfStake = 0, targetProofOfStake = 0;
             COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
             if (CheckStakeKernelHash(nBits, block, prevoutStake.n, *pcoin.first, prevoutStake, txNew.nTime - n, hashProofOfStake, targetProofOfStake, fDebug))
@@ -1666,8 +1670,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             break; // if kernel is found stop searching
     }
 
-    if (nCredit == 0 || nCredit > nBalance - nReserveBalance)
+    if (nCredit == 0 || nCredit > nBalance - nReserveBalance){
+        printf("CWallet::CreateCoinStake - (nCredit == 0 || nCredit > nBalance - nReserveBalance)");
         return false;
+    }
 
     BOOST_FOREACH(PAIRTYPE(const CWalletTx*, unsigned int) pcoin, setCoins)
     {
@@ -1719,8 +1725,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return error("CreateCoinStake : failed to calculate coin age");
 
         int64 nReward = GetProofOfStakeReward(nCoinAge, nFees);
-        if (nReward <= 0)
-            return false;
+        if (nReward <= 0){
+        printf("CWallet::CreateCoinStake - nReward <= 0");
+        return false;
+    }
 
         nCredit += nReward;
     }
@@ -1748,6 +1756,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         return error("CreateCoinStake : exceeded coinstake size limit");
 
     // Successfully generated coinstake
+    printf("WALLET.CPP CreateCoinStake SUCCESSFULLY GENERATED COINSTAKE\n");
     return true;
 }
 
