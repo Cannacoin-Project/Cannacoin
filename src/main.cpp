@@ -2770,7 +2770,7 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
 bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 {
 
-    printf("Inside sign block (SubCreative)\n");
+    printf("SubCreative - Inside CBlock::SignBlock \n");
 
     // if we are trying to sign
     //    something except proof-of-stake block template
@@ -2780,20 +2780,20 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
     // if we are trying to sign
     //    a complete proof-of-stake block
     if (IsProofOfStake()){
-        printf("SubCreative - IsProofOfStake() = True!\n");
+        printf("SubCreative - CBlock::SignBlock - IsProofOfStake() = True!\n");
         return true; 
     } else {
-        printf("SubCreative - IsProofOfStake() = False!\n"); 
+        printf("SubCreative - CBlock::SignBlock - IsProofOfStake() = False!\n"); 
     }
         
 
     static int64 nLastCoinStakeSearchTime = GetAdjustedTime(); // startup timestamp
-    printf("nLastCoinStakeSearchTime : %llu\n", nLastCoinStakeSearchTime);
+    printf("SubCreative - CBlock::SignBlock - nLastCoinStakeSearchTime : %llu\n", nLastCoinStakeSearchTime);
 
     CKey key;
     CTransaction txCoinStake;
     int64 nSearchTime = txCoinStake.nTime; // search to current time
-    printf("nSearchTime : %llu\n", nSearchTime);
+    printf("SubCreative - CBlock::SignBlock - nSearchTime : %llu\n", nSearchTime);
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
         if (fDebug)
