@@ -109,6 +109,7 @@ static bool GetLastStakeModifier(const CBlockIndex* pindex, uint64& nStakeModifi
 // Get selection interval section (in seconds)
 static int64 GetStakeModifierSelectionIntervalSection(int nSection)
 {
+    printf("SubCreative - Kernel.cpp - Inside GetStakeModifierSelectionIntervalSection()\n");
     assert (nSection >= 0 && nSection < 64);
     return (nModifierInterval * 63 / (63 + ((63 - nSection) * (MODIFIER_INTERVAL_RATIO - 1))));
 }
@@ -116,6 +117,7 @@ static int64 GetStakeModifierSelectionIntervalSection(int nSection)
 // Get stake modifier selection interval (in seconds)
 static int64 GetStakeModifierSelectionInterval()
 {
+    printf("SubCreative - Inside GetStakeModifierSelectionInterval()\n");
     int64 nSelectionInterval = 0;
     for (int nSection=0; nSection<64; nSection++)
         nSelectionInterval += GetStakeModifierSelectionIntervalSection(nSection);
@@ -132,6 +134,7 @@ static int64 GetStakeModifierSelectionInterval()
 static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTimestamp, map<uint256, const CBlockIndex*>& mapSelectedBlocks,
     int64 nSelectionIntervalStop, uint64 nStakeModifierPrev, const CBlockIndex** pindexSelected)
 {
+    printf("SubCreative - Kernel.cpp - Inside SelectBlockFromCandidates()\n");
     bool fSelected = false;
     uint256 hashBest = 0;
     *pindexSelected = (const CBlockIndex*) 0;
@@ -140,8 +143,11 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
         if (!mapBlockIndex.count(item.second))
             return error("SelectBlockFromCandidates: failed to find block index for candidate block %s", item.second.ToString().c_str());
         const CBlockIndex* pindex = mapBlockIndex[item.second];
-        if (fSelected && pindex->GetBlockTime() > nSelectionIntervalStop)
+        if (fSelected && pindex->GetBlockTime() > nSelectionIntervalStop){
+            printf("SubCreative - SelectBlockFromCandidates - (fSelected && pindex->GetBlockTime() > nSelectionIntervalStop)\n");
             break;
+        }
+            
         if (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0)
             continue;
         // compute the selection hash by hashing its proof-hash and the
@@ -152,21 +158,26 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
         // the selection hash is divided by 2**32 so that proof-of-stake block
         // is always favored over proof-of-work block. this is to preserve
         // the energy efficiency property
+
+        printf("SubCreative - pindex->IsProofOfStake(): %d\n", pindex->IsProofOfStake()); 
+
         if (pindex->IsProofOfStake())
             hashSelection >>= 32;
         if (fSelected && hashSelection < hashBest)
         {
+            printf("SubCreative - SelectBlockFromCandidates - (fSelected && hashSelection < hashBest) = True");
             hashBest = hashSelection;
             *pindexSelected = (const CBlockIndex*) pindex;
         }
         else if (!fSelected)
         {
+            printf("SubCreative - SelectBlockFromCandidates - !fSelected = True");
             fSelected = true;
             hashBest = hashSelection;
             *pindexSelected = (const CBlockIndex*) pindex;
         }
     }
-    if (fDebug && GetBoolArg("-printstakemodifier"))
+    if (fDebug)
         printf("SelectBlockFromCandidates: selection hash=%s\n", hashBest.ToString().c_str());
     return fSelected;
 }
@@ -186,6 +197,7 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
 // blocks.
 bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64& nStakeModifier, bool& fGeneratedStakeModifier)
 {
+    printf("SubCreative - Kernel.cpp - Inside ComputeNextStakeModifier()\n");
     nStakeModifier = 0;
     fGeneratedStakeModifier = false;
     if (!pindexPrev)
@@ -274,6 +286,7 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64& nStakeModif
 // modifier about a selection interval later than the coin generating the kernel
 static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier, int& nStakeModifierHeight, int64& nStakeModifierTime, bool fPrintProofOfStake)
 {
+    printf("SubCreative - Kernel.cpp - Inside GetKernelStakeModifier()\n");
     nStakeModifier = 0;
     if (!mapBlockIndex.count(hashBlockFrom))
         return error("GetKernelStakeModifier() : block not indexed");
@@ -298,7 +311,7 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
         {
             nStakeModifierHeight = pindex->nHeight;
             nStakeModifierTime = pindex->GetBlockTime();
-            // printf("GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
+            printf("SubCreative - GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
         }
     }
     nStakeModifier = pindex->nStakeModifier;
@@ -328,6 +341,8 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
 //
 bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned int nTxPrevOffset, const CTransaction& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, uint256& targetProofOfStake, bool fPrintProofOfStake)
 {
+    printf("SubCreative - Kernel.cpp - Inside CheckStakeKernelHash()\n");
+
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
     unsigned int nTimeTxPrev = txPrev.nTime;
 
@@ -404,6 +419,7 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hashProofOfStake, uint256& targetProofOfStake)
 {
+    printf("SubCreative - Kernel.cpp - Inside CheckProofOfStake()\n");
     if (!tx.IsCoinStake())
         return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString().c_str());
 
@@ -438,6 +454,7 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
 // Check whether the coinstake timestamp meets protocol
 bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 {
+    printf("SubCreative - Kernel.cpp - Inside CheckCoinStakeTimestamp()\n");
     // v0.3 protocol
     return (nTimeBlock == nTimeTx);
 }
@@ -445,6 +462,7 @@ bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 // Get stake modifier checksum
 unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 {
+    printf("SubCreative - Kernel.cpp - Inside GetStakeModifierChecksum()\n");
     assert (pindex->pprev || pindex->GetBlockHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
     // Hash previous checksum with flags, hashProofOfStake and nStakeModifier
     CDataStream ss(SER_GETHASH, 0);
@@ -459,6 +477,7 @@ unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 // Check stake modifier hard checkpoints
 bool CheckStakeModifierCheckpoints(int nHeight, uint64 nStakeModifierChecksum)
 {
+    printf("SubCreative - Kernel.cpp - Inside CheckStakeModifierCheckpoints()\n");
     if (fDebug)
         printf("CheckStakeModifierCheckpoints : nHeight=%d, nStakeModifierChecksum=0x%016"PRI64x"\n", nHeight, nStakeModifierChecksum);
 
