@@ -78,7 +78,7 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Reddcoin PoSV
-static const int LAST_POW_BLOCK = 312400 - 1;
+static const int LAST_POW_BLOCK = 321250 - 1;
 static const int64 COIN_YEAR_REWARD = 1 * CENT; // 5% per year
 
 extern CScript COINBASE_FLAGS;
