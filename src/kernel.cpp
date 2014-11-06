@@ -354,6 +354,11 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     int nStakeModifierHeight = 0;
     int64 nStakeModifierTime = 0;
 
+    //SubCreatives Prints
+    printf("SubCreative - CheckStakeKernelHash() : %llu\n", nValueIn);
+    printf("SubCreative - CheckStakeKernelHash() : %s\n", hashBlockFrom.ToString().c_str());
+    printf("SubCreative - CheckStakeKernelHash() :  %s\n", targetProofOfStake.ToString().c_str());
+
     if (!GetKernelStakeModifier(hashBlockFrom, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake))
         return false;
     ss << nStakeModifier;

@@ -1539,8 +1539,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Choose coins to use
     int64 nBalance = GetBalance();
-    printf("Balance %llu\n", nBalance);
-    printf("ReserveBalance %llu\n", nReserveBalance);
+    printf("SubCreative - Balance %llu\n", nBalance);
+    printf("SubCreative - ReserveBalance %llu\n", nReserveBalance);
 
     if (nBalance <= nReserveBalance)
         return false;
@@ -1596,7 +1596,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         {
             // Search backward in time from the given txNew timestamp
             // Search nSearchInterval seconds back up to nMaxStakeSearchInterval
-            printf("SubCreative - Search backward in time from the given txNew timestamp - Search nSearchInterval seconds back up to nMaxStakeSearchInterval\n");
+            printf("SubCreative - Searching backward in time from the given txNew timestamp - Search nSearchInterval seconds back up to nMaxStakeSearchInterval\n");
             uint256 hashProofOfStake = 0, targetProofOfStake = 0;
             COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
             if (CheckStakeKernelHash(nBits, block, prevoutStake.n, *pcoin.first, prevoutStake, txNew.nTime - n, hashProofOfStake, targetProofOfStake, fDebug))
