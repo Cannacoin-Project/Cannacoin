@@ -147,7 +147,7 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
         }
             
         if (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0){
-            printf("SubCreative - SelectBlockFromCandidates - (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0) = True.. Continue...\n", );
+            printf("SubCreative - SelectBlockFromCandidates - (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0) = True.. Continue...\n");
             continue;
         }
             
@@ -159,7 +159,7 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
         // the selection hash is divided by 2**32 so that proof-of-stake block
         // is always favored over proof-of-work block. this is to preserve
         // the energy efficiency property
-        printf("SubCreative - SelectBlockFromCandidates - hashSelection%s\n", hashSelection.ToString().c_str();
+        printf("SubCreative - SelectBlockFromCandidates - hashSelection%s\n", hashSelection.ToString().c_str());
         printf("SubCreative - pindex->IsProofOfStake(): %d\n", pindex->IsProofOfStake()); 
 
         if (pindex->IsProofOfStake())
