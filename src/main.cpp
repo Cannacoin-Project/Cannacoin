@@ -2443,6 +2443,10 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
 
     if (IsProofOfStake())
     {
+        printf("SubCreative - CBlock::CheckBlock vtx.print()\n");
+        vtx[0].print();
+        vtx[1].print();
+
         // Coinbase output should be empty if proof-of-stake block
         if (vtx[0].vout.size() != 1 || !vtx[0].vout[0].IsEmpty())
             return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));

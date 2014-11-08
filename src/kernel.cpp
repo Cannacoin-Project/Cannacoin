@@ -466,11 +466,6 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
 // Check whether the coinstake timestamp meets protocol
 bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 {
-    printf("\n\n\n\nSubCreative - Kernel.cpp - Inside CheckCoinStakeTimestamp()\n");
-    printf("SubCreative - Kernel.cpp nTimeBlock: %llu\n", nTimeBlock);
-    printf("SubCreative - Kernel.cpp nTimeTx: %llu\n'\n\n\n", nTimeTx);
-
-    // v0.3 protocol 
     return (nTimeBlock == nTimeTx);
 }
 
