@@ -139,14 +139,12 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
     else
     {
         if (fDebug)
-            printf("CreateNewBlock : new PoSV block\n");
+            printf("CreateNewBlock : Creating new POSV block\n");
 
         // Height first in coinbase required for block.version=2
         txNew.vin[0].scriptSig = (CScript() << pindexPrev->nHeight+1) + COINBASE_FLAGS;
         assert(txNew.vin[0].scriptSig.size() <= 100);
         txNew.vout[0].SetEmpty();
-        printf("SubCreative - CreateNewBlock() Miner.cpp - txNew.vout[0].print();  ");
-        txNew.vout[0].print();
     }
 
     // Add our coinbase tx as first transaction
@@ -390,9 +388,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn)
         CValidationState state;
         if (!pblock->ConnectBlock(state, &indexDummy, viewNew, true))
             throw std::runtime_error("CreateNewBlock() : ConnectBlock failed");
-        
-        printf("SubCreative - CreateNewBlock - pblock-print(): ");
-        pblock->print();
     }
 
     return pblocktemplate.release();

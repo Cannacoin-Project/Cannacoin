@@ -20,11 +20,17 @@ unsigned int nModifierInterval = 13 * 60;
 
 // FIXME
 // Hard checkpoints of stake modifiers to ensure they are deterministic
+// When updating checkpoints in the future, use -debug on startup to print out block modifier Checksums for use below.
+// It's also posslble to enter false checksum with proper blockheight and debug will output error and a return of a valid checksum that can be used on next startup.
 static std::map<int, uint64> mapStakeModifierCheckpoints =
     boost::assign::map_list_of
-        ( 0,    0x0e00670b )
-        //( 1000, 0x71168906 )
-        //( 2000, 0x4f2ef99d )
+    ( 0,      0x0e00670b )
+    ( 5000,   0x586a4526 )
+    ( 150000, 0x22063638 )
+    //( 200000, 0xe4892bbf ) // ERRORS AFTER THIS POINT, NEED TO REVISIT WHY SOME WORK AND SOME DONT.
+    //( 250000, 0xc23f2d74 )
+    //( 300000, 0x07c15e99 )
+    //( 320000, 0x5c53acd8 )
     ;
 
 // Hard checkpoints of stake modifiers to ensure they are deterministic (testNet)
@@ -290,7 +296,6 @@ bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64& nStakeModif
 // modifier about a selection interval later than the coin generating the kernel
 static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier, int& nStakeModifierHeight, int64& nStakeModifierTime, bool fPrintProofOfStake)
 {
-    printf("SubCreative - Kernel.cpp - Inside GetKernelStakeModifier()\n");
     nStakeModifier = 0;
     if (!mapBlockIndex.count(hashBlockFrom))
         return error("GetKernelStakeModifier() : block not indexed");
@@ -380,10 +385,11 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
 
     if (!GetKernelStakeModifier(hashBlockFrom, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake))
         return false;
+    
     ss << nStakeModifier;
-
     ss << nTimeBlockFrom << nTxPrevOffset << nTimeTxPrev << prevout.n << nTimeTx;
     hashProofOfStake = Hash(ss.begin(), ss.end());
+
     if (fPrintProofOfStake)
     {
         printf("CheckStakeKernelHash() : using modifier 0x%016"PRI64x" at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
@@ -396,14 +402,16 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
             nTimeBlockFrom, nTxPrevOffset, nTimeTxPrev, prevout.n, nTimeTx,
             hashProofOfStake.ToString().c_str());
     }
+
     // Now check if proof-of-stake hash meets target protocol
     if (CBigNum(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay){
         printf("SubCreative - CheckStakeKernelHash() : Proof-of-stake DOES NOT hash meets target protocol\n");
-        printf("SubCreative - CheckStakeKernelHash() : hashProofOfStake: %s\n", hashProofOfStake.ToString().c_str());
+        printf("SubCreative - CheckStakeKernelHash() : hashProofOfStake: %s\n", CBigNum(hashProofOfStake).ToString().c_str());
         printf("SubCreative - CheckStakeKernelHash() : bnCoinDayWeight: %s\n", bnCoinDayWeight.ToString().c_str());
         printf("SubCreative - CheckStakeKernelHash() : bnTargetPerCoinDay: %s\n", bnTargetPerCoinDay.ToString().c_str());
         return false; 
     }
+
     if (fDebug && !fPrintProofOfStake)
     {
         printf("CheckStakeKernelHash() : using modifier 0x%016"PRI64x" at height=%d timestamp=%s for block from height=%d timestamp=%s\n",
@@ -458,14 +466,21 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
 // Check whether the coinstake timestamp meets protocol
 bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 {
-    printf("SubCreative - Kernel.cpp - Inside CheckCoinStakeTimestamp()\n");
-    // v0.3 protocol
+    printf("\n\n\n\nSubCreative - Kernel.cpp - Inside CheckCoinStakeTimestamp()\n");
+    printf("SubCreative - Kernel.cpp nTimeBlock: %llu\n", nTimeBlock);
+    printf("SubCreative - Kernel.cpp nTimeTx: %llu\n'\n\n\n", nTimeTx);
+
+    // v0.3 protocol 
     return (nTimeBlock == nTimeTx);
 }
 
 // Get stake modifier checksum
 unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 {
+    printf("SubCreative - GETTING STAKE MODIFER FOR BLOCK! height=%d, modifier=0x%016"PRI64x" : \n", pindex->nHeight, pindex->nStakeModifier);
+    printf("SubCreative - pindex->IsProofOfStake=%d\n", pindex->IsProofOfStake());
+    printf("SubCreative - pindex->nFlags=%d\n", pindex->nFlags);
+
     assert (pindex->pprev || pindex->GetBlockHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
     // Hash previous checksum with flags, hashProofOfStake and nStakeModifier
     CDataStream ss(SER_GETHASH, 0);
@@ -484,7 +499,10 @@ bool CheckStakeModifierCheckpoints(int nHeight, uint64 nStakeModifierChecksum)
         printf("CheckStakeModifierCheckpoints : nHeight=%d, nStakeModifierChecksum=0x%016"PRI64x"\n", nHeight, nStakeModifierChecksum);
 
     MapModifierCheckpoints& checkpoints = (fTestNet ? mapStakeModifierCheckpointsTestNet : mapStakeModifierCheckpoints);
-    if (checkpoints.count(nHeight))
+
+    if (checkpoints.count(nHeight)){
         return nStakeModifierChecksum == checkpoints[nHeight];
+    }
+
     return true;
 }

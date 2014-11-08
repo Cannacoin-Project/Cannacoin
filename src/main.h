@@ -627,14 +627,7 @@ public:
 
     // ppcoin: the coin stake transaction is marked with the first output empty
     bool IsCoinStake() const
-    {   
-        //printf("CTransaction IsCoinStake() - vin.size() (EXPECTED RESULT > 0): %lu\n", vin.size());
-        //printf("CTransaction IsCoinStake() - vin[0].prevout.IsNull() (EXPECTED EMPTY FALSE or 0): %d\n", vin[0].prevout.IsNull());
-        //printf("IsCoinStake() - vout[0] (EXPECTED EMPTY OUTPUT ON NEW LINE)\n");
-        //vout[0].print();
-        //printf("CTransaction IsCoinStake() - vout.size() (EXPECTED RESULT >= 2) %lu\n", vout.size());
-        //printf("CTransaction IsCoinStake() - vout[0].IsEmpty() (EXPECTED TRUE OR 1) %d\n", vout[0].IsEmpty());
-
+    {        
         return (vin.size() > 0 && (!vin[0].prevout.IsNull()) && vout.size() >= 2 && vout[0].IsEmpty());
     }
 
@@ -1017,7 +1010,8 @@ public:
     // equality test
     friend bool operator==(const CCoins &a, const CCoins &b) {
         if (fDebug)
-        {
+        {   
+            printf("SubCreative - Equality Test: a.fCoinBase=%d b.fCoinBase=%d a.fCoinStake=%d b.fCoinStake=%d\n",a.fCoinBase, b.fCoinBase, a.fCoinStake, b.fCoinStake);
             if (a.fCoinBase != b.fCoinBase)
                 printf("CCoins: fCoinBase mismatch\n");
             if (a.fCoinStake != b.fCoinStake)
@@ -1520,7 +1514,7 @@ public:
 
     // ppcoin: two types of block: proof-of-work or proof-of-stake
     bool IsProofOfStake() const
-    {
+    {   
         return (vtx.size() > 1 && vtx[1].IsCoinStake());
     }
 

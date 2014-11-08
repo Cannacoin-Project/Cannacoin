@@ -2836,7 +2836,7 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
         nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
         nLastCoinStakeSearchTime = nSearchTime;
     }
-
+    
     return false;
 }
 
