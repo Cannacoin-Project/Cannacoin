@@ -1202,6 +1202,7 @@ static const char *strMainNetDNSSeed[][2] = {
 
 static const char *strTestNetDNSSeed[][2] = {
     {"testnet.cannacoin.cc", "testnet.cannacoin.cc"},
+    {"testnet.cannacoin.cc", "testnet.cannapay.io"},
     {NULL, NULL}
 };
 
