@@ -41,7 +41,7 @@ unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xf1b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
-uint256 hashGenesisBlockTestNet("0xc2b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
+uint256 hashGenesisBlockTestNet("0x6d85bd883b58ffb8d441128698ebd166d152c462db1a3ab91f056df22a2611de");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
 static CBigNum bnStartDiff(~uint256(0) >> 26);
 CBlockIndex* pindexGenesisBlock = NULL;
@@ -1119,8 +1119,14 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 
 int64 GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 12.5 * COIN;
-
+    if(fTestNet){
+        if(nHeight <= 100) {nSubsidy = 1000000 * COIN;} else {
+            int64 nSubsidy = 12.5 * COIN;
+        }
+    } else {
+        int64 nSubsidy = 12.5 * COIN;
+    }
+    
     // Subsidy is cut in half every 525600 blocks, which will occur approximately every 1 years
     nSubsidy >>= (nHeight / 525600); // Cannacoin: 525.6K blocks in ~1 years
 
@@ -3332,7 +3338,7 @@ bool InitBlockIndex() {
         if (fTestNet)
         {
             txNew.nTime = block.nTime = 1415864349;
-            block.nNonce = 0;
+            block.nNonce = 2667413;
         }
 
         // If genesis block hash does not match & first value == true, then generate new genesis hash (set to false to ignore generation processes).
