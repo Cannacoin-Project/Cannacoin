@@ -1119,12 +1119,10 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 
 int64 GetBlockValue(int nHeight, int64 nFees)
 {
+    int64 nSubsidy = 12.5 * COIN;
+    
     if(fTestNet){
-        if(nHeight <= 100) {nSubsidy = 1000000 * COIN;} else {
-            int64 nSubsidy = 12.5 * COIN;
-        }
-    } else {
-        int64 nSubsidy = 12.5 * COIN;
+        if(nHeight <= 100) {nSubsidy = 1000000 * COIN;}
     }
     
     // Subsidy is cut in half every 525600 blocks, which will occur approximately every 1 years
