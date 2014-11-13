@@ -1652,18 +1652,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 }
 
                 txNew.nTime -= n;
-                printf("\n\n\n\nSubCreative - CreateCoinStake txNew.nTime: %d\n\n\n\n\n", txNew.nTime);
-                
-
                 txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
                 nCredit += pcoin.first->vout[pcoin.second].nValue;
                 vwtxPrev.push_back(pcoin.first);
                 txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
-                txNew.vin.push_back(CTxIn(pcoin.first->GetHash(), pcoin.second));
-                nCredit += pcoin.first->vout[pcoin.second].nValue;
-                vwtxPrev.push_back(pcoin.first);
-                txNew.vout.push_back(CTxOut(0, scriptPubKeyOut));
-
 
                 if (GetCoinAgeWeight(block.GetBlockTime(), (int64)txNew.nTime) < nStakeSplitAge && nCredit >= nStakeCombineThreshold)
                     txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
@@ -2447,4 +2439,3 @@ void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts)
         vOutpts.push_back(outpt);
     }
 }
-

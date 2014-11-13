@@ -2274,19 +2274,12 @@ bool CBlock::AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos, 
     // ppcoin: compute stake modifier
     uint64 nStakeModifier = 0;
     bool fGeneratedStakeModifier = false;
-
-    if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier)){
+    if (!ComputeNextStakeModifier(pindexNew->pprev, nStakeModifier, fGeneratedStakeModifier))
         return state.Invalid(error("AddToBlockIndex() : ComputeNextStakeModifier() failed"));
-        printf("SubCreative - AddToBlockIndex() : ComputeNextStakeModifier() failed\n");
-    }
-        
     pindexNew->SetStakeModifier(nStakeModifier, fGeneratedStakeModifier);
     pindexNew->nStakeModifierChecksum = GetStakeModifierChecksum(pindexNew);
-
-    if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum)){
+    if (!CheckStakeModifierCheckpoints(pindexNew->nHeight, pindexNew->nStakeModifierChecksum))
         return state.Invalid(error("AddToBlockIndex() : Rejected by stake modifier checkpoint height=%d, modifier=0x%016"PRI64x, pindexNew->nHeight, nStakeModifier));
-        printf("SubCreative - AddToBlockIndex() : Rejected by stake modifier checkpoint\n");
-    }
 
     pindexNew->nChainTx = (pindexNew->pprev ? pindexNew->pprev->nChainTx : 0) + pindexNew->nTx;
     pindexNew->nFile = pos.nFile;
@@ -2443,10 +2436,6 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
 
     if (IsProofOfStake())
     {
-        printf("SubCreative - CBlock::CheckBlock vtx.print()\n");
-        vtx[0].print();
-        vtx[1].print();
-
         // Coinbase output should be empty if proof-of-stake block
         if (vtx[0].vout.size() != 1 || !vtx[0].vout[0].IsEmpty())
             return state.DoS(100, error("CheckBlock() : coinbase output not empty for proof-of-stake block"));
@@ -2459,10 +2448,9 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
                 return state.DoS(100, error("CheckBlock() : more than one coinstake"));
 
         // Check coinstake timestamp
-        /*
         if (!CheckCoinStakeTimestamp(GetBlockTime(), (int64)vtx[1].nTime))
             return state.DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%"PRI64d" nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
-        */
+
         // NovaCoin: check proof-of-stake block signature
         if (fCheckSig && !CheckBlockSignature())
             return state.DoS(100, error("CheckBlock() : bad proof-of-stake block signature"));
@@ -2841,7 +2829,7 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
         nLastCoinStakeSearchInterval = nSearchTime - nLastCoinStakeSearchTime;
         nLastCoinStakeSearchTime = nSearchTime;
     }
-    
+
     return false;
 }
 
@@ -3323,7 +3311,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "08795136517445238056987515653326978746565045253647784699110785997841012011001784";
+        const char* pszTimestamp = fTestNet ? "On Novemember 12, 2014 the CCN Testnet was launched." : "08795136517445238056987515653326978746565045253647784699110785997841012011001784";
         CTransaction txNew;
         txNew.nVersion = 1;
         txNew.nTime = 1390280400;
@@ -3343,16 +3331,48 @@ bool InitBlockIndex() {
 
         if (fTestNet)
         {
-            txNew.nTime = block.nTime = 999999;
-            block.nNonce = 999999;
+            txNew.nTime = block.nTime = 1415864349;
+            block.nNonce = 0;
         }
+
+        // If genesis block hash does not match & first value == true, then generate new genesis hash (set to false to ignore generation processes).
+        if (true && block.GetHash() != hashGenesisBlock)
+        {
+            printf("Searching for genesis block...\n");
+            // This will figure out a valid hash and Nonce if you're
+            // creating a different genesis block:
+            uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+            uint256 thash;
+            char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
+
+            loop
+            {
+                scrypt_1024_1_1_256_sp(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
+                if (thash <= hashTarget)
+                    break;
+                if ((block.nNonce & 0xFFF) == 0)
+                {
+                    printf("nonce %08X: hash = %s (target = %s)\n", block.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+                }
+                ++block.nNonce;
+                if (block.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time\n");
+                    ++block.nTime;
+                }
+            }
+            printf("block.nTime = %u \n", block.nTime);
+            printf("block.nNonce = %u \n", block.nNonce);
+            printf("block.GetHash = %s\n", block.GetHash().ToString().c_str());
+        }
+
 
         //// debug print
         uint256 hash = block.GetHash();
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x04c3ae72b7e099c2a3fe2862ab6280b09c8b1e4cd217237ebb2d0cacc20aaa68"));
+        assert(block.hashMerkleRoot == uint256(fTestNet ? "0x42e5a203b536eeb9831095c2a173718cdcd149ffd4319c45e9eda9bdcd5237ec" : "0x04c3ae72b7e099c2a3fe2862ab6280b09c8b1e4cd217237ebb2d0cacc20aaa68"));
         block.print();
         assert(hash == hashGenesisBlock);
 
