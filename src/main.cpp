@@ -1121,10 +1121,6 @@ int64 GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 12.5 * COIN;
     
-    if(fTestNet){
-        if(nHeight <= 100) {nSubsidy = 1000000 * COIN;}
-    }
-    
     // Subsidy is cut in half every 525600 blocks, which will occur approximately every 1 years
     nSubsidy >>= (nHeight / 525600); // Cannacoin: 525.6K blocks in ~1 years
 
@@ -3340,7 +3336,7 @@ bool InitBlockIndex() {
         }
 
         // If genesis block hash does not match & first value == true, then generate new genesis hash (set to false to ignore generation processes).
-        if (true && block.GetHash() != hashGenesisBlock)
+        if (false && block.GetHash() != hashGenesisBlock)
         {
             printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if you're
