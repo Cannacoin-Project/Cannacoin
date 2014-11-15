@@ -41,7 +41,7 @@ unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xf1b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
-uint256 hashGenesisBlockTestNet("0x6d85bd883b58ffb8d441128698ebd166d152c462db1a3ab91f056df22a2611de");
+uint256 hashGenesisBlockTestNet("0x9d8e1783e489909457ee8971639ad1709919e3188e7c04aa84757109f80880e4");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
 static CBigNum bnStartDiff(~uint256(0) >> 26);
 CBlockIndex* pindexGenesisBlock = NULL;
@@ -3311,7 +3311,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = fTestNet ? "On Novemember 12, 2014 the CCN Testnet was launched." : "08795136517445238056987515653326978746565045253647784699110785997841012011001784";
+        const char* pszTimestamp = fTestNet ? "On Novemember 15, 2014 the CCN Testnet was launched." : "08795136517445238056987515653326978746565045253647784699110785997841012011001784";
         CTransaction txNew;
         txNew.nVersion = 1;
         txNew.nTime = 1390280400;
@@ -3332,11 +3332,11 @@ bool InitBlockIndex() {
         if (fTestNet)
         {
             txNew.nTime = block.nTime = 1415864349;
-            block.nNonce = 2667413;
+            block.nNonce = 1004103;
         }
 
         // If genesis block hash does not match & first value == true, then generate new genesis hash (set to false to ignore generation processes).
-        if (false && block.GetHash() != hashGenesisBlock)
+        if (true && block.GetHash() != hashGenesisBlock)
         {
             printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if you're
@@ -3372,7 +3372,7 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256(fTestNet ? "0x42e5a203b536eeb9831095c2a173718cdcd149ffd4319c45e9eda9bdcd5237ec" : "0x04c3ae72b7e099c2a3fe2862ab6280b09c8b1e4cd217237ebb2d0cacc20aaa68"));
+        assert(block.hashMerkleRoot == uint256(fTestNet ? "0x04b2b21c6484bd7dc672ad2dd2cddebabeeed35a8c5fcb6be1bb3ed582ac3676a" : "0x04c3ae72b7e099c2a3fe2862ab6280b09c8b1e4cd217237ebb2d0cacc20aaa68"));
         block.print();
         assert(hash == hashGenesisBlock);
 
