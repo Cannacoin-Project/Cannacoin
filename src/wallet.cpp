@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014 The Reddcoin developers
+// Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -374,7 +374,7 @@ void CWallet::WalletUpdateSpent(const CTransaction &tx)
                     printf("WalletUpdateSpent: bad wtx %s\n", wtx.GetHash().ToString().c_str());
                 else if (!wtx.IsSpent(txin.prevout.n) && IsMine(wtx.vout[txin.prevout.n]))
                 {
-                    printf("WalletUpdateSpent found spent coin %s RDD %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
+                    printf("WalletUpdateSpent found spent coin %s CCN %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
                     wtx.MarkSpent(txin.prevout.n);
                     wtx.WriteToDisk();
                     NotifyTransactionChanged(this, txin.prevout.hash, CT_UPDATED);
@@ -876,7 +876,7 @@ void CWallet::ReacceptWalletTransactions()
                 }
                 if (fUpdated)
                 {
-                    printf("ReacceptWalletTransactions found spent coin %s RDD %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
+                    printf("ReacceptWalletTransactions found spent coin %s CCN %s\n", FormatMoney(wtx.GetCredit()).c_str(), wtx.GetHash().ToString().c_str());
                     wtx.MarkDirty();
                     wtx.WriteToDisk();
                 }
@@ -1523,8 +1523,6 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64& nAverageWeight, 
 
 bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int64 nSearchInterval, int64 nFees, CTransaction& txNew, CKey& key)
 {
-    printf("Inside CreateCoinStake - SubCreative\n");
-
     CBlockIndex* pindexPrev = pindexBest;
     CBigNum bnTargetPerCoinDay;
     bnTargetPerCoinDay.SetCompact(nBits);
@@ -1539,8 +1537,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Choose coins to use
     int64 nBalance = GetBalance();
-    printf("SubCreative - Balance %llu\n", nBalance);
-    printf("SubCreative - ReserveBalance %llu\n", nReserveBalance);
 
     if (nBalance <= nReserveBalance)
         return false;
@@ -1552,12 +1548,10 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Select coins with suitable depth
     if (!SelectCoinsSimple(nBalance - nReserveBalance, txNew.nTime, COINBASE_MATURITY + 20, setCoins, nValueIn)){
-        printf("SubCreative - CWallet::CreateCoinStake - No coins with suitable depth");
         return false;
     }
 
     if (setCoins.empty()){
-        printf("SubCreative - CWallet::CreateCoinStake - setCoins.empty()");
         return false;
     }
         
@@ -1596,7 +1590,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         {
             // Search backward in time from the given txNew timestamp
             // Search nSearchInterval seconds back up to nMaxStakeSearchInterval
-            printf("SubCreative - Searching backward in time from the given txNew timestamp - Search nSearchInterval seconds back up to nMaxStakeSearchInterval\n");
             uint256 hashProofOfStake = 0, targetProofOfStake = 0;
             COutPoint prevoutStake = COutPoint(pcoin.first->GetHash(), pcoin.second);
             if (CheckStakeKernelHash(nBits, block, prevoutStake.n, *pcoin.first, prevoutStake, txNew.nTime - n, hashProofOfStake, targetProofOfStake, fDebug))
@@ -1671,13 +1664,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     }
 
     if (nCredit == 0 || nCredit > nBalance - nReserveBalance){
-        
-        printf("SubCreative - CreateCoinStake : (nCredit == 0 || nCredit > nBalance - nReserveBalance) - Returned False \n");
-        
-        printf("SubCreative - CreateCoinStake : nCredits: %llu\n", nCredit); 
-        printf("SubCreative - CreateCoinStake : nBalance: %llu\n", nBalance); 
-        printf("SubCreative - CreateCoinStake : nReserveBalance: %llu\n", nReserveBalance); 
-
         return false;
     }
 
@@ -1732,9 +1718,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
         int64 nReward = GetProofOfStakeReward(nCoinAge, nFees);
         if (nReward <= 0){
-        printf("SubCreative - CWallet::CreateCoinStake - nReward <= 0");
-        return false;
-    }
+            return false;
+        }
 
         nCredit += nReward;
     }
@@ -1762,7 +1747,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         return error("CreateCoinStake : exceeded coinstake size limit");
 
     // Successfully generated coinstake
-    printf("SubCreative - WALLET.CPP CreateCoinStake SUCCESSFULLY GENERATED COINSTAKE\n");
     return true;
 }
 

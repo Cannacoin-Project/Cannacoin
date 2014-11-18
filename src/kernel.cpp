@@ -1,5 +1,5 @@
 // Copyright (c) 2012-2013 The PPCoin developers
-// Copyright (c) 2014 The Reddcoin developers
+// Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -55,12 +55,12 @@ int64 GetCoinAgeWeightLinear(int64 nIntervalBeginning, int64 nIntervalEnd)
  * The parameters used in this function are the
  * solutions to a set of intricate mathematical
  * equations chosen specifically to incentivise
- * owners of Reddcoin to participate in minting.
+ * owners of Cannacoin to participate in minting.
  * These parameters are also affected by the values
  * assigned to other variables such as expected
  * block confirmation time.
  * If you are merely forking the source code of
- * Reddcoin, it's highly UNLIKELY that this set of
+ * Cannacoin, it's highly UNLIKELY that this set of
  * parameters work for your purpose. In particular,
  * if you have tweaked the values of other variables,
  * this set of parameters are certainly no longer
@@ -138,7 +138,6 @@ static int64 GetStakeModifierSelectionInterval()
 static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTimestamp, map<uint256, const CBlockIndex*>& mapSelectedBlocks,
     int64 nSelectionIntervalStop, uint64 nStakeModifierPrev, const CBlockIndex** pindexSelected)
 {
-    printf("SubCreative - Kernel.cpp - Inside SelectBlockFromCandidates()\n");
     bool fSelected = false;
     uint256 hashBest = 0;
     *pindexSelected = (const CBlockIndex*) 0;
@@ -148,12 +147,10 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
             return error("SelectBlockFromCandidates: failed to find block index for candidate block %s", item.second.ToString().c_str());
         const CBlockIndex* pindex = mapBlockIndex[item.second];
         if (fSelected && pindex->GetBlockTime() > nSelectionIntervalStop){
-            printf("SubCreative - SelectBlockFromCandidates - (fSelected && pindex->GetBlockTime() > nSelectionIntervalStop)\n");
             break;
         }
             
         if (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0){
-            printf("SubCreative - SelectBlockFromCandidates - (mapSelectedBlocks.count(pindex->GetBlockHash()) > 0) = True.. Continue...\n");
             continue;
         }
             
@@ -165,20 +162,16 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
         // the selection hash is divided by 2**32 so that proof-of-stake block
         // is always favored over proof-of-work block. this is to preserve
         // the energy efficiency property
-        printf("SubCreative - SelectBlockFromCandidates - hashSelection%s\n", hashSelection.ToString().c_str());
-        printf("SubCreative - pindex->IsProofOfStake(): %d\n", pindex->IsProofOfStake()); 
 
         if (pindex->IsProofOfStake())
             hashSelection >>= 32;
         if (fSelected && hashSelection < hashBest)
         {
-            printf("SubCreative - SelectBlockFromCandidates - (fSelected && hashSelection < hashBest) = True");
             hashBest = hashSelection;
             *pindexSelected = (const CBlockIndex*) pindex;
         }
         else if (!fSelected)
         {
-            printf("SubCreative - SelectBlockFromCandidates - !fSelected = True");
             fSelected = true;
             hashBest = hashSelection;
             *pindexSelected = (const CBlockIndex*) pindex;
@@ -204,12 +197,10 @@ static bool SelectBlockFromCandidates(vector<pair<int64, uint256> >& vSortedByTi
 // blocks.
 bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64& nStakeModifier, bool& fGeneratedStakeModifier)
 {
-    printf("SubCreative - Kernel.cpp - Inside ComputeNextStakeModifier()\n");
     nStakeModifier = 0;
     fGeneratedStakeModifier = false;
     if (!pindexPrev)
     {
-        printf("SubCreative - ComputeNextStakeModifier - (!pindexPrev) = True (genesis block's modifier is 0) \n");
         fGeneratedStakeModifier = true;
         return true;  // genesis block's modifier is 0
     }
@@ -320,7 +311,6 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
         {
             nStakeModifierHeight = pindex->nHeight;
             nStakeModifierTime = pindex->GetBlockTime();
-            printf("SubCreative - GetKernelStakeModifier : nStakeModifierHeight=%d\n", nStakeModifierHeight);
         }
     }
     nStakeModifier = pindex->nStakeModifier;
@@ -350,8 +340,6 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
 //
 bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned int nTxPrevOffset, const CTransaction& txPrev, const COutPoint& prevout, unsigned int nTimeTx, uint256& hashProofOfStake, uint256& targetProofOfStake, bool fPrintProofOfStake)
 {
-    printf("SubCreative - Kernel.cpp - Inside CheckStakeKernelHash()\n");
-
     unsigned int nTimeBlockFrom = blockFrom.GetBlockTime();
     unsigned int nTimeTxPrev = txPrev.nTime;
 
@@ -378,11 +366,6 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     int nStakeModifierHeight = 0;
     int64 nStakeModifierTime = 0;
 
-    //SubCreatives Prints
-    printf("SubCreative - CheckStakeKernelHash() nValueIn : %llu\n", nValueIn);
-    printf("SubCreative - CheckStakeKernelHash() hashBlockFrom : %s\n", hashBlockFrom.ToString().c_str());
-    printf("SubCreative - CheckStakeKernelHash() targetProofOfStake : %s\n", targetProofOfStake.ToString().c_str());
-
     if (!GetKernelStakeModifier(hashBlockFrom, nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake))
         return false;
     
@@ -407,7 +390,6 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     // Now check if proof-of-stake hash meets target protocol
     if (CBigNum(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
         return false;
-    
 
     if (fDebug && !fPrintProofOfStake)
     {
@@ -421,14 +403,13 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
             nTimeBlockFrom, nTxPrevOffset, nTimeTxPrev, prevout.n, nTimeTx,
             hashProofOfStake.ToString().c_str());
     }
-    printf("SubCreative - CheckStakeKernelHash() SUCCESS: proof-of-stake hash meets target protocol\n");
+
     return true;
 }
 
 // Check kernel hash target and coinstake signature
 bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hashProofOfStake, uint256& targetProofOfStake)
 {
-    printf("SubCreative - Kernel.cpp - Inside CheckProofOfStake()\n");
     if (!tx.IsCoinStake())
         return error("CheckProofOfStake() : called on non-coinstake %s", tx.GetHash().ToString().c_str());
 
@@ -456,7 +437,7 @@ bool CheckProofOfStake(const CTransaction& tx, unsigned int nBits, uint256& hash
 
     if (!CheckStakeKernelHash(nBits, block, txin.prevout.n, txPrev, txin.prevout, tx.nTime, hashProofOfStake, targetProofOfStake, fDebug))
         return error("CheckProofOfStake() : INFO: check kernel failed on coinstake %s, hashProof=%s", tx.GetHash().ToString().c_str(), hashProofOfStake.ToString().c_str()); // may occur during initial download or if behind on block chain sync
-    printf("SubCreative - CheckProofOfStake : Function Returned True!\n");
+
     return true;
 }
 
@@ -469,10 +450,6 @@ bool CheckCoinStakeTimestamp(int64 nTimeBlock, int64 nTimeTx)
 // Get stake modifier checksum
 unsigned int GetStakeModifierChecksum(const CBlockIndex* pindex)
 {
-    printf("SubCreative - GETTING STAKE MODIFER FOR BLOCK! height=%d, modifier=0x%016"PRI64x" : \n", pindex->nHeight, pindex->nStakeModifier);
-    printf("SubCreative - pindex->IsProofOfStake=%d\n", pindex->IsProofOfStake());
-    printf("SubCreative - pindex->nFlags=%d\n", pindex->nFlags);
-
     assert (pindex->pprev || pindex->GetBlockHash() == (!fTestNet ? hashGenesisBlock : hashGenesisBlockTestNet));
     // Hash previous checksum with flags, hashProofOfStake and nStakeModifier
     CDataStream ss(SER_GETHASH, 0);

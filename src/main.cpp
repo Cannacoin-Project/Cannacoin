@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014 The Reddcoin developers
+// Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +22,7 @@ using namespace std;
 using namespace boost;
 
 #if defined(NDEBUG)
-# error "Reddcoin cannot be compiled without assertions."
+# error "Cannacoin cannot be compiled without assertions."
 #endif
 
 typedef vector<unsigned char> valtype;
@@ -42,7 +42,7 @@ unsigned int nTransactionsUpdated = 0;
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0xf1b4cdf03c86099a0758f1c018d1a10bf05afab436c92b93b42bb88970de9821");
 uint256 hashGenesisBlockTestNet("0x9d8e1783e489909457ee8971639ad1709919e3188e7c04aa84757109f80880e4");
-static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Reddcoin: starting difficulty is 1 / 2^12
+static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Cannacoin: starting difficulty is 1 / 2^12
 static CBigNum bnStartDiff(~uint256(0) >> 26);
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -75,7 +75,7 @@ map<uint256, set<uint256> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "Reddcoin Signed Message:\n";
+const string strMessageMagic = "Cannacoin Signed Message:\n";
 
 double dHashesPerSec = 0.0;
 int64 nHPSTimerStart = 0;
@@ -375,7 +375,7 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 
 bool CTxOut::IsDust() const
 {
-    // Reddcoin: IsDust() detection disabled, allows any valid dust to be relayed.
+    // Cannacoin: IsDust() detection disabled, allows any valid dust to be relayed.
     // The fees imposed on each dust txo is considered sufficient spam deterrant.
     return false;
 }
@@ -638,7 +638,7 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
             nMinFee = 0;
     }
 
-    // Reddcoin
+    // Cannacoin
     // To limit dust spam, add nBaseFee for each output less than DUST_SOFT_LIMIT
     BOOST_FOREACH(const CTxOut& txout, vout)
         if (txout.nValue < DUST_SOFT_LIMIT)
@@ -1327,7 +1327,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     int64   PastSecondsMin  = TimeDaySeconds * 0.1;
     int64   PastSecondsMax  = TimeDaySeconds * 2.8;
-    /* Commented out, removed from Reddcoin 
+    /* Commented out, removed from Cannacoin 
     if (pindexLast->nHeight < 60000)
     {
         PastSecondsMin = TimeDaySeconds * 0.01;
@@ -1783,7 +1783,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("reddcoin-scriptch");
+    RenameThread("cannacoin-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -2567,7 +2567,6 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         // Reject block.nVersion=1 blocks when 95% (75% on testnet) of the network has upgraded:
         if (nVersion < 2)
         {
-            printf("nVersion is < 2 (SubCreative) - Main.cpp ln. 2357\n");
             if ((!fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 950, 1000)) ||
                 (fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 75, 100)))
             {
@@ -2579,7 +2578,6 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
         // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
         if (nVersion >= 2)
         { 
-            printf("nVersion is >= 2 (SubCreative) - Main.cpp ln. 2549\n");
             // if 750 of the last 1,000 blocks are version 2 or greater (51/100 if testnet):
             if ((!fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 750, 1000)) ||
                 (fTestNet && CBlockIndex::IsSuperMajority(2, pindexPrev, 51, 100)))
@@ -2627,12 +2625,7 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
 
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
 {
-    printf("Inside IsSuperMajority: (SubCreative) \n");
-    printf("minVersion: %i \n", minVersion);
-    printf("nRequired: %i \n", nRequired);
-    printf("nToCheck: %i \n", nToCheck);
-
-    // Reddcoin: temporarily disable v2 block lockin until we are ready for v2 transition
+    // Cannacoin: temporarily disable v2 block lockin until we are ready for v2 transition
     return false;
     unsigned int nFound = 0;
     for (unsigned int i = 0; i < nToCheck && nFound < nRequired && pstart != NULL; i++)
@@ -2770,8 +2763,6 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
 bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 {
 
-    printf("SubCreative - Inside CBlock::SignBlock \n");
-
     // if we are trying to sign
     //    something except proof-of-stake block template
     if (!vtx[0].vout[0].IsEmpty())
@@ -2779,29 +2770,20 @@ bool CBlock::SignBlock(CWallet& wallet, int64 nFees)
 
     // if we are trying to sign
     //    a complete proof-of-stake block
-    if (IsProofOfStake()){
-        printf("SubCreative - CBlock::SignBlock - IsProofOfStake() = True!\n");
+    if (IsProofOfStake())
         return true; 
-    } else {
-        printf("SubCreative - CBlock::SignBlock - IsProofOfStake() = False!\n"); 
-    }
-        
 
     static int64 nLastCoinStakeSearchTime = GetAdjustedTime(); // startup timestamp
-    printf("SubCreative - CBlock::SignBlock - nLastCoinStakeSearchTime : %llu\n", nLastCoinStakeSearchTime);
 
     CKey key;
     CTransaction txCoinStake;
     int64 nSearchTime = txCoinStake.nTime; // search to current time
-    printf("SubCreative - CBlock::SignBlock - nSearchTime : %llu\n", nSearchTime);
+
     if (nSearchTime > nLastCoinStakeSearchTime)
     {
         if (fDebug)
 
             printf("CBlock::SignBlock : about to create coinstake: nFees=%lld\n", nFees);
-            printf("SubCreative - CBlock::SignBlock : txCoinStake ");
-            txCoinStake.print();
-            printf("SubCreative - CBlock::SignBlock : nBits %d\n", nBits);
 
         if (wallet.CreateCoinStake(wallet, nBits, nSearchTime-nLastCoinStakeSearchTime, nFees, txCoinStake, key))
         {
@@ -3655,7 +3637,7 @@ bool static AlreadyHave(const CInv& inv)
 // The message start string is designed to be unlikely to occur in normal data.
 // The characters are rarely used upper ASCII, not valid as UTF-8, and produce
 // a large 4-byte int at any alignment.
-unsigned char pchMessageStart[4] = { 0xc7, 0xc0, 0xfc, 0xd5 }; // Reddcoin: increase each by adding 2 to bitcoin's value.
+unsigned char pchMessageStart[4] = { 0xc7, 0xc0, 0xfc, 0xd5 }; // Cannacoin: increase each by adding 2 to bitcoin's value.
 
 
 void static ProcessGetData(CNode* pfrom)

@@ -36,7 +36,7 @@ SendCoinsDialog::SendCoinsDialog(QWidget *parent) :
 #endif
 #if QT_VERSION >= 0x040700
     /* Do not move this to the XML file, Qt before 4.7 will choke on it */
-    ui->lineEditCoinControlChange->setPlaceholderText(tr("Enter a Reddcoin address (starts with R)"));
+    ui->lineEditCoinControlChange->setPlaceholderText(tr("Enter a Cannacoin address (starts with C)"));
 #endif
 
     addEntry();
@@ -484,7 +484,7 @@ void SendCoinsDialog::coinControlChangeEdited(const QString & text)
         else if (!CBitcoinAddress(text.toStdString()).IsValid())
         {
             ui->labelCoinControlChangeLabel->setStyleSheet("QLabel{color:red;}");
-            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Reddcoin address"));
+            ui->labelCoinControlChangeLabel->setText(tr("Warning: Invalid Cannacoin address"));
         }
         else
         {

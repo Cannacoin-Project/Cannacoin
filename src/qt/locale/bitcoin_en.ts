@@ -6,13 +6,13 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../forms/aboutdialog.ui" line="+14"/>
-        <source>About Reddcoin</source>
-        <translation>About Reddcoin</translation>
+        <source>About Cannacoin</source>
+        <translation>About Cannacoin</translation>
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Reddcoin&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Reddcoin&lt;/b&gt; version</translation>
+        <source>&lt;b&gt;Cannacoin&lt;/b&gt; version</source>
+        <translation>&lt;b&gt;Cannacoin&lt;/b&gt; version</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -36,8 +36,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+0"/>
-        <source>The Reddcoin developers</source>
-        <translation>The Reddcoin developers</translation>
+        <source>The Cannacoin developers</source>
+        <translation>The Cannacoin developers</translation>
     </message>
 </context>
 <context>
@@ -69,8 +69,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="+63"/>
-        <source>These are your Reddcoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
-        <translation>These are your Reddcoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</translation>
+        <source>These are your Cannacoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
+        <translation>These are your Cannacoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</translation>
     </message>
     <message>
         <location filename="../forms/addressbookpage.ui" line="+14"/>
@@ -84,8 +84,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+11"/>
-        <source>Sign a message to prove you own a Reddcoin address</source>
-        <translation>Sign a message to prove you own a Reddcoin address</translation>
+        <source>Sign a message to prove you own a Cannacoin address</source>
+        <translation>Sign a message to prove you own a Cannacoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -109,8 +109,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="-44"/>
-        <source>Verify a message to ensure it was signed with a specified Reddcoin address</source>
-        <translation>Verify a message to ensure it was signed with a specified Reddcoin address</translation>
+        <source>Verify a message to ensure it was signed with a specified Cannacoin address</source>
+        <translation>Verify a message to ensure it was signed with a specified Cannacoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -124,8 +124,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="-5"/>
-        <source>These are your Reddcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>These are your Reddcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</translation>
+        <source>These are your Cannacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>These are your Cannacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -277,8 +277,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="-56"/>
-        <source>Reddcoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your reddcoins from being stolen by malware infecting your computer.</source>
-        <translation>Reddcoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your reddcoins from being stolen by malware infecting your computer.</translation>
+        <source>Cannacoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your cannacoins from being stolen by malware infecting your computer.</source>
+        <translation>Cannacoin will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your cannacoins from being stolen by malware infecting your computer.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -376,8 +376,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+4"/>
-        <source>Show information about Reddcoin</source>
-        <translation>Show information about Reddcoin</translation>
+        <source>Show information about Cannacoin</source>
+        <translation>Show information about Cannacoin</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -421,13 +421,13 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="-347"/>
-        <source>Send coins to a Reddcoin address</source>
-        <translation>Send coins to a Reddcoin address</translation>
+        <source>Send coins to a Cannacoin address</source>
+        <translation>Send coins to a Cannacoin address</translation>
     </message>
     <message>
         <location line="+49"/>
-        <source>Modify configuration options for Reddcoin</source>
-        <translation>Modify configuration options for Reddcoin</translation>
+        <source>Modify configuration options for Cannacoin</source>
+        <translation>Modify configuration options for Cannacoin</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -457,8 +457,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <location line="-165"/>
         <location line="+530"/>
-        <source>Reddcoin</source>
-        <translation>Reddcoin</translation>
+        <source>Cannacoin</source>
+        <translation>Cannacoin</translation>
     </message>
     <message>
         <location line="-530"/>
@@ -482,8 +482,8 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+22"/>
-        <source>&amp;About Reddcoin</source>
-        <translation>&amp;About Reddcoin</translation>
+        <source>&amp;About Cannacoin</source>
+        <translation>&amp;About Cannacoin</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -502,13 +502,13 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+7"/>
-        <source>Sign messages with your Reddcoin addresses to prove you own them</source>
-        <translation>Sign messages with your Reddcoin addresses to prove you own them</translation>
+        <source>Sign messages with your Cannacoin addresses to prove you own them</source>
+        <translation>Sign messages with your Cannacoin addresses to prove you own them</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Verify messages to ensure they were signed with specified Reddcoin addresses</source>
-        <translation>Verify messages to ensure they were signed with specified Reddcoin addresses</translation>
+        <source>Verify messages to ensure they were signed with specified Cannacoin addresses</source>
+        <translation>Verify messages to ensure they were signed with specified Cannacoin addresses</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -538,15 +538,15 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     <message>
         <location line="+47"/>
-        <source>Reddcoin client</source>
-        <translation>Reddcoin client</translation>
+        <source>Cannacoin client</source>
+        <translation>Cannacoin client</translation>
     </message>
     <message numerus="yes">
         <location line="+141"/>
-        <source>%n active connection(s) to Reddcoin network</source>
+        <source>%n active connection(s) to Cannacoin network</source>
         <translation>
-            <numerusform>%n active connection to Reddcoin network</numerusform>
-            <numerusform>%n active connections to Reddcoin network</numerusform>
+            <numerusform>%n active connection to Cannacoin network</numerusform>
+            <numerusform>%n active connections to Cannacoin network</numerusform>
         </translation>
     </message>
     <message>
@@ -670,8 +670,8 @@ Address: %4
     <message>
         <location line="-23"/>
         <location line="+23"/>
-        <source>URI can not be parsed! This can be caused by an invalid Reddcoin address or malformed URI parameters.</source>
-        <translation>URI can not be parsed! This can be caused by an invalid Reddcoin address or malformed URI parameters.</translation>
+        <source>URI can not be parsed! This can be caused by an invalid Cannacoin address or malformed URI parameters.</source>
+        <translation>URI can not be parsed! This can be caused by an invalid Cannacoin address or malformed URI parameters.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -685,8 +685,8 @@ Address: %4
     </message>
     <message>
         <location filename="../bitcoin.cpp" line="+111"/>
-        <source>A fatal error occurred. Reddcoin can no longer continue safely and will quit.</source>
-        <translation>A fatal error occurred. Reddcoin can no longer continue safely and will quit.</translation>
+        <source>A fatal error occurred. Cannacoin can no longer continue safely and will quit.</source>
+        <translation>A fatal error occurred. Cannacoin can no longer continue safely and will quit.</translation>
     </message>
 </context>
 <context>
@@ -751,8 +751,8 @@ Address: %4
     </message>
     <message>
         <location line="-5"/>
-        <source>The entered address &quot;%1&quot; is not a valid Reddcoin address.</source>
-        <translation>The entered address &quot;%1&quot; is not a valid Reddcoin address.</translation>
+        <source>The entered address &quot;%1&quot; is not a valid Cannacoin address.</source>
+        <translation>The entered address &quot;%1&quot; is not a valid Cannacoin address.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -770,8 +770,8 @@ Address: %4
     <message>
         <location filename="../guiutil.cpp" line="+424"/>
         <location line="+12"/>
-        <source>Reddcoin-Qt</source>
-        <translation>Reddcoin-Qt</translation>
+        <source>Cannacoin-Qt</source>
+        <translation>Cannacoin-Qt</translation>
     </message>
     <message>
         <location line="-12"/>
@@ -833,13 +833,13 @@ Address: %4
     </message>
     <message>
         <location line="+31"/>
-        <source>Automatically start Reddcoin after logging in to the system.</source>
-        <translation>Automatically start Reddcoin after logging in to the system.</translation>
+        <source>Automatically start Cannacoin after logging in to the system.</source>
+        <translation>Automatically start Cannacoin after logging in to the system.</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Start Reddcoin on system login</source>
-        <translation>&amp;Start Reddcoin on system login</translation>
+        <source>&amp;Start Cannacoin on system login</source>
+        <translation>&amp;Start Cannacoin on system login</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -858,8 +858,8 @@ Address: %4
     </message>
     <message>
         <location line="+6"/>
-        <source>Automatically open the Reddcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatically open the Reddcoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+        <source>Automatically open the Cannacoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the Cannacoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -868,8 +868,8 @@ Address: %4
     </message>
     <message>
         <location line="+7"/>
-        <source>Connect to the Reddcoin network through a SOCKS proxy (e.g. when connecting through Tor).</source>
-        <translation>Connect to the Reddcoin network through a SOCKS proxy (e.g. when connecting through Tor).</translation>
+        <source>Connect to the Cannacoin network through a SOCKS proxy (e.g. when connecting through Tor).</source>
+        <translation>Connect to the Cannacoin network through a SOCKS proxy (e.g. when connecting through Tor).</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -943,8 +943,8 @@ Address: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting Reddcoin.</source>
-        <translation>The user interface language can be set here. This setting will take effect after restarting Reddcoin.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting Cannacoin.</source>
+        <translation>The user interface language can be set here. This setting will take effect after restarting Cannacoin.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -958,8 +958,8 @@ Address: %4
     </message>
     <message>
         <location line="+9"/>
-        <source>Whether to show Reddcoin addresses in the transaction list or not.</source>
-        <translation>Whether to show Reddcoin addresses in the transaction list or not.</translation>
+        <source>Whether to show Cannacoin addresses in the transaction list or not.</source>
+        <translation>Whether to show Cannacoin addresses in the transaction list or not.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1010,8 +1010,8 @@ Address: %4
     <message>
         <location line="-9"/>
         <location line="+9"/>
-        <source>This setting will take effect after restarting Reddcoin.</source>
-        <translation>This setting will take effect after restarting Reddcoin.</translation>
+        <source>This setting will take effect after restarting Cannacoin.</source>
+        <translation>This setting will take effect after restarting Cannacoin.</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -1029,8 +1029,8 @@ Address: %4
     <message>
         <location line="+50"/>
         <location line="+166"/>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Reddcoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Reddcoin network after a connection is established, but this process has not completed yet.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Cannacoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Cannacoin network after a connection is established, but this process has not completed yet.</translation>
     </message>
     <message>
         <location line="-124"/>
@@ -1083,8 +1083,8 @@ Address: %4
     <name>PaymentServer</name>
     <message>
         <location filename="../paymentserver.cpp" line="+107"/>
-        <source>Cannot start reddcoin: click-to-pay handler</source>
-        <translation>Cannot start reddcoin: click-to-pay handler</translation>
+        <source>Cannot start cannacoin: click-to-pay handler</source>
+        <translation>Cannot start cannacoin: click-to-pay handler</translation>
     </message>
 </context>
 <context>
@@ -1233,8 +1233,8 @@ Address: %4
     </message>
     <message>
         <location line="+7"/>
-        <source>Show the Reddcoin-Qt help message to get a list with possible Reddcoin command-line options.</source>
-        <translation>Show the Reddcoin-Qt help message to get a list with possible Reddcoin command-line options.</translation>
+        <source>Show the Cannacoin-Qt help message to get a list with possible Cannacoin command-line options.</source>
+        <translation>Show the Cannacoin-Qt help message to get a list with possible Cannacoin command-line options.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1253,13 +1253,13 @@ Address: %4
     </message>
     <message>
         <location line="-104"/>
-        <source>Reddcoin - Debug window</source>
-        <translation>Reddcoin - Debug window</translation>
+        <source>Cannacoin - Debug window</source>
+        <translation>Cannacoin - Debug window</translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>Reddcoin Core</source>
-        <translation>Reddcoin Core</translation>
+        <source>Cannacoin Core</source>
+        <translation>Cannacoin Core</translation>
     </message>
     <message>
         <location line="+279"/>
@@ -1268,8 +1268,8 @@ Address: %4
     </message>
     <message>
         <location line="+7"/>
-        <source>Open the Reddcoin debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Open the Reddcoin debug log file from the current data directory. This can take a few seconds for large log files.</translation>
+        <source>Open the Cannacoin debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Open the Cannacoin debug log file from the current data directory. This can take a few seconds for large log files.</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -1278,8 +1278,8 @@ Address: %4
     </message>
     <message>
         <location filename="../rpcconsole.cpp" line="-30"/>
-        <source>Welcome to the Reddcoin RPC console.</source>
-        <translation>Welcome to the Reddcoin RPC console.</translation>
+        <source>Welcome to the Cannacoin RPC console.</source>
+        <translation>Welcome to the Cannacoin RPC console.</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1421,8 +1421,8 @@ Address: %4
     </message>
     <message>
         <location line="+34"/>
-        <source>The address to send the payment to (starts with R)</source>
-        <translation>The address to send the payment to (starts with R)</translation>
+        <source>The address to send the payment to (starts with C)</source>
+        <translation>The address to send the payment to (starts with C)</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -1462,8 +1462,8 @@ Address: %4
     </message>
     <message>
         <location filename="../sendcoinsentry.cpp" line="+1"/>
-        <source>Enter a Reddcoin address (starts with R)</source>
-        <translation>Enter a Reddcoin address (starts with R)</translation>
+        <source>Enter a Cannacoin address (starts with C)</source>
+        <translation>Enter a Cannacoin address (starts with C)</translation>
     </message>
 </context>
 <context>
@@ -1485,8 +1485,8 @@ Address: %4
     </message>
     <message>
         <location line="+18"/>
-        <source>The address to sign the message with (starts with R)</source>
-        <translation>The address to sign the message with (starts with R)</translation>
+        <source>The address to sign the message with (starts with C)</source>
+        <translation>The address to sign the message with (starts with C)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1527,8 +1527,8 @@ Address: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Reddcoin address</source>
-        <translation>Sign the message to prove you own this Reddcoin address</translation>
+        <source>Sign the message to prove you own this Cannacoin address</source>
+        <translation>Sign the message to prove you own this Cannacoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1558,13 +1558,13 @@ Address: %4
     </message>
     <message>
         <location line="+21"/>
-        <source>The address the message was signed with (starts with R)</source>
-        <translation>The address the message was signed with (starts with R)</translation>
+        <source>The address the message was signed with (starts with C)</source>
+        <translation>The address the message was signed with (starts with C)</translation>
     </message>
     <message>
         <location line="+40"/>
-        <source>Verify the message to ensure it was signed with the specified Reddcoin address</source>
-        <translation>Verify the message to ensure it was signed with the specified Reddcoin address</translation>
+        <source>Verify the message to ensure it was signed with the specified Cannacoin address</source>
+        <translation>Verify the message to ensure it was signed with the specified Cannacoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1579,8 +1579,8 @@ Address: %4
     <message>
         <location filename="../signverifymessagedialog.cpp" line="+27"/>
         <location line="+3"/>
-        <source>Enter a Reddcoin address (starts with R)</source>
-        <translation>Enter a Reddcoin address (starts with R)</translation>
+        <source>Enter a Cannacoin address (starts with C)</source>
+        <translation>Enter a Cannacoin address (starts with C)</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -1589,8 +1589,8 @@ Address: %4
     </message>
     <message>
         <location line="+3"/>
-        <source>Enter Reddcoin signature</source>
-        <translation>Enter Reddcoin signature</translation>
+        <source>Enter Cannacoin signature</source>
+        <translation>Enter Cannacoin signature</translation>
     </message>
     <message>
         <location line="+82"/>
@@ -1663,8 +1663,8 @@ Address: %4
     <name>SplashScreen</name>
     <message>
         <location filename="../splashscreen.cpp" line="+22"/>
-        <source>The Reddcoin developers</source>
-        <translation>The Reddcoin developers</translation>
+        <source>The Cannacoin developers</source>
+        <translation>The Cannacoin developers</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2216,8 +2216,8 @@ Address: %4
     <name>bitcoin-core</name>
     <message>
         <location filename="../bitcoinstrings.cpp" line="+94"/>
-        <source>Reddcoin version</source>
-        <translation>Reddcoin version</translation>
+        <source>Cannacoin version</source>
+        <translation>Cannacoin version</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -2226,8 +2226,8 @@ Address: %4
     </message>
     <message>
         <location line="-29"/>
-        <source>Send command to -server or reddcoind</source>
-        <translation>Send command to -server or reddcoind</translation>
+        <source>Send command to -server or cannacoind</source>
+        <translation>Send command to -server or cannacoind</translation>
     </message>
     <message>
         <location line="-23"/>
@@ -2246,13 +2246,13 @@ Address: %4
     </message>
     <message>
         <location line="+24"/>
-        <source>Specify configuration file (default: reddcoin.conf)</source>
-        <translation>Specify configuration file (default: reddcoin.conf)</translation>
+        <source>Specify configuration file (default: cannacoin.conf)</source>
+        <translation>Specify configuration file (default: cannacoin.conf)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Specify pid file (default: reddcoind.pid)</source>
-        <translation>Specify pid file (default: reddcoind.pid)</translation>
+        <source>Specify pid file (default: cannacoind.pid)</source>
+        <translation>Specify pid file (default: cannacoind.pid)</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -2329,24 +2329,24 @@ Address: %4
         <source>%s, you must set a rpcpassword in the configuration file:
 %s
 It is recommended you use the following random password:
-rpcuser=reddcoinrpc
+rpcuser=cannacoinrpc
 rpcpassword=%s
 (you do not need to remember this password)
 The username and password MUST NOT be the same.
 If the file does not exist, create it with owner-readable-only file permissions.
 It is also recommended to set alertnotify so you are notified of problems;
-for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
+for example: alertnotify=echo %%s | mail -s &quot;Cannacoin Alert&quot; admin@foo.com
 </source>
         <translation>%s, you must set a rpcpassword in the configuration file:
 %s
 It is recommended you use the following random password:
-rpcuser=reddcoinrpc
+rpcuser=cannacoinrpc
 rpcpassword=%s
 (you do not need to remember this password)
 The username and password MUST NOT be the same.
 If the file does not exist, create it with owner-readable-only file permissions.
 It is also recommended to set alertnotify so you are notified of problems;
-for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo.com
+for example: alertnotify=echo %%s | mail -s &quot;Cannacoin Alert&quot; admin@foo.com
 </translation>
     </message>
     <message>
@@ -2361,8 +2361,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+3"/>
-        <source>Cannot obtain a lock on data directory %s. Reddcoin is probably already running.</source>
-        <translation>Cannot obtain a lock on data directory %s. Reddcoin is probably already running.</translation>
+        <source>Cannot obtain a lock on data directory %s. Cannacoin is probably already running.</source>
+        <translation>Cannot obtain a lock on data directory %s. Cannacoin is probably already running.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2406,8 +2406,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+3"/>
-        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Reddcoin will not work properly.</source>
-        <translation>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Reddcoin will not work properly.</translation>
+        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Cannacoin will not work properly.</source>
+        <translation>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Cannacoin will not work properly.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2656,8 +2656,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+5"/>
-        <source>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</source>
-        <translation>SSL options: (see wiki.reddcoin.com for SSL setup instructions)</translation>
+        <source>SSL options: (see wiki.cannacoin.com for SSL setup instructions)</source>
+        <translation>SSL options: (see wiki.cannacoin.com for SSL setup instructions)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2846,13 +2846,13 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="+1"/>
-        <source>Error loading wallet.dat: Wallet requires newer version of Reddcoin</source>
-        <translation>Error loading wallet.dat: Wallet requires newer version of Reddcoin</translation>
+        <source>Error loading wallet.dat: Wallet requires newer version of Cannacoin</source>
+        <translation>Error loading wallet.dat: Wallet requires newer version of Cannacoin</translation>
     </message>
     <message>
         <location line="+93"/>
-        <source>Wallet needed to be rewritten: restart Reddcoin to complete</source>
-        <translation>Wallet needed to be rewritten: restart Reddcoin to complete</translation>
+        <source>Wallet needed to be rewritten: restart Cannacoin to complete</source>
+        <translation>Wallet needed to be rewritten: restart Cannacoin to complete</translation>
     </message>
     <message>
         <location line="-95"/>
@@ -2911,8 +2911,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Reddcoin Alert&quot; admin@foo
     </message>
     <message>
         <location line="-25"/>
-        <source>Unable to bind to %s on this computer. Reddcoin is probably already running.</source>
-        <translation>Unable to bind to %s on this computer. Reddcoin is probably already running.</translation>
+        <source>Unable to bind to %s on this computer. Cannacoin is probably already running.</source>
+        <translation>Unable to bind to %s on this computer. Cannacoin is probably already running.</translation>
     </message>
     <message>
         <location line="+64"/>

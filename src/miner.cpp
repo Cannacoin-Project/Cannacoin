@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Copyright (c) 2013 The NovaCoin developers
-// Copyright (c) 2014 The ReddCoin developers
+// Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,7 +15,7 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// ReddcoinMiner
+// CannacoinMiner
 //
 
 extern unsigned int nMinerSleep;
@@ -557,7 +557,7 @@ void StakeMiner(CWallet *pwallet)
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
     // Make this thread recognisable as the mining thread
-    RenameThread("reddcoin-stakeminer");
+    RenameThread("cannacoin-stakeminer");
     CReserveKey reservekey(pwallet);
     bool fTryToSync = true;
 
@@ -607,7 +607,7 @@ void StakeMiner(CWallet *pwallet)
         }
         else
         {
-            printf("SubCreative - StakeMiner : Failed to sign the new block.\n");
+            //printf("StakeMiner : Failed to sign the new block.\n");
             MilliSleep(nMinerSleep);
         }
     } }
@@ -618,11 +618,11 @@ void StakeMiner(CWallet *pwallet)
     }
 }
 
-void static ReddcoinMiner(CWallet *pwallet)
+void static CannacoinMiner(CWallet *pwallet)
 {
-    printf("ReddcoinMiner started\n");
+    printf("CannacoinMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("reddcoin-miner");
+    RenameThread("cannacoin-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
@@ -646,13 +646,13 @@ void static ReddcoinMiner(CWallet *pwallet)
         // exit if received a PoSV block template
         if (pblock->vtx[0].vout[0].IsEmpty())
         {
-            printf("ReddcoinMiner : no more PoW blocks\n");
+            printf("CannacoinMiner : no more PoW blocks\n");
             return;
         }
 
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        printf("Running ReddcoinMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
+        printf("Running CannacoinMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
                ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -751,12 +751,12 @@ void static ReddcoinMiner(CWallet *pwallet)
     } }
     catch (boost::thread_interrupted)
     {
-        printf("ReddcoinMiner terminated\n");
+        printf("CannacoinMiner terminated\n");
         throw;
     }
 }
 
-void GenerateReddcoins(bool fGenerate, CWallet* pwallet)
+void GenerateCannacoins(bool fGenerate, CWallet* pwallet)
 {
     static boost::thread_group* minerThreads = NULL;
 
@@ -783,5 +783,5 @@ void GenerateReddcoins(bool fGenerate, CWallet* pwallet)
 
     // start threads for PoW CPU mining
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&ReddcoinMiner, pwallet));
+        minerThreads->create_thread(boost::bind(&CannacoinMiner, pwallet));
 }

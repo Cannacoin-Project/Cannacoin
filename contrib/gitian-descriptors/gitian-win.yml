@@ -1,5 +1,5 @@
 ---
-name: "reddcoin"
+name: "cannacoin"
 suites:
 - "precise"
 architectures:
@@ -19,8 +19,8 @@ packages:
 
 reference_datetime: "2014-04-01 00:00:00"
 remotes:
-- "url": "https://github.com/reddcoin-project/reddcoin.git"
-  "dir": "reddcoin"
+- "url": "https://github.com/cannacoin-project/cannacoin.git"
+  "dir": "cannacoin"
 files:
 - "qt-win32-5.2.0-gitian-r2.zip"
 - "qt-win64-5.2.0-gitian-r2.zip"
@@ -62,8 +62,8 @@ script: |
     unzip $INDIR/bitcoin-deps-win${BITS}-gitian-r10.zip
     if [ "$NEEDDIST" == "1" ]; then
       # Make source code archive which is architecture independent so it only needs to be done once
-      cd $HOME/build/reddcoin
-      DISTNAME="reddcoin-src.tar.gz"
+      cd $HOME/build/cannacoin
+      DISTNAME="cannacoin-src.tar.gz"
       git archive HEAD | gzip > $DISTNAME
       NEEDDIST=0
     fi
@@ -71,31 +71,31 @@ script: |
     cd $BUILDDIR
     mkdir -p distsrc
     cd distsrc
-    tar -xf $HOME/build/reddcoin/$DISTNAME
+    tar -xf $HOME/build/cannacoin/$DISTNAME
     # This is a temporary fix until 60dc589477f963d9848be7bb7fb0589a30deb912 is merged
-    sed -i 's/qcncodecs qjpcodecs qtwcodecs qkrcodecs//g' reddcoin-qt.pro
+    sed -i 's/qcncodecs qjpcodecs qtwcodecs qkrcodecs//g' cannacoin-qt.pro
     sed -i 's/Q_IMPORT_PLUGIN.*codecs.*//g' src/qt/bitcoin.cpp
     sed -i 's/Q_IMPORT_PLUGIN.*qtaccessiblewidgets.*/Q_IMPORT_PLUGIN(AccessibleFactory)\nQ_IMPORT_PLUGIN(QWindowsIntegrationPlugin);/g' src/qt/bitcoin.cpp
 
     export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
     export FAKETIME=$REFERENCE_DATETIME
-    $STAGING/host/bin/qmake -spec win32-g++ MINIUPNPC_LIB_PATH=$STAGING MINIUPNPC_INCLUDE_PATH=$STAGING BDB_LIB_PATH=$STAGING BDB_INCLUDE_PATH=$STAGING BOOST_LIB_PATH=$STAGING BOOST_INCLUDE_PATH=$STAGING BOOST_LIB_SUFFIX=-mt-s BOOST_THREAD_LIB_SUFFIX=_win32-mt-s OPENSSL_LIB_PATH=$STAGING OPENSSL_INCLUDE_PATH=$STAGING QRENCODE_LIB_PATH=$STAGING QRENCODE_INCLUDE_PATH=$STAGING USE_QRCODE=1 INCLUDEPATH=$STAGING DEFINES=BOOST_THREAD_USE_LIB BITCOIN_NEED_QT_PLUGINS=1 QMAKE_LRELEASE=lrelease QMAKE_CXXFLAGS=-frandom-seed=reddcoin USE_BUILD_INFO=1 USE_SSE2=1
+    $STAGING/host/bin/qmake -spec win32-g++ MINIUPNPC_LIB_PATH=$STAGING MINIUPNPC_INCLUDE_PATH=$STAGING BDB_LIB_PATH=$STAGING BDB_INCLUDE_PATH=$STAGING BOOST_LIB_PATH=$STAGING BOOST_INCLUDE_PATH=$STAGING BOOST_LIB_SUFFIX=-mt-s BOOST_THREAD_LIB_SUFFIX=_win32-mt-s OPENSSL_LIB_PATH=$STAGING OPENSSL_INCLUDE_PATH=$STAGING QRENCODE_LIB_PATH=$STAGING QRENCODE_INCLUDE_PATH=$STAGING USE_QRCODE=1 INCLUDEPATH=$STAGING DEFINES=BOOST_THREAD_USE_LIB BITCOIN_NEED_QT_PLUGINS=1 QMAKE_LRELEASE=lrelease QMAKE_CXXFLAGS=-frandom-seed=cannacoin USE_BUILD_INFO=1 USE_SSE2=1
     make $MAKEOPTS
-    $HOST-strip release/reddcoin-qt.exe
+    $HOST-strip release/cannacoin-qt.exe
     #
     cd src
-    make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$STAGING reddcoind.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=reddcoin" USE_SSE2=1
-    $HOST-strip reddcoind.exe
+    make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$STAGING cannacoind.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=cannacoin" USE_SSE2=1
+    $HOST-strip cannacoind.exe
     cd ..
     mkdir nsis
     cd nsis
-    tar -xf $HOME/build/reddcoin/$DISTNAME
+    tar -xf $HOME/build/cannacoin/$DISTNAME
     cd src
     mkdir ../release
     cp ../../release/* ../release/
     cp ../../src/*.exe .
     makensis ../share/setup.nsi
-    cp -f ../share/reddcoin-*setup*.exe $BINDIR/
+    cp -f ../share/cannacoin-*setup*.exe $BINDIR/
     unset LD_PRELOAD
     unset FAKETIME
   done # for BITS in
@@ -105,5 +105,5 @@ script: |
   rm -rf $TEMPDIR
   mkdir -p $TEMPDIR
   cd $TEMPDIR
-  tar -xvf $HOME/build/reddcoin/$DISTNAME | sort | tar --no-recursion -cT /dev/stdin --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 --mtime="$REFERENCE_DATETIME" | gzip -n > $OUTDIR/src/$DISTNAME
+  tar -xvf $HOME/build/cannacoin/$DISTNAME | sort | tar --no-recursion -cT /dev/stdin --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 --mtime="$REFERENCE_DATETIME" | gzip -n > $OUTDIR/src/$DISTNAME
 

@@ -35,9 +35,9 @@ Release Process
 
 	mkdir build
 	cd build
-	git clone https://github.com/reddcoin-project/reddcoin.git
+	git clone https://github.com/cannacoin-project/cannacoin.git
 	git clone https://github.com/devrandom/gitian-builder.git
-	git clone https://github.com/reddcoin-project/gitian.sigs.git
+	git clone https://github.com/cannacoin-project/gitian.sigs.git
 
 	mkdir gitian-builder/inputs
 	cd gitian-builder/inputs
@@ -66,15 +66,15 @@ Release Process
 
  The following must be run as root:
 
-	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/boost-linux.yml
+	./bin/gbuild ../cannacoin/contrib/gitian-descriptors/boost-linux.yml
 	mv build/out/boost-*.zip inputs/
-	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/deps-linux.yml
+	./bin/gbuild ../cannacoin/contrib/gitian-descriptors/deps-linux.yml
 	mv build/out/bitcoin-deps-*.zip inputs/
-	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/boost-win.yml
+	./bin/gbuild ../cannacoin/contrib/gitian-descriptors/boost-win.yml
 	mv build/out/boost-*.zip inputs/
-	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/deps-win.yml
+	./bin/gbuild ../cannacoin/contrib/gitian-descriptors/deps-win.yml
 	mv build/out/bitcoin-deps-*.zip inputs/
-	./bin/gbuild ../reddcoin/contrib/gitian-descriptors/qt-win.yml
+	./bin/gbuild ../cannacoin/contrib/gitian-descriptors/qt-win.yml
 	mv build/out/qt-*.zip inputs/
 
 * * *
@@ -86,11 +86,11 @@ Release Process
 
 ###Update (commit) version in sources
 
- With all the VMs and dependency packages ready, it's time to make any necessary change to reddcoin repository:
+ With all the VMs and dependency packages ready, it's time to make any necessary change to cannacoin repository:
 
-	cd ../reddcoin
+	cd ../cannacoin
 
-	reddcoin-qt.pro
+	cannacoin-qt.pro
 	doc/README*
 	share/setup.nsi
 	src/clientversion.h (change CLIENT_VERSION_IS_RELEASE to true)
@@ -115,28 +115,28 @@ Release Process
 	export VERSION=1.4.0.0
 	cd ../gitian-builder
 
- Build reddcoind and reddcoin-qt on Linux32, Linux64:
+ Build cannacoind and cannacoin-qt on Linux32, Linux64:
 
-	./bin/gbuild --commit reddcoin=v${VERSION} ../reddcoin/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer "$SIGNER" --release ${VERSION} --destination ../gitian.sigs/ ../reddcoin/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gbuild --commit cannacoin=v${VERSION} ../cannacoin/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer "$SIGNER" --release ${VERSION} --destination ../gitian.sigs/ ../cannacoin/contrib/gitian-descriptors/gitian-linux.yml
 	pushd build/out
-	zip -r reddcoin-${VERSION}-linux-gitian.zip *
-	mv reddcoin-${VERSION}-linux-gitian.zip ../../
+	zip -r cannacoin-${VERSION}-linux-gitian.zip *
+	mv cannacoin-${VERSION}-linux-gitian.zip ../../
 	popd
 
- Build reddcoind and reddcoin-qt on Win32:
+ Build cannacoind and cannacoin-qt on Win32:
 
-	./bin/gbuild --commit reddcoin=v${VERSION} ../reddcoin/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer "$SIGNER" --release ${VERSION}-win --destination ../gitian.sigs/ ../reddcoin/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gbuild --commit cannacoin=v${VERSION} ../cannacoin/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer "$SIGNER" --release ${VERSION}-win --destination ../gitian.sigs/ ../cannacoin/contrib/gitian-descriptors/gitian-win.yml
 	pushd build/out
-	zip -r reddcoin-${VERSION}-win-gitian.zip *
-	mv reddcoin-${VERSION}-win-gitian.zip ../../
+	zip -r cannacoin-${VERSION}-win-gitian.zip *
+	mv cannacoin-${VERSION}-win-gitian.zip ../../
 	popd
 
  Build output expected:
 
-  1. linux 32-bit and 64-bit binaries + source (reddcoin-${VERSION}-linux-gitian.zip)
-  2. windows 32-bit binaries, installer + source (reddcoin-${VERSION}-win-gitian.zip)
+  1. linux 32-bit and 64-bit binaries + source (cannacoin-${VERSION}-linux-gitian.zip)
+  2. windows 32-bit binaries, installer + source (cannacoin-${VERSION}-win-gitian.zip)
   3. Gitian signatures (in gitian.sigs/${VERSION}[-win]/(your gitian key)/
 
  Commit your signature to gitian.sigs:
@@ -154,45 +154,45 @@ Release Process
  From the gitian-builder directory created above
 
 	export VERSION=1.4.0.0
-	mkdir reddcoin-${VERSION}-linux-gitian
-	pushd reddcoin-${VERSION}-linux-gitian
-	unzip ../reddcoin-${VERSION}-linux-gitian.zip
+	mkdir cannacoin-${VERSION}-linux-gitian
+	pushd cannacoin-${VERSION}-linux-gitian
+	unzip ../cannacoin-${VERSION}-linux-gitian.zip
 	mkdir gitian
-	cp ../reddcoin/contrib/gitian-downloader/*.pgp ./gitian/
+	cp ../cannacoin/contrib/gitian-downloader/*.pgp ./gitian/
 	for signer in $(ls ../gitian.sigs/${VERSION}/); do
-	 cp ../gitian.sigs/${VERSION}/${signer}/reddcoin-build.assert ./gitian/${signer}-build.assert
-	 cp ../gitian.sigs/${VERSION}/${signer}/reddcoin-build.assert.sig ./gitian/${signer}-build.assert.sig
+	 cp ../gitian.sigs/${VERSION}/${signer}/cannacoin-build.assert ./gitian/${signer}-build.assert
+	 cp ../gitian.sigs/${VERSION}/${signer}/cannacoin-build.assert.sig ./gitian/${signer}-build.assert.sig
 	done
-	zip -r reddcoin-${VERSION}-linux-gitian.zip *
-	cp reddcoin-${VERSION}-linux-gitian.zip ../
+	zip -r cannacoin-${VERSION}-linux-gitian.zip *
+	cp cannacoin-${VERSION}-linux-gitian.zip ../
 	popd
-	mkdir reddcoin-${VERSION}-win-gitian
-	pushd reddcoin-${VERSION}-win-gitian
-	unzip ../reddcoin-${VERSION}-win-gitian.zip
+	mkdir cannacoin-${VERSION}-win-gitian
+	pushd cannacoin-${VERSION}-win-gitian
+	unzip ../cannacoin-${VERSION}-win-gitian.zip
 	mkdir gitian
-	cp ../reddcoin/contrib/gitian-downloader/*.pgp ./gitian/
+	cp ../cannacoin/contrib/gitian-downloader/*.pgp ./gitian/
 	for signer in $(ls ../gitian.sigs/${VERSION}-win32/); do
-	 cp ../gitian.sigs/${VERSION}-win/${signer}/reddcoin-build.assert ./gitian/${signer}-build.assert
-	 cp ../gitian.sigs/${VERSION}-win/${signer}/reddcoin-build.assert.sig ./gitian/${signer}-build.assert.sig
+	 cp ../gitian.sigs/${VERSION}-win/${signer}/cannacoin-build.assert ./gitian/${signer}-build.assert
+	 cp ../gitian.sigs/${VERSION}-win/${signer}/cannacoin-build.assert.sig ./gitian/${signer}-build.assert.sig
 	done
-	zip -r reddcoin-${VERSION}-win-gitian.zip *
-	cp reddcoin-${VERSION}-win-gitian.zip ../
+	zip -r cannacoin-${VERSION}-win-gitian.zip *
+	cp cannacoin-${VERSION}-win-gitian.zip ../
 	popd
 
 repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 **Linux .tar.gz:**
 
-	unzip reddcoin-${VERSION}-linux-gitian.zip -d reddcoin-${VERSION}-linux
-	tar czvf reddcoin-${VERSION}-linux.tar.gz reddcoin-${VERSION}-linux
-	rm -rf reddcoin-${VERSION}-linux
+	unzip cannacoin-${VERSION}-linux-gitian.zip -d cannacoin-${VERSION}-linux
+	tar czvf cannacoin-${VERSION}-linux.tar.gz cannacoin-${VERSION}-linux
+	rm -rf cannacoin-${VERSION}-linux
 
 **Windows .zip and setup.exe:**
 
-	unzip reddcoin-${VERSION}-win-gitian.zip -d reddcoin-${VERSION}-win
-	cp reddcoin-${VERSION}-win/32/reddcoin-*-setup.exe .
-	zip -r reddcoin-${VERSION}-win.zip reddcoin-${VERSION}-win
-	rm -rf reddcoin-${VERSION}-win
+	unzip cannacoin-${VERSION}-win-gitian.zip -d cannacoin-${VERSION}-win
+	cp cannacoin-${VERSION}-win/32/cannacoin-*-setup.exe .
+	zip -r cannacoin-${VERSION}-win.zip cannacoin-${VERSION}-win
+	rm -rf cannacoin-${VERSION}-win
 
 ###Next steps:
 
@@ -203,7 +203,7 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 * create SHA256SUMS for builds, and PGP-sign it
 
-* update reddcoin.com version
+* update cannacoin.com version
   make sure all OS download links go to the right versions
 
 * update forum version
@@ -220,12 +220,12 @@ repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 	brew update
 	brew install qt --HEAD
-	/usr/local/bin/qmake -spec unsupported/macx-clang-libc++ reddcoin-qt.pro USE_UPNP=1 STATIC=1
+	/usr/local/bin/qmake -spec unsupported/macx-clang-libc++ cannacoin-qt.pro USE_UPNP=1 STATIC=1
 	make
-	codesign -s "Developer ID" Reddcoin-Qt.app
+	codesign -s "Developer ID" Cannacoin-Qt.app
 	export QTDIR=/usr/local/Cellar/qt/4.8.6/  # needed to find translations/qt_*.qm files
 	T=$(contrib/qt_translations.py $QTDIR/translations src/qt/locale)
 	python2.7 share/qt/clean_mac_info_plist.py
-	python2.7 contrib/macdeploy/macdeployqtplus Reddcoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
+	python2.7 contrib/macdeploy/macdeployqtplus Cannacoin-Qt.app -add-qt-tr $T -dmg -fancy contrib/macdeploy/fancy.plist
 
- Build output expected: Reddcoin-Qt.dmg
+ Build output expected: Cannacoin-Qt.dmg

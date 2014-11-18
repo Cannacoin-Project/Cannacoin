@@ -11,7 +11,7 @@
 #include "main.h"
 #include "uint256.h"
 
-// Reddcoin: auto-select a checkpoint among the latest blocks
+// Cannacoin: auto-select a checkpoint among the latest blocks
 static const int nCheckpointSpan = 10;
 
 namespace Checkpoints
@@ -436,7 +436,7 @@ namespace Checkpoints
     }
 }
 
-// Reddcoin: sync-checkpoint master key
+// Cannacoin: sync-checkpoint master key
 const std::string CSyncCheckpoint::strMasterPubKey = "0437b4b0f5d356f205c17ffff6c46dc9ec4680ffb7f8a9a4e6eebcebd5f340d01df00ef304faea7779d97d8f1addbe1e87308ea237aae3ead96e0a736c7e9477a1";
 
 std::string CSyncCheckpoint::strMasterPrivKey = "";

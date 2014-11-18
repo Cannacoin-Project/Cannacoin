@@ -2,8 +2,8 @@
 ===============
 
 - A proper fork of the Litecoin project on Github was made, incorporating all the changes that were in 1.1.3.0:
-  - Reddcoin specific branding
-  - Reddcoin specific block time, size, ...
+  - Cannacoin specific branding
+  - Cannacoin specific block time, size, ...
   - Update of leveldb to version 1.15
   - Implemented KGW including the fix for problems at block 44877
   - Add spaces every 3 decimals in Qt client
@@ -12,8 +12,8 @@
   - Restored information on automated testing
   - Fixed Github URL's in various places
   - Restored copyright for Litecoin Developers
-  - Changed references to "Reddcoin Wiki" to Reddcoin website
-  - Changed references to reddcoin.org to reddcoin.com
+  - Changed references to "Cannacoin Wiki" to Cannacoin website
+  - Changed references to cannacoin.org to cannacoin.com
   - Fixed reference to .pro file in mac build
   - Source formatting
   - Any "unnecessary" changes to makefiles have been reverted. If Litecoin can build it like this, we should be able to do so too
@@ -22,5 +22,5 @@
   - Kept <defaultcodec> tags in translations
   - Reverted disabling of CLIENT_VERSION_BUILD in version.h
   - Used the commit from bitcoin repo to update leveldb to 1.15
-  - Updated the addresses in Qt tests to a valid RDD address
-  - Renamed litecoin.icns to reddcoin.icns according to config file
+  - Updated the addresses in Qt tests to a valid CCN address
+  - Renamed litecoin.icns to cannacoin.icns according to config file

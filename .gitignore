@@ -1,7 +1,7 @@
 src/*.exe
-src/reddcoin
-src/reddcoind
-src/test_reddcoin
+src/cannacoin
+src/cannacoind
+src/test_cannacoin
 src/tags
 .*.swp
 *.*~*
@@ -10,17 +10,17 @@ src/tags
 *.orig
 *.o
 *.patch
-.reddcoin
+.cannacoin
 
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-reddcoin-qt
-Reddcoin-Qt.app
+cannacoin-qt
+Cannacoin-Qt.app
 
 # Unit-tests
 Makefile.test
-reddcoin-qt_test
+cannacoin-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -36,7 +36,7 @@ build
 
 .qmake.stash
 Info.plist
-Reddcoin-Qt.xcodeproj
+Cannacoin-Qt.xcodeproj
 dist/
 *.dmg
 

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014 The Reddcoin developers
+// Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_MAIN_H
@@ -53,9 +53,9 @@ static const unsigned int UNDOFILE_CHUNK_SIZE = 0x100000; // 1 MiB
 /** Fake height value used in CCoins to signify they are only in the memory pool (since 0.8) */
 static const unsigned int MEMPOOL_HEIGHT = 0x7FFFFFFF;
 /** Dust Soft Limit, allowed with additional fee per output */
-static const int64 DUST_SOFT_LIMIT = 100000000; // 1 RDD
+static const int64 DUST_SOFT_LIMIT = 100000000; // 1 CCN
 /** Dust Hard Limit, ignored as wallet inputs (mininput default) */
-static const int64 DUST_HARD_LIMIT = 1000000;   // 0.01 RDD mininput
+static const int64 DUST_HARD_LIMIT = 1000000;   // 0.01 CCN mininput
 /** No amount larger than this (in satoshi) is valid */
 static const int64 MAX_MONEY = 13140000 * COIN; // Maximum or compile warning, will fix in future release.
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
@@ -77,7 +77,7 @@ static const int fHaveUPnP = false;
 inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 minutes from the past
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
-// Reddcoin PoSV
+// Cannacoin PoSV
 static const int LAST_POW_BLOCK = 1200 - 1;
 static const int64 COIN_YEAR_REWARD = 1 * CENT; // 5% per year
 
@@ -111,7 +111,7 @@ extern int nScriptCheckThreads;
 extern bool fTxIndex;
 extern unsigned int nCoinCacheSize;
 
-// Reddcoin PoSV
+// Cannacoin PoSV
 extern std::set<std::pair<COutPoint, unsigned int> > setStakeSeen;
 extern unsigned int nStakeMinAge;
 extern unsigned int nStakeMaxAge;
@@ -205,7 +205,7 @@ bool VerifySignature(const CTransaction& txFrom, const CTransaction& txTo, unsig
 /** Abort with a message */
 bool AbortNode(const std::string &msg);
 
-// Reddcoin PoSV
+// Cannacoin PoSV
 int64 GetProofOfStakeReward(int64 nCoinAge, int64 nFees);
 int64 GetBlockValue(int nHeight, int64 nFees);
 unsigned int ComputeMinStake(unsigned int nBase, int64 nTime);
@@ -1011,7 +1011,6 @@ public:
     friend bool operator==(const CCoins &a, const CCoins &b) {
         if (fDebug)
         {   
-            printf("SubCreative - Equality Test: a.fCoinBase=%d b.fCoinBase=%d a.fCoinStake=%d b.fCoinStake=%d\n",a.fCoinBase, b.fCoinBase, a.fCoinStake, b.fCoinStake);
             if (a.fCoinBase != b.fCoinBase)
                 printf("CCoins: fCoinBase mismatch\n");
             if (a.fCoinStake != b.fCoinStake)
