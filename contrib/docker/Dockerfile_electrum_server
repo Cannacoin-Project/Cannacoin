@@ -29,7 +29,7 @@ RUN python setup.py install
 WORKDIR /var
 RUN touch /var/log/electrum.log
 RUN chown cannacoin:cannacoin /var/log/electrum.log
-RUN wget -q http://reddwallet.org/electrum.tar.gz
+RUN wget -q http://cannacoin.cc/electrum.tar.gz
 RUN tar -zxvf electrum.tar.gz
 RUN rm electrum.tar.gz
 RUN chown cannacoin:cannacoin -R electrum-server

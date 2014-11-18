@@ -4,8 +4,8 @@
 // Copyright (c) 2014 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef REDDCOIN_MINER_H
-#define REDDCOIN_MINER_H
+#ifndef CANNACOIN_MINER_H
+#define CANNACOIN_MINER_H
 
 #include <stdint.h>
 
@@ -32,4 +32,4 @@ bool CheckStake(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey);
 /** Base sha256 mining transform */
 void SHA256Transform(void* pstate, void* pinput, const void* pinit);
 
-#endif // REDDCOIN_MINER_H
+#endif // CANNACOIN_MINER_H
