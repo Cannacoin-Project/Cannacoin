@@ -3318,7 +3318,7 @@ bool InitBlockIndex() {
         }
 
         // If genesis block hash does not match & first value == true, then generate new genesis hash (set to false to ignore generation processes).
-        if (true && block.GetHash() != hashGenesisBlock)
+        if (false && block.GetHash() != hashGenesisBlock)
         {
             printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if you're
