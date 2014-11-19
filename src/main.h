@@ -67,10 +67,11 @@ static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20
 static const int MAX_SCRIPTCHECK_THREADS = 16;
 /** Start checking POW after block 44877 http://cryptexplorer.com/block/4253e7618d40aded00d11b664e874245ae74d55b976f4ac087d1a9db2f5f3cda */
 static const int64 CHECK_POW_FROM_NTIME = 1414964233;
+
 #ifdef USE_UPNP
-static const int fHaveUPnP = true;
+    static const int fHaveUPnP = true;
 #else
-static const int fHaveUPnP = false;
+    static const int fHaveUPnP = false;
 #endif
 
 // ppcoin
@@ -78,8 +79,9 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Cannacoin PoSV
-static const int LAST_POW_BLOCK = 1200 - 1;
-static const int64 COIN_YEAR_REWARD = 1 * CENT; // 5% per year
+static const int LAST_POW_BLOCK = fTestNet ? 1000 : 370000;
+
+static const int64 COIN_YEAR_REWARD = 2 * CENT; // 2% per year
 
 extern CScript COINBASE_FLAGS;
 extern CCriticalSection cs_main;
