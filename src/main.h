@@ -79,7 +79,7 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Cannacoin PoSV
-static const int LAST_POW_BLOCK = fTestNet ? 1000 : 370000;
+static const int LAST_POW_BLOCK = 1300;
 
 static const int64 COIN_YEAR_REWARD = 2 * CENT; // 2% per year
 
@@ -99,7 +99,7 @@ extern unsigned int nTransactionsUpdated;
 extern uint64 nLastBlockTx;
 extern uint64 nLastBlockSize;
 extern const std::string strMessageMagic;
-extern double dHashesPerSec;
+extern double dHashesPerSec; 
 extern int64 nHPSTimerStart;
 extern int64 nTimeBestReceived;
 extern CCriticalSection cs_setpwalletRegistered;
