@@ -79,7 +79,7 @@ inline int64 PastDrift(int64 nTime)   { return nTime - 10 * 60; } // up to 10 mi
 inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 minutes from the future
 
 // Cannacoin PoSV
-static const int LAST_POW_BLOCK = 1300;
+#define LAST_POW_BLOCK (fTestNet ? 1300: 370000)
 
 static const int64 COIN_YEAR_REWARD = 2 * CENT; // 2% per year
 
