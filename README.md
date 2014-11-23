@@ -10,25 +10,24 @@ Copyright (c) 2014 Cannacoin Developers
 What is Cannacoin?
 ----------------
 
-On 2nd August 2014 at block 260,800 Cannacoin transitioned to its own original Proof-of-Stake-Velocity (PoSV)
+At block 260,800 Cannacoin will transition to its own Proof-of-Stake-Velocity (PoSV) 
 algorithm which replaced Proof-of-Work (PoW).
  - 1 minute block target
- - just under 27 billion mined in PoW phase
- - 5% annual interest in PoSV phase
- - difficulty retarget: every block using Kimoto's gravity well
- - white paper: http://www.cannacoin.com/papers/PoSV.pdf
- - FAQs paper: http://www.cannacoin.com/papers/PoSV_FAQ.pdf
+ - Roughly 4,625,000 CCN will be mined in PoW phase
+ - 2% annual interest in PoSV phase
+ - Difficulty retarget: every block using Kimoto's gravity well
+ - White paper: https://www.reddcoin.com/papers/PoSV.pdf
+ - FAQs paper: http://www.cannacoin.cc/Cannacoin_PoSV_FAQ.pdf
 
-Cannacoin first started in January 2014 as a variant of Litecoin using Scrypt as
+Cannacoin first started in March 28th 2014 as a variant of Litecoin using Scrypt as
 the Proof-of-Work (PoW) hash algorithm.
  - 1 minute block target
- - 100,000 coins per block
- - subsidy halves every 500,000 blocks
- - subsidy halves every 50,000 blocks starting at block 140,000
- - difficulty retarget: every block using Kimoto's gravity well
+ - 12.5 coins per block
+ - Subsidy halves every 526,000 blocks
+ - Difficulty retarget: Every block using Kimoto's gravity well
 
 For more information, as well as an immediately useable, binary version of
-the Cannacoin wallet client, please visit http://www.cannacoin.com.
+the Cannacoin wallet client, please visit http://www.cannacoin.cc.
 
 License
 -------
