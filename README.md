@@ -10,7 +10,7 @@ Copyright (c) 2014 Cannacoin Developers
 What is Cannacoin?
 ----------------
 
-At block 260,800 Cannacoin will transition to its own Proof-of-Stake-Velocity (PoSV) 
+At block 370,800 Cannacoin will transition to its own Proof-of-Stake-Velocity (PoSV) 
 algorithm which replaced Proof-of-Work (PoW).
  - 1 minute block target
  - Roughly 4,625,000 CCN will be mined in PoW phase
