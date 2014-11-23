@@ -80,7 +80,6 @@ inline int64 FutureDrift(int64 nTime) { return nTime + 10 * 60; } // up to 10 mi
 
 // Cannacoin PoSV
 #define LAST_POW_BLOCK (fTestNet ? 1300: 370000)
-
 static const int64 COIN_YEAR_REWARD = 2 * CENT; // 2% per year
 
 extern CScript COINBASE_FLAGS;
