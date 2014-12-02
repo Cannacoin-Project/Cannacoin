@@ -5,9 +5,9 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.4.0.0
+!define VERSION 2.0.0.1
 !define COMPANY "Cannacoin project"
-!define URL http://www.cannacoin.com/
+!define URL http://www.cannacoin.cc/
 
 # MUI Symbol Definitions
 !define MUI_ICON "../share/pixmaps/bitcoin.ico"
