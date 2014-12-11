@@ -4,8 +4,11 @@ Cannacoin integration/staging tree
 http://www.cannacoin.com
 
 Copyright (c) 2009-2014 Bitcoin Developers
+
 Copyright (c) 2011-2014 Litecoin Developers
+
 Copyright (c) 2014 Cannacoin Developers
+
 
 What is Cannacoin?
 ----------------
