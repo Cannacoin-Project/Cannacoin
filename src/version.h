@@ -34,8 +34,7 @@ static const int POW_TX_VERSION = 1;
 static const int POW_BLOCK_VERSION = 2;
 
 // network protocol versioning
-//
-static const int PROTOCOL_VERSION = 2000001;
+static const int PROTOCOL_VERSION = 2010001;
 
 // intial proto version, to be increased after version/verack negotiation
 static const int INIT_PROTO_VERSION = 209;
