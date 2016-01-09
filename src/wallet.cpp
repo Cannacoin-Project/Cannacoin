@@ -22,7 +22,7 @@ typedef vector<unsigned char> valtype;
 
 // we split the coinstake output in two to avoid concentrating
 // too many coins in one output. currently almost always split.
-unsigned int nStakeSplitAge = 90 * 24 * 60 * 60; // 90 days (Increased from 45 to 90 during 2.1.0.0)
+unsigned int nStakeSplitAge = 90 * 24 * 60 * 60; // 90 days (Increased from 45 to 90 during 2.1.0.1)
 // avoid concentrated transactions. on average, each block contains:
 // generated interest  ~= 4659000 * 2% / 365 / 1440 ~= 0.177CCN
 // corresponding stake ~= 4659000 / 365 / 1440 ~= 8.864CCN
