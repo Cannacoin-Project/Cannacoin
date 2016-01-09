@@ -22,13 +22,13 @@ typedef vector<unsigned char> valtype;
 
 // we split the coinstake output in two to avoid concentrating
 // too many coins in one output. currently almost always split.
-unsigned int nStakeSplitAge = 45 * 24 * 60 * 60; // 45 days
+unsigned int nStakeSplitAge = 90 * 24 * 60 * 60; // 90 days (Increased from 45 to 90 during 2.1.0.0)
 // avoid concentrated transactions. on average, each block contains:
-// generated interest  ~= 27b * 5% / 365 / 1440 ~= 2.5k
-// corresponding stake ~= 27b / 365 / 1440 ~= 50k
-// optimally each output stakes once every week so 50k * 52 = 2.6m
+// generated interest  ~= 4659000 * 2% / 365 / 1440 ~= 0.177CCN
+// corresponding stake ~= 4659000 / 365 / 1440 ~= 8.864CCN
+// optimally each output stakes once every week so 8.864CCN * 52 = 460.936CCN
 // but only a fraction of the total money supply is staked on the network
-int64 nStakeCombineThreshold = 2000000 * COIN;
+int64 nStakeCombineThreshold = 46000 * COIN; 
 
 //////////////////////////////////////////////////////////////////////////////
 //
