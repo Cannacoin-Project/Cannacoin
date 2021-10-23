@@ -101,28 +101,28 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 Team Cannacoin
 =
 
-Brent K. aka deusopus
-Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptocurrency Project since 2014. Artist, Writer, and Designer. Podcaster.
-
-
-Thomas B. aka CryptoSplinter
-Assistant Director and Senior Member. Music and Sports fan. Technical Support.
-
-James P. aka CryptoKid
-Administrative Director and Junior Member. Artist and Hip-Hop Musician. Cryptocurrency trader.
-
-Phillip C. aka GodCloud
-Treasurer and Junior Member. NFT pioneer. First finger drummer on the blockchain. Ambitious community builder.
-
-
-In Memory Of...
-Phil C. aka RebPhil
-Former Lead Developer and Founding Member of The Cannacoin Community Network. Gone but not forgotten. RIP 2015.
-
-Always do your due diligence!
-
-Visit cannacoinblog.blogspot.com for more info
-
+Brent K. aka deusopus<br>
+Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptocurrency Project since 2014. Artist, Writer, and Designer. Podcaster.<br>
+<br>
+<br>
+Thomas B. aka CryptoSplinter<br>
+Assistant Director and Senior Member. Music and Sports fan. Technical Support.<br>
+<br>
+James P. aka CryptoKid<br>
+Administrative Director and Junior Member. Artist and Hip-Hop Musician. Cryptocurrency trader.<br>
+<br>
+Phillip C. aka GodCloud<br>
+Treasurer and Junior Member. NFT pioneer. First finger drummer on the blockchain. Ambitious community builder.<br>
+<br>
+<br>
+In Memory Of...<br>
+Phil C. aka RebPhil<br>
+Former Lead Developer and Founding Member of The Cannacoin Community Network. Gone but not forgotten. RIP 2015.<br>
+<br>
+Always do your due diligence!<br>
+<br>
+Visit cannacoinblog.blogspot.com for more info<br>
+<br>
 Domain acquisitions
 =
 grasshausenterprises.com<br>
