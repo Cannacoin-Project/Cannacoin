@@ -84,3 +84,9 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     qmake BITCOIN_QT_TEST=1 -o Makefile.test bitcoin-qt.pro
     make -f Makefile.test
     ./cannacoin-qt_test
+
+<object data="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file" type="application/pdf" width="600px" height="600px">
+    <embed src="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file">Download PDF</a>.</p>
+    </embed>
+</object>
