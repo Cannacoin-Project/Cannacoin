@@ -93,7 +93,7 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 ![0002](https://user-images.githubusercontent.com/84210241/138538970-c1c41ddf-06b1-4739-8de0-974bec4abd30.jpg)
 
 
-![0005](https://user-images.githubusercontent.com/84210241/138539041-c341e4b1-7d68-4f3f-9f10-28b40ae8d222.jpg)
+
 ![0007](https://user-images.githubusercontent.com/84210241/138539069-5d1e9240-e396-4e91-ac3b-bb37d7580417.jpg)
 
 ![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
