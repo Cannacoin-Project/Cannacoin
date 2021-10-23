@@ -1,3 +1,7 @@
+Join the Cannacoin Discord server
+https://discord.gg/TEC9aNBhHw
+
+
 Cannacoin integration/staging tree
 ================================
 
