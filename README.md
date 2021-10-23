@@ -103,24 +103,22 @@ Team Cannacoin
 
 Brent K. aka deusopus<br>
 Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptocurrency Project since 2014. Artist, Writer, and Designer. Podcaster.<br>
-<br>
-<br>
+<br><br>
 Thomas B. aka CryptoSplinter<br>
 Assistant Director and Senior Member. Music and Sports fan. Technical Support.<br>
-<br>
+<br><br>
 James P. aka CryptoKid<br>
 Administrative Director and Junior Member. Artist and Hip-Hop Musician. Cryptocurrency trader.<br>
-<br>
+<br><br>
 Phillip C. aka GodCloud<br>
 Treasurer and Junior Member. NFT pioneer. First finger drummer on the blockchain. Ambitious community builder.<br>
-<br>
-<br>
+<br><br><br>
 In Memory Of...<br>
 Phil C. aka RebPhil<br>
 Former Lead Developer and Founding Member of The Cannacoin Community Network. Gone but not forgotten. RIP 2015.<br>
 <br>
 Always do your due diligence!<br>
-<br>
+<br><br>
 Visit cannacoinblog.blogspot.com for more info<br>
 <br>
 Domain acquisitions
