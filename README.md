@@ -32,7 +32,7 @@ the Proof-of-Work (PoW) hash algorithm.
  - Difficulty retarget: Every block using Kimoto's gravity well
 
 For more information, as well as an immediately useable, binary version of
-the Cannacoin wallet client, please visit http://www.cannacoin.cc.
+the Cannacoin wallet client, please visit <s>http://www.cannacoin.cc</s>.
 
 License
 -------
@@ -93,5 +93,32 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 ![0007](https://user-images.githubusercontent.com/84210241/138539069-5d1e9240-e396-4e91-ac3b-bb37d7580417.jpg)
 ![0008](https://user-images.githubusercontent.com/84210241/138539086-209d0b5d-22ff-4d1b-8b02-93e6cfaa6dcf.jpg)
 ![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
+
+Team Cannacoin 2021
+
+Brent K. aka deusopus
+Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptocurrency Project since 2014. Artist, Writer, and Designer. Podcaster.
+
+
+Thomas B. aka CryptoSplinter
+Assistant Director and Senior Member. Music and Sports fan. Technical Support.
+
+James P. aka CryptoKid
+Administrative Director and Junior Member. Artist and Hip-Hop Musician. Cryptocurrency trader.
+
+Phillip C. aka GodCloud
+Treasurer and Junior Member. NFT pioneer. First finger drummer on the blockchain. Ambitious community builder.
+
+
+In Memory Of...
+Phil C. aka RebPhil
+Former Lead Developer and Founding Member of The Cannacoin Community Network. Gone but not forgotten. RIP 2015.
+
+Always do your due diligence!
+
+
+
+
+
 
 Copyright (c) 2014-2021 Grass Haus Enterprises
