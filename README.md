@@ -85,10 +85,4 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     make -f Makefile.test
     ./cannacoin-qt_test
 
-xfun::embed_file("https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file")
-
-<object data="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file" type="application/pdf" width="600px" height="600px">
-    <embed src="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://www.mediafire.com/file/nw0uirfe7psbos6/cannacoin-pitchdeck-oct-21.pdf/file">Download PDF</a>.</p>
-    </embed>
-</object>
+[cannacoin-pitchdeck-oct-21.pdf](https://github.com/cannacoin-official/promotional-pack-2021/files/7402097/cannacoin-pitchdeck-oct-21.pdf)
