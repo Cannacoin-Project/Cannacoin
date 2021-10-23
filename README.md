@@ -2,19 +2,19 @@ Join the Cannacoin Discord server
 https://discord.gg/TEC9aNBhHw
 
 
-Cannacoin integration/staging tree
-================================
-
-http://www.cannacoin.org
-
-Copyright (c) 2009-2014 Bitcoin 
-
+Cannacoin (integration/staging tree)
+=
+<br>
+https://www.cannacoin.org<br>
+<br>
+Copyright (c) 2009-2014 Bitcoin<br> 
+<br>
 Copyright (c) 2011-2014 Litecoin Developers
-
+<br>
 Copyright (c) 2014-2021 Reddcoin Developers
-
+<br>
 Copyright (c) 2014-2021 Cannacoin Developers
-
+<br>
 
 
 What is Cannacoin?
@@ -98,8 +98,8 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 ![0008](https://user-images.githubusercontent.com/84210241/138539086-209d0b5d-22ff-4d1b-8b02-93e6cfaa6dcf.jpg)
 ![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
 
-Team Cannacoin 2021
-=====================
+Team Cannacoin
+=
 
 Brent K. aka deusopus
 Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptocurrency Project since 2014. Artist, Writer, and Designer. Podcaster.
@@ -124,7 +124,7 @@ Always do your due diligence!
 Visit cannacoinblog.blogspot.com for more info
 
 Domain acquisitions
-================
+=
 grasshausenterprises.com<br>
 cannacoin.org<br>
 cannacoinonline.com<br>
@@ -151,6 +151,9 @@ cannacoinpitchdeck.com<br>
 kcoinradio.com<br>
 <br>
 nftarcade.art<br>
+<br>
+<br>
+Cannacoin is pending trademark with the USPTO 
 <br>
 <br>
 Copyright (c) 2014-2021 Grass Haus Enterprises
