@@ -7,7 +7,7 @@ Cannacoin (integration/staging tree)
 <br>
 https://www.cannacoin.org<br>
 <br>
-Copyright (c) 2009-2014 Bitcoin<br> 
+Copyright (c) 2009-2014 Bitcoin Developers<br> 
 <br>
 Copyright (c) 2011-2014 Litecoin Developers
 <br>
