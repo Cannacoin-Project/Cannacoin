@@ -119,7 +119,8 @@ Former Lead Developer and Founding Member of The Cannacoin Community Network. Go
 <br>
 Always do your due diligence!<br>
 <br><br>
-Visit cannacoinblog.blogspot.com for more info<br>
+=
+Visit https://cannacoinblog.blogspot.com for more info<br>
 <br>
 Domain acquisitions
 =
