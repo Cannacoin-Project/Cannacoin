@@ -123,7 +123,34 @@ Always do your due diligence!
 
 Visit cannacoinblog.blogspot.com for more info
 
+Domain acquisitions
+================
+grasshausenterprises.com
+cannacoin.org
+cannacoinonline.com
+cannacoin.wiki
+cannacoinblog.com
+cannacoin.chat
+cannacoin.exchange
+cannascan.info
+cannacoinfaucet.com
+cannacoingiftshop.com
+cannacoinrewards.com
 
+cannacoincore.com
+cannacoin-nodejs.com
+
+cannacoinwallet.com
+cannacoinpay.com
+cannacoinkiosk.com
+
+teamcannacoin.com
+cannacoinpitchdeck.com
+
+
+kcoinradio.com
+
+nftarcade.art
 
 
 Copyright (c) 2014-2021 Grass Haus Enterprises
