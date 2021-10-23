@@ -1,6 +1,5 @@
 Cannacoin integration/staging tree
 ================================
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Cannacoin-Project/Cannacoin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 http://www.cannacoin.org
 
@@ -8,9 +7,10 @@ Copyright (c) 2009-2014 Bitcoin
 
 Copyright (c) 2011-2014 Litecoin Developers
 
-Copyright (c) 2014 Reddcoin Developers
+Copyright (c) 2014-2021 Reddcoin Developers
 
-Copyright (c) 2014 Cannacoin Developers
+Copyright (c) 2014-2021 Cannacoin Developers
+
 
 
 What is Cannacoin?
@@ -95,3 +95,4 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 ![0008](https://user-images.githubusercontent.com/84210241/138539086-209d0b5d-22ff-4d1b-8b02-93e6cfaa6dcf.jpg)
 ![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
 
+Copyright (c) 2014-2021 Grass Haus Enterprises
