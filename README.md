@@ -85,4 +85,13 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     make -f Makefile.test
     ./cannacoin-qt_test
 
-[cannacoin-pitchdeck-oct-21.pdf](https://github.com/cannacoin-official/promotional-pack-2021/files/7402097/cannacoin-pitchdeck-oct-21.pdf)
+![0001](https://user-images.githubusercontent.com/84210241/138538925-12671258-c89d-49f2-a55e-54259066b5d4.jpg)
+![0002](https://user-images.githubusercontent.com/84210241/138538970-c1c41ddf-06b1-4739-8de0-974bec4abd30.jpg)
+![0003](https://user-images.githubusercontent.com/84210241/138539006-cc3d2654-6132-4827-8a62-98f9e46fb17a.jpg)
+![0004](https://user-images.githubusercontent.com/84210241/138539028-76c08118-e333-4d5b-9c20-78b173566bd3.jpg)
+![0005](https://user-images.githubusercontent.com/84210241/138539041-c341e4b1-7d68-4f3f-9f10-28b40ae8d222.jpg)
+![0006](https://user-images.githubusercontent.com/84210241/138539060-89f9c783-cef5-4240-bea7-46e31df5cd08.jpg)
+![0007](https://user-images.githubusercontent.com/84210241/138539069-5d1e9240-e396-4e91-ac3b-bb37d7580417.jpg)
+![0008](https://user-images.githubusercontent.com/84210241/138539086-209d0b5d-22ff-4d1b-8b02-93e6cfaa6dcf.jpg)
+![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
+
