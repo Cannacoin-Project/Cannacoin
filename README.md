@@ -116,12 +116,14 @@ Former Lead Developer and Founding Member of The Cannacoin Community Network. Go
 Always do your due diligence!<br>
 <br><br>
 =
-Visit https://cannacoinblog.blogspot.com for more info<br>
+Visit http://cannacoinblog.com for more info<br>
 <br>
 Domain acquisitions
 =
 grasshausenterprises.com<br>
+cannachan.org<br>
 cannacoin.org<br>
+cannacoinwhitepaper.com<br>
 cannacoinonline.com<br>
 cannacoin.wiki<br>
 cannacoinblog.com<br>
@@ -138,12 +140,20 @@ cannacoin-nodejs.com<br>
 cannacoinwallet.com<br>
 cannacoinpay.com<br>
 cannacoinkiosk.com<br>
+cannacoincoupons.com<br>
+cannacointokens.com<br>
+cannacoinnft.com<br>
+<br>
+cannaswap.exchange<br>
+<br>
+discordtipbot.com<br>
 <br>
 teamcannacoin.com<br>
+<br>
 cannacoinpitchdeck.com<br>
 <br>
-<br>
 kcoinradio.com<br>
+cryptocurrents.news<br>
 <br>
 nftarcade.art<br>
 <br>
