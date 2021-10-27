@@ -152,6 +152,8 @@ cannacoinkiosk.com<br>
 cannacoincoupons.com<br>
 cannacointokens.com<br>
 cannacoinnft.com<br>
+cannacoincredits.com<br>
+cannacoinotc.com<br>
 <br>
 cannaswap.exchange<br>
 <br>
