@@ -89,19 +89,7 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     make -f Makefile.test
     ./cannacoin-qt_test
 
-![0001](https://user-images.githubusercontent.com/84210241/138538925-12671258-c89d-49f2-a55e-54259066b5d4.jpg)
-![0002](https://user-images.githubusercontent.com/84210241/138538970-c1c41ddf-06b1-4739-8de0-974bec4abd30.jpg)
-![cannacoin-pitchdeck-final-03](https://user-images.githubusercontent.com/84210241/139118867-9176e486-b86c-415b-94e5-af3893ee07ea.png)
 
-![cannacoin-pitchdeck-final-04](https://user-images.githubusercontent.com/84210241/139118849-dbc0c9fd-bb76-45ce-8bba-0b42e530cec1.png)
-![cannacoin-pitchdeck-final-05](https://user-images.githubusercontent.com/84210241/139118882-c88a6c86-a5f9-442c-8cc9-ac10b6d4affa.png)
-
-![cannacoin-pitchdeck-final-06](https://user-images.githubusercontent.com/84210241/139118894-3cc21324-730d-4ae9-a8c2-6ba7081cf896.png)
-![cannacoin-pitchdeck-final-07](https://user-images.githubusercontent.com/84210241/139118911-4417e506-042f-47c9-9f7d-9dc72beb5c28.png)
-![cannacoin-pitchdeck-final-08](https://user-images.githubusercontent.com/84210241/139118930-87775bc2-4ee4-4172-8c6c-a0b17c420f9b.png)
-
-![cannacoin-pitchdeck-final-09](https://user-images.githubusercontent.com/84210241/139118949-4d505e43-f386-441a-bae7-846f5c59a930.png)
-![0009](https://user-images.githubusercontent.com/84210241/138539099-28ceb07d-6b63-4eb7-ac32-30f695cbb30e.jpg)
 
 Team Cannacoin
 =
@@ -125,51 +113,7 @@ Former Lead Developer and Founding Member of The Cannacoin Community Network. Go
 Always do your due diligence!<br>
 <br><br>
 =
-Visit http://cannacoinblog.com for more info<br>
+Visit https://www.cannacoinblog.com for more info<br>
 <br>
-Domain acquisitions
-=
-grasshausenterprises.com<br>
-cannachan.org<br>
-cannacoin.org<br>
-cannacoinwhitepaper.com<br>
-cannacoinonline.com<br>
-cannacoin.wiki<br>
-cannacoinblog.com<br>
-cannacoin.chat<br>
-cannacoin.exchange<br>
-cannascan.info<br>
-cannacoinfaucet.com<br>
-cannacoingiftshop.com<br>
-cannacoinrewards.com<br>
-<br>
-cannacoincore.com<br>
-cannacoin-nodejs.com<br>
-<br>
-cannacoinwallet.com<br>
-cannacoinpay.com<br>
-cannacoinkiosk.com<br>
-cannacoincoupons.com<br>
-cannacointokens.com<br>
-cannacoinnft.com<br>
-cannacoincredits.com<br>
-cannacoinotc.com<br>
-<br>
-cannaswap.exchange<br>
-<br>
-discordtipbot.com<br>
-<br>
-teamcannacoin.com<br>
-<br>
-cannacoinpitchdeck.com<br>
-<br>
-kcoinradio.com<br>
-cryptocurrents.news<br>
-<br>
-nftarcade.art<br>
-<br>
-<br>
-Cannacoin is pending trademark with the USPTO 
-<br>
-<br>
+
 Copyright (c) 2014-2021 Grass Haus Enterprises
