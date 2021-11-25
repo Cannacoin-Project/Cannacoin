@@ -99,12 +99,6 @@ Lead Director and Founder of Grass Haus Enterprises. Member of Cannacoin Cryptoc
 <br><br>
 Thomas B. aka CryptoSplinter<br>
 Assistant Director and Senior Member. Music and Sports fan. Technical Support.<br>
-<br><br>
-James P. aka CryptoKid<br>
-Administrative Director and Junior Member. Artist and Hip-Hop Musician. Cryptocurrency trader.<br>
-<br><br>
-Phillip C. aka GodCloud<br>
-Treasurer and Junior Member. NFT pioneer. First finger drummer on the blockchain. Ambitious community builder.<br>
 <br><br><br>
 In Memory Of...<br>
 Phil C. aka RebPhil<br>
