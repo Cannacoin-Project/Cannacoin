@@ -1206,9 +1206,8 @@ void MapPort(bool)
 //};
 
 static const char *strMainNetDNSSeed[][2] = {
-    {"Seed0", "172.86.131.7"},
-    {"Seed1", "seed0.cannacoin.duckdns.org"},
-    {"Seed2", "seed1.cannacoin.duckdns.org"},
+    {"Cannacoin DNS", "seed0.cannacoin.duckdns.org"},
+    {"Seed1", "196.52.2.42:7143"},
     {NULL, NULL}
 };
 
