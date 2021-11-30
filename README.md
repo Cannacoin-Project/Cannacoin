@@ -1,11 +1,8 @@
-Join the Cannacoin Discord server
-https://discord.gg/TEC9aNBhHw
-
-
 Cannacoin (integration/staging tree)
 =
 <br>
 https://www.cannacoin.org<br>
+https://blog.cannacoin.org<br>
 <br>
 Copyright (c) 2009-2014 Bitcoin Developers
 <br>
@@ -92,7 +89,6 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 
 
 Team Cannacoin
-=
 
 Brent K. aka deusopus<br>
 Lead Director and Founder of Grass Haus Enterprises.<br>
@@ -109,8 +105,9 @@ Gone but not forgotten. RIP 2015.<br>
 <br>
 Always do your due diligence!<br>
 <br><br>
-=
-Visit https://blog.cannacoin.org for more info<br>
+Join the Cannacoin Discord server<br>
+https://discord.gg/TEC9aNBhHw<br>
+<br>
 <br>
 
 Copyright (c) 2014-2021 Grass Haus Enterprises<br>
