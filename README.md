@@ -91,12 +91,12 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
 Team Cannacoin
 
 Brent K. aka deusopus<br>
-Lead Director and Founder of Grass Haus Enterprises.<br>
-Member of The Cannacoin Cryptocurrency Project since 2014.<br>
-Artist, Writer, Designer, and Podcaster.<br>
+Lead Director and Member since 2014<br>
+Founder of Grass Haus Enterprises.<br>
 <br><br>
 Thomas B. aka CryptoSplinter<br>
-Assistant Director and Senior Member. Technical Support.<br>
+Assistant Director and Senior Member.<br>
+Technical Support.<br>
 <br><br><br>
 In Memory Of...<br>
 Phil C. aka RebPhil<br>
