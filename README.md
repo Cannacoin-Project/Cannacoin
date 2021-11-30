@@ -87,7 +87,7 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     ./cannacoin-qt_test
 
 
-
+<br><br>
 Team Cannacoin
 
 Brent K. aka deusopus<br>
