@@ -93,7 +93,7 @@ Team Cannacoin
 Brent K. aka deusopus<br>
 Lead Director and Member since 2014<br>
 Founder of Grass Haus Enterprises.<br>
-<br><br>
+<br>
 Thomas B. aka CryptoSplinter<br>
 Assistant Director and Senior Member.<br>
 Technical Support.<br>
