@@ -1,4 +1,5 @@
-// Copyright (c) 2011-2013 The Bitcoin developers
+// Copyright (c) 2011-2021 The Bitcoin developers
+// Copyright (c) 2011-2021 The Cannacoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,19 +13,22 @@
 #include "guiconstants.h"
 #include "init.h"
 #include "util.h"
+
 #include "ui_interface.h"
 #include "paymentserver.h"
 #include "splashscreen.h"
 
-#include <QMessageBox>
-#if QT_VERSION < 0x050000
+#include <QApplication>
 #include <QTextCodec>
-#endif
+#include <QDesktopWidget>
 #include <QLocale>
+#include <QStyleFactory>
 #include <QTimer>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QMessageBox>
 
+#if QT_VERSION < 0x050000
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
 #endif
@@ -122,11 +126,15 @@ int main(int argc, char *argv[])
 
 #if QT_VERSION < 0x050000
     // Internal string conversion is all UTF-8
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForTr());
+    //QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    //QTextCodec::setCodecForCStrings(QTextCodec::codecForTr());
 #endif
 
     Q_INIT_RESOURCE(bitcoin);
+    
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	QApplication::setStyle(QStyleFactory::create("Fusion"));
+    
     QApplication app(argc, argv);
 
     // Register meta types used for QMetaObject::invokeMethod
