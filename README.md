@@ -1,16 +1,17 @@
-Cannacoin integration/staging tree
-================================
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Cannacoin-Project/Cannacoin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-http://www.cannacoin.com
-
-Copyright (c) 2009-2014 Bitcoin 
-
+Cannacoin (integration/staging tree)
+=
+<br>
+https://www.cannacoin.org<br>
+https://blog.cannacoin.org<br>
+<br>
+Copyright (c) 2009-2014 Bitcoin Developers
+<br>
 Copyright (c) 2011-2014 Litecoin Developers
-
-Copyright (c) 2014 Reddcoin Developers
-
-Copyright (c) 2014 Cannacoin Developers
+<br>
+Copyright (c) 2014-2021 Reddcoin Developers
+<br>
+Copyright (c) 2014-2021 Cannacoin Developers
+<br>
 
 
 What is Cannacoin?
@@ -22,9 +23,8 @@ algorithm which replaced Proof-of-Work (PoW).
  - Roughly 4,625,000 CCN will be mined in PoW phase
  - 2% annual interest in PoSV phase
  - Difficulty retarget: every block using Kimoto's gravity well
- - White paper: https://www.reddcoin.com/papers/PoSV.pdf
- - FAQs paper: http://www.cannacoin.cc/Cannacoin_PoSV_FAQ.pdf
-
+ - White paper: 
+ - FAQs paper: 
 Cannacoin first started in March 28th 2014 as a variant of Litecoin using Scrypt as
 the Proof-of-Work (PoW) hash algorithm.
  - 1 minute block target
@@ -33,7 +33,7 @@ the Proof-of-Work (PoW) hash algorithm.
  - Difficulty retarget: Every block using Kimoto's gravity well
 
 For more information, as well as an immediately useable, binary version of
-the Cannacoin wallet client, please visit http://www.cannacoin.cc.
+the Cannacoin wallet client, please visit <s>http://www.cannacoin.cc</s>.
 
 License
 -------
@@ -85,3 +85,31 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     qmake BITCOIN_QT_TEST=1 -o Makefile.test bitcoin-qt.pro
     make -f Makefile.test
     ./cannacoin-qt_test
+
+
+<br><br>
+Team Cannacoin
+
+Brent K. aka deusopus<br>
+Lead Director and Member since 2014<br>
+Founder of Grass Haus Enterprises.<br>
+<br>
+Thomas B. aka CryptoSplinter<br>
+Assistant Director and Senior Member.<br>
+Technical Support.<br>
+<br><br><br>
+In Memory Of...<br>
+Phil C. aka RebPhil<br>
+Original Lead Developer and Founding Member of The Cannacoin Community Network.<br>
+Gone but not forgotten. RIP 2015.<br>
+<br>
+Always do your due diligence!<br>
+<br><br>
+Join the Cannacoin Discord server<br>
+https://discord.gg/TEC9aNBhHw<br>
+<br>
+<br>
+
+Copyright (c) 2014-2021 Grass Haus Enterprises<br>
+<br><br>
+Thanks to Subtoshi and JamesonWA and all the members of The Cannacoin Community Network
