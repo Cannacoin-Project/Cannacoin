@@ -94,7 +94,7 @@ Brent K. aka deusopus<br>
 Lead Director and Member since 2014<br>
 Founder of Grass Haus Enterprises.<br>
 <br>
-Thomas B. aka CryptoSplinter<br>
+Thomas B. aka 8bit<br>
 Assistant Director and Senior Member.<br>
 Technical Support.<br>
 <br><br><br>
