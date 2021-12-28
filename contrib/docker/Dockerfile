@@ -18,7 +18,7 @@ RUN mkdir bin src
 RUN echo PATH=\"\$HOME/bin:\$PATH\" >> .bash_profile
 
 WORKDIR /home/cannacoin/src
-RUN git clone https://github.com/cannacoin-project/cannacoin.git
+RUN git clone https://github.com/cannacoin-official/cannacoin.git
 
 WORKDIR	/home/cannacoin/src/cannacoin/src
 RUN make -f makefile.unix
@@ -31,7 +31,7 @@ RUN mkdir .cannacoin
 RUN cp -f src/cannacoin/contrib/docker/cannacoin.conf .cannacoin/
 
 WORKDIR /home/cannacoin/.cannacoin
-RUN wget -q https://github.com/cannacoin-project/cannacoin/releases/download/v1.3.1.2/bootstrap.dat.xz
+#RUN wget -q https://github.com/cannacoin-official/cannacoin/releases/download/v1.3.1.2/bootstrap.dat.xz
 
 ENV HOME /home/cannacoin
 EXPOSE 8332
