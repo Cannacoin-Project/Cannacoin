@@ -31,7 +31,7 @@ RUN mkdir .cannacoin
 RUN cp -f src/cannacoin/contrib/docker/cannacoin.conf .cannacoin/
 
 WORKDIR /home/cannacoin/.cannacoin
-RUN wget -q https://github.com/cannacoin-official/cannacoin/releases/download/v1.3.1.2/bootstrap.dat.xz
+#RUN wget -q https://github.com/cannacoin-official/cannacoin/releases/download/v1.3.1.2/bootstrap.dat.xz
 
 ENV HOME /home/cannacoin
 EXPOSE 8332
