@@ -1,8 +1,8 @@
 Cannacoin integration/staging tree
 ================================
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Cannacoin-Project/Cannacoin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
-http://www.cannacoin.org
+http://www.cannacoin.com
 
 Copyright (c) 2009-2014 Bitcoin 
 
@@ -22,7 +22,8 @@ algorithm which replaced Proof-of-Work (PoW).
  - Roughly 4,625,000 CCN will be mined in PoW phase
  - 2% annual interest in PoSV phase
  - Difficulty retarget: every block using Kimoto's gravity well
- - White paper: https://cannacoin.org/cannacoinwhitepaper.pdf
+ - White paper: https://www.reddcoin.com/papers/PoSV.pdf
+ - FAQs paper: http://www.cannacoin.cc/Cannacoin_PoSV_FAQ.pdf
 
 Cannacoin first started in March 28th 2014 as a variant of Litecoin using Scrypt as
 the Proof-of-Work (PoW) hash algorithm.
@@ -31,7 +32,8 @@ the Proof-of-Work (PoW) hash algorithm.
  - Subsidy halves every 526,000 blocks
  - Difficulty retarget: Every block using Kimoto's gravity well
 
-For more information visit https://wiki.cannacoin.org
+For more information, as well as an immediately useable, binary version of
+the Cannacoin wallet client, please visit http://www.cannacoin.cc.
 
 License
 -------
