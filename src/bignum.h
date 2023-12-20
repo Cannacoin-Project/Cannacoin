@@ -2,8 +2,8 @@
 // Copyright (c) 2009-2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef BITCOIN_BIGNUM_H
-#define BITCOIN_BIGNUM_H
+#ifndef BITCOIN_CBigNum_H
+#define BITCOIN_CBigNum_H
 
 #include <stdexcept>
 #include <vector>
@@ -47,8 +47,8 @@ public:
 };
 
 
-/** C++ wrapper for BIGNUM (OpenSSL bignum) */
-class CBigNum : public BIGNUM
+/** C++ wrapper for CBigNum (OpenSSL bignum) */
+class CBigNum : public CBigNum
 {
 public:
     CBigNum()
@@ -256,7 +256,7 @@ public:
     {
         std::vector<unsigned char> vch2(vch.size() + 4);
         unsigned int nSize = vch.size();
-        // BIGNUM's byte stream format expects 4 bytes of
+        // CBigNum's byte stream format expects 4 bytes of
         // big endian size data info at the front
         vch2[0] = (nSize >> 24) & 0xff;
         vch2[1] = (nSize >> 16) & 0xff;
