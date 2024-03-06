@@ -568,20 +568,20 @@ void StakeMiner(CWallet *pwallet)
             MilliSleep(1000);
         }
 
-        while (vNodes.empty() || IsInitialBlockDownload())
+        //while (vNodes.empty() || IsInitialBlockDownload())
         {
             nLastCoinStakeSearchInterval = 0;
             fTryToSync = true;
             MilliSleep(1000);
         }
 
-        if (fTryToSync)
+        //if (fTryToSync)
         {
             fTryToSync = false;
             if (vNodes.size() < 3 || nBestHeight < GetNumBlocksOfPeers())
             {
-                MilliSleep(60000);
-                continue;
+                //MilliSleep(60000);
+                //continue;
             }
         }
 
